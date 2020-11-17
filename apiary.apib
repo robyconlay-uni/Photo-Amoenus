@@ -36,6 +36,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Location'
+  /locations/:
+    get:
+      description: >-
+        Gets information about all existing locations
+      summary: Get all locations
+      parameters:
+      responses:
+        '200':
+          description: 'All the existing locations'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        '404':
+          description: 'There are no existing locations'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
   
           
 components:
