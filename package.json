@@ -1,27 +1,16 @@
 {
-  "name": "photo-amoenus",
+  "name": "lib",
   "version": "1.0.0",
-  "description": "Repository per il progetto di Ingegneria del Software 2",
-  "main": "index.js",
-  "directories": {
-    "lib": "lib"
-  },
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/robyconlay-uni/Photo-Amoenus.git"
-  },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/robyconlay-uni/Photo-Amoenus/issues"
-  },
-  "homepage": "https://github.com/robyconlay-uni/Photo-Amoenus#readme",
   "dependencies": {
     "express": "^4.17.1",
     "mongoose": "^5.10.14"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "description": ""
 }
