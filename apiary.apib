@@ -30,6 +30,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Location'
+        '404':
+          description: 'Insert ID doesn't exist'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
   
           
 components:
@@ -42,19 +48,27 @@ components:
         - address
         - description
         - image
+        - category
+        - likes
       properties:
         id:
-          type: integer
+          type: String
           description: 'ID of the location'
         name:
-          type: string
+          type: String
           description: 'Name of the location'
         address:
-          type: string
+          type: String
           description: 'Address of the location'
         description:
-          type: string
+          type: String
           description: 'Short description of the location'
         image:
-          type: string
+          type: String
           description: 'Representative image of the location'
+        category:
+          type: String
+          description: 'Most Representative category of the location'
+        likes:
+          type: Number
+          description: 'Number of people who likes this element'  
