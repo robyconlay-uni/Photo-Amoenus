@@ -10,6 +10,21 @@ function login() {
 
 function registration() {
 
-    //use fetch function maybe here too
+    //get the form object
+    var username = document.getElementById("regUser").value;
+    var emailuser = document.getElementById("regEmail").value;
+    var passworduser = document.getElementById("regPd").value;
+    var password2 = document.getElementById("regPdConf").value;
+
+
+    fetch('../lib/user/registration', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify( { 
+            user: username,
+            email: emailuser,
+            password: passworduser
+        } ),
+    })
 
 }
