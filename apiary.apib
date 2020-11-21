@@ -1,80 +1,93 @@
-FORMAT: 1A
-HOST: https://polls.apiblueprint.org/
-
-# Photo Amoenus
-
-Polls is a simple API allowing consumers to view polls and vote in them.
-
-## Questions Collection [/questions]
-
-### List All Questions [GET]
-
-+ Response 200 (application/json)
-
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
-            }
-        ]
-
-### Create a New Question [POST]
-
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
-
-+ Request (application/json)
-
-        {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
-        }
-
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: /questions/2
-
-    + Body
-
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
-            }
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: "User Story #1"
+  description: Voglio poter vedere le foto scattate in una determinata location per farmi un’idea del posto
+  license:
+    name: MIT
+servers:
+  - url: http://assignments-api.herokuapp.com.com/api/v1
+    description: Heroku
+  - url: http://localhost:3000/api/v1
+    description: Localhost
+paths:
+  /locations/{id}:
+    get:
+      description: >-
+        Gets information about a specific location, identified by an ID
+      summary: Get a location
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: String
+          required: true
+          description: 'ID of the requested location'
+      responses:
+        '200':
+          description: 'The location corresponding to the input ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        '404':
+          description: 'Insert ID doesn't exist'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+  /locations/:
+    get:
+      description: >-
+        Gets information about all existing locations
+      summary: Get all locations
+      parameters:
+      responses:
+        '200':
+          description: 'All the existing locations'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        '404':
+          description: 'There are no existing locations'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+  
+          
+components:
+  schemas:
+    Location:
+      type: object
+      required:
+        - id
+        - name
+        - address
+        - description
+        - image
+        - category
+        - likes
+      properties:
+        id:
+          type: String
+          description: 'ID of the location'
+        name:
+          type: String
+          description: 'Name of the location'
+        address:
+          type: String
+          description: 'Address of the location'
+        description:
+          type: String
+          description: 'Short description of the location'
+        image:
+          type: String
+          description: 'Representative image of the location'
+        category:
+          type: String
+          description: 'Most Representative category of the location'
+        likes:
+          type: Number
+          description: 'Number of people who likes this element'  
