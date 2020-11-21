@@ -1,0 +1,6 @@
+{
+    "env": {
+        "MONGO_PW": "7M1LXWdGfoTYVcTm",
+        "PORT": 8000
+    }
+}
