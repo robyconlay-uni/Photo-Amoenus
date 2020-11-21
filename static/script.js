@@ -26,5 +26,11 @@ function registration() {
             password: passworduser
         } ),
     })
+    .then((resp) => resp.json())
+    .then(function(data) {
+        if 
+
+
+    });
 
 }
