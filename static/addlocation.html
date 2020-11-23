@@ -40,6 +40,37 @@
                     x.value = "";
                 }
             }
+
+            function addLocation(){
+                var nameLoc = document.getElementById("nome").value;
+                var addressLoc = document.getElementById("posizione").value;
+                var descLoc = document.getElementById("descrizione").value;
+                var imgLoc = document.getElementById("myFile");
+                var catLoc = "";
+                var likesLoc = 0;
+
+                console.log(nameLoc);
+
+                fetch('../locations', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify( { 
+                        name: nameLoc,
+                        address: addressLoc,
+                        description: descLoc,
+                        locationImage: imgLoc,
+                        category: catLoc,
+                        likes: likesLoc
+                    } ),
+                })
+                .then((resp) => {
+                    console.log(resp);
+                    //loadBooks();
+                    return;
+                })
+                .catch( error => console.error(error) ); // If there is any error you will catch them here
+
+            };
         </script>
     </head>
     <body style="font-family: roboto; font-size: 20px">
@@ -49,16 +80,20 @@
             <img src="https://www.informagiovani-italia.com/images/mappa_trento.jpg" style="max-width: 400px">
             
         </div>
-        <form method="POST"> <!--
-                inserire pagina da richiamare al completamento
-            -->
+
+
+        <form method="post" action="/locations" name="addLocationForm" id="addLocationForm"> 
+            
             <br><br><br>
             <div style="text-align: left; margin-top: 40px; margin-left: 50px">
+                <label for="nome" style="margin-right: 130px">Inserisci nome del luogo</label>
+                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="nome" onchange="addLocation()"><br>
+
                 <label for="posizione" style="margin-right: 130px">Inserisci la posizione</label>
-                <input type="text" style="width: 400px; height: 40px; margin: 10px"><br>
+                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="posizione"><br>
                 
                 <label for="descrizione">Inserisci una breve descrizione del luogo</label>
-                <input type="text" style="height: 200px; width: 600px; margin: 10px"><br>
+                <input type="text" style="height: 200px; width: 600px; margin: 10px" id="descrizione"><br>
             </div>
             <div style="text-align: left; margin-top: 40px; margin-left: 50px">
                 <input type="button" value="Aggiungi tag" ><br><br><br>
@@ -70,8 +105,8 @@
                 <input type="radio" name="ragg" style="margin-left: 50px">Con mezzi pubblici
                 <br><br><br>
                 
-                <input type="file" id="myFile" style="margin-top: 40px;" onchange="myFunction()">
-                <p id="demo" style="margin-top: 40px;"></p><br><br>
+                <input type="file" id="myFile" style="margin-top: 40px;" onchange="myFunction()" >
+                <p id="demo" style="margin-top: 40px;" id="immagine"></p><br><br>
                 
                 <label for="descrizione2">Inserisci una breve descrizione della macchina fotografica utilizzata o del supporto,
                                         aggiungendo dettagli a piacere
@@ -91,7 +126,7 @@
             </div>
             
             <div style="text-align: right; margin-top: 50px; margin-right: 100px">
-                <input type="submit" value="Aggiungi!" style="width: 200px; height: 50px">
+                <input type="submit" value="Aggiungi!" onclick="addLocation()" style="width: 200px; height: 50px">
             </div>
 
         </form>
