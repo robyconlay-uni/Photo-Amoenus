@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Aggiungi una location</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body style="font-family: roboto; font-size: 20px">
+        <div  style="text-align: center"><h1>Aggiungi un luogo</h1></div>
+        <div  style="text-align: center">
+            
+            <img src="https://www.informagiovani-italia.com/images/mappa_trento.jpg" style="max-width: 400px">
+            
+        </div>
+        <form method="POST"> <!--
+                inserire pagina da richiamare al completamento
+            -->
+            <br><br><br>
+            <div style="text-align: left; margin-top: 40px; margin-left: 50px">
+                <label for="posizione" style="margin-right: 130px">Inserisci la posizione</label>
+                <input type="text" style="width: 400px; height: 40px; margin: 10px"><br>
+                
+                <label for="descrizione">Inserisci una breve descrizione del luogo</label>
+                <input type="text" style="height: 200px; width: 600px; margin: 10px"><br>
+            </div>
+            <div style="text-align: left; margin-top: 40px; margin-left: 50px">
+                <input type="button" value="Aggiungi tag" ><br><br><br>
+                
+                <label for="ragg">Raggiungibilità:</label>
+                <input type="radio" name="ragg" style="margin-left: 50px">A piedi
+                <input type="radio" name="ragg" style="margin-left: 50px">In bicicletta
+                <input type="radio" name="ragg" style="margin-left: 50px">In macchina
+                <input type="radio" name="ragg" style="margin-left: 50px">Con mezzi pubblici
+                <br><br><br>
+                
+                <input type="file" id="myFile" style="margin-top: 40px;" onchange="myFunction()">
+                <p id="demo" style="margin-top: 40px;"></p><br><br>
+                
+                <label for="descrizione2">Inserisci una breve descrizione della macchina fotografica utilizzata o del supporto,
+                                        aggiungendo dettagli a piacere
+                </label>
+                <input type="text" style="height: 200px; width: 600px; margin: 10px"><br>
+                
+                <label for="orario" style="margin-right: 60px">Inserisci l'orario di scatto</label>
+                <input type="text" style="width: 400px; height: 40px; margin: 10px"><br>
+                
+                <label for="ampm">Momento della giornata:</label>
+                <input type="radio" name="ampm" style="margin-left: 70px">A.M.
+                <input type="radio" name="ampm" style="margin-left: 50px">P.M.
+                <br>
+                
+                <label for="data" style="margin-right: 130px">Data dello scatto</label>
+                <input type="text" style="width: 400px; height: 40px; margin: 10px"><br>
+            </div>
+            
+            <div style="text-align: right; margin-top: 50px; margin-right: 100px">
+                <input type="submit" value="Aggiungi!" style="width: 200px; height: 50px">
+            </div>
+
+        </form>
+    </body>
+</html>
