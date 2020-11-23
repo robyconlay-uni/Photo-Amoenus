@@ -22,7 +22,7 @@
   "homepage": "https://github.com/robyconlay-uni/Photo-Amoenus#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^5.10.14",
+    "mongoose": "^5.10.15",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.6"
   },
