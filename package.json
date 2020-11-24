@@ -11,7 +11,7 @@
     "collectCoverage": true
 },
   "scripts": {
-    "start": "node api.js",
+    "start": "node index.js",
     "test": "jest"
   },
   "repository": {
