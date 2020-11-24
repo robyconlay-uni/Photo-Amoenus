@@ -141,3 +141,40 @@ components:
         likes:
           type: Number
           description: 'Number of people who likes this element'  
+          
+/registration:
+    post:
+      description: >-
+        Creates a new user in the system.
+      summary: Register a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+		             - id
+		             - username
+                 - email
+		             - password
+              properties:
+		            username:
+                  type: objectId
+                  description: 'Id of the user'
+		              username:
+                  type: string
+                  description: 'Username that will be shown in the site'
+                  email:
+                  type: string
+                  description: 'Email address of the user'
+	               	password:
+                  type: string
+                  description: 'Password to access to the account'
+      responses:                                                         //questa parte non ancora implementata
+        '201':
+          description: 'User created'
+          headers:
+            'Location':
+              schema:
+                type: string
+              description: Link to the newly created student.
