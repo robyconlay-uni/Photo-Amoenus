@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <script src="script.js">
+            document.onload(loadLocations());
+        </script>
+    </head>
+    <body onload="loadLocation(req.param(id))">
+
+        <h2 id="name"></h2>
+        <div id="address"></div>
+        <div id="city"></div>
+        <div id="description"></div>
+        <div id="locationImage"></div>
+        <div id="category"></div>
+        <div id="likes"></div>
+
+        <button onclick="upvote(req.param(id))" type="button"></button>
+
+    </body>
+</html>
