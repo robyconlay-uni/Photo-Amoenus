@@ -153,21 +153,21 @@ components:
             schema:
               type: object
               required:
-		             - id
-		             - username
-                 - email
-		             - password
+		            - id
+		            - username
+                - email
+		            - password
               properties:
-		            username:
+		            id:
                   type: objectId
                   description: 'Id of the user'
-		              username:
+		            username:
                   type: string
                   description: 'Username that will be shown in the site'
-                  email:
+                email:
                   type: string
                   description: 'Email address of the user'
-	               	password:
+		            password:
                   type: string
                   description: 'Password to access to the account'
       responses:                                                         //questa parte non ancora implementata
@@ -178,3 +178,39 @@ components:
               schema:
                 type: string
               description: Link to the newly created student.
+	'500':
+          description: 'Error in creating a new user'
+          headers:
+            content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/registration'
+	'422':
+          description: 'User already exist'
+          headers:
+            content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/registration'
+components:
+  schemas:
+    userScheme:
+      type: object
+      required:
+        - id
+        - username
+        - email
+        - password
+      properties:
+        id:
+          type: String
+          description: 'ID of the location'
+        username:
+          type: String
+          description: 'Name of the location'
+        email:
+          type: String
+          description: 'Email of the user'
+        password:
+          type: String
+          description: 'Password of the user'
