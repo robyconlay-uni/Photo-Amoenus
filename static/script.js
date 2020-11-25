@@ -147,22 +147,22 @@ function openLocation(){
     fetch('http://localhost:8000/locations/'+ idLocation, {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'multpart/form-data'
         }
 
     })
-    .then((resp) => resp.json()) // Transform the data into json
+    .then((resp) => resp/*.json()*/) // Transform the data into json
     .then(function(data) { // Here you get the data to modify as you please
         
         console.log(data);
-        document.getElementById('locName').innerHTML+= `${data.name.toUpperCase()}`;
+        document.getElementById('locName').innerHTML+= `${data.body.name.toUpperCase()}`;
 
         
         //ID
         let li = document.createElement('li');
         let span = document.createElement('span');
         span.innerHTML = `<label for="_id" style="margin-right: 130px">_id: </label>`;
-        span.innerHTML += `<label id="_id" style="margin-right: 130px">${data._id}</label>`;
+        span.innerHTML += `<label id="_id" style="margin-right: 130px">${data.body._id}</label>`;
         li.appendChild(span);
         ul.appendChild(li);
     
@@ -170,7 +170,7 @@ function openLocation(){
         li = document.createElement('li');
         span = document.createElement('span');
         span.innerHTML = `<label for="name" style="margin-right: 130px">name: </label>`;
-        span.innerHTML += `<label id="name" style="margin-right: 130px">${data.name}</label>`;
+        span.innerHTML += `<label id="name" style="margin-right: 130px">${data.body.name}</label>`;
         li.appendChild(span);
         ul.appendChild(li);
 
@@ -178,7 +178,7 @@ function openLocation(){
         li = document.createElement('li');
         span = document.createElement('span');
         span.innerHTML = `<label for="address" style="margin-right: 130px">address: </label>`;
-        span.innerHTML += `<label id="address" style="margin-right: 130px">${data.address}</label>`;
+        span.innerHTML += `<label id="address" style="margin-right: 130px">${data.body.address}</label>`;
         li.appendChild(span);
         ul.appendChild(li);
 
@@ -186,7 +186,7 @@ function openLocation(){
         li = document.createElement('li');
         span = document.createElement('span');
         span.innerHTML = `<label for="city" style="margin-right: 130px">city: </label>`;
-        span.innerHTML += `<label id="city" style="margin-right: 130px">${data.city}</label>`;
+        span.innerHTML += `<label id="city" style="margin-right: 130px">${data.body.city}</label>`;
         li.appendChild(span);
         ul.appendChild(li);
 
@@ -194,13 +194,18 @@ function openLocation(){
         li = document.createElement('li');
         span = document.createElement('span');
         span.innerHTML = `<label for="description" style="margin-right: 130px">description: </label>`;
-        span.innerHTML += `<label id="descriprtion" style="margin-right: 130px">${data.description}</label>`;
+        span.innerHTML += `<label id="descriprtion" style="margin-right: 130px">${data.body.description}</label>`;
         li.appendChild(span);
         ul.appendChild(li);
 
         //IMMAGINE
-
-        //CATEGORIA
+        /*li = document.createElement('li');
+        span = document.createElement('span');
+        span.innerHTML = `<label for="image" style="margin-right: 130px">image: </label>`;
+        span.innerHTML += `<div> <img id="image">${data.} <div> `;
+        li.appendChild(span);
+        ul.appendChild(li);
+        //CATEGORIA*/
 
 
     })
