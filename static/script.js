@@ -73,12 +73,7 @@ function addLocation(){
         console.log(resp);
         return;
     })
-    .then((resp) => {
-            console.log(resp);
-            //loadBooks();
-            return;
-        })
-        .catch(error => console.error(error)); // If there is any error you will catch them here
+    .catch(error => console.error(error)); // If there is any error you will catch them here
 
 }
 
