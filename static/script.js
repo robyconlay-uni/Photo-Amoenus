@@ -78,12 +78,12 @@ function registration() {
 
     fetch('../lib/user/registration', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify( { 
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
             user: username,
             email: emailuser,
             password: passworduser
-        } ),
+        }),
     })
 
 };
@@ -167,6 +167,7 @@ async function upvote(url_string) {
         .catch(err => {
             console.log(err);
         });
+}
 
 function registration() {
 
@@ -179,17 +180,14 @@ function registration() {
 
     fetch('../lib/user/registration', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify( { 
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
             user: username,
             email: emailuser,
             password: passworduser
-        } ),
+        }),
     })
-    .then((resp) => resp.json())
-    .then(function(data) {
-        
-
-
-    });
+        .then((resp) => resp.json())
+        .then(function (data) {
+        });
 }
