@@ -1,4 +1,8 @@
 //here goes the script for the html page
+
+/**
+ * Gestisce l'aggiunta di un file(immagine)
+ */
 function myFunction(){
     var x = document.getElementById("myFile");
     var txt = "";
@@ -35,6 +39,10 @@ function myFunction(){
     }
 }
 
+
+/**
+ * Aggiunge una location
+ */
 function addLocation(){
     
     //Importo inserimenti da form HTML
@@ -67,7 +75,9 @@ function addLocation(){
 
 }
 
-
+/**
+ * Registra un nuovo utente
+ */
 function registration() {
 
     //get the form object
@@ -89,33 +99,110 @@ function registration() {
 
 };
 
+
+/**
+ * Carica l'elenco completo delle locations
+ */
 function loadLocations() {
 
     const ul = document.getElementById("locations"); 
     ul.innerHTML = '';
 
-    fetch('../locations')
-    .then((resp) => resp.json()) // Transform the data into json
-    .then(function(data) { // Here you get the data to modify as you please
+    fetch('../locations',{method: 'GET', header:'Content-Type: application/json' })
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) { // Here you get the data to modify as you please
         
-        // console.log(data);
+            // console.log(data);
         
-        return data.map(function(location) { // Map through the results and for each run the code below
+            return data.map(function(location) { // Map through the results and for each run the code below
                    
-            let li = document.createElement('li');
-            let span = document.createElement('span');
-            span.innerHTML = `<a href="${location._id}">${location.name}</a>`;
-            span.innerHTML += `<button type="button" onclick="openLocation('${location._id}')">Visualizza luogo</button>`
+                let li = document.createElement('li');
+                let span = document.createElement('span');
+                span.innerHTML = `<a href="http://localhost:8000/getlocation.html?_id=${location._id}">${location.name}</a>`;
+                //span.innerHTML = `<label>${location.name}</label>`;
+                //span.innerHTML += `<button type="button" onclick="openLocation('${location._id}')">Visualizza luogo</button>`
             
-            // Append all our elements
-            li.appendChild(span);
-            ul.appendChild(li);
+                // Append all our elements
+                li.appendChild(span);
+                ul.appendChild(li);
+            })
         })
-    })
-    .catch( error => console.error(error) );// If there is any error you will catch them here
+        .catch( error => console.error(error) );// If there is any error you will catch them here
     
 }
 
-function openLocation(idLocation){
-    window.open("localhost:8000/locations/"+idLocation);
+
+/**
+ * Visualizza una loaction singola
+ */
+function openLocation(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const idLocation= urlParams.get('_id');
+
+    
+
+    const ul= document.getElementById('dettagli');
+    ul.innerHTML='';
+
+    fetch('http://localhost:8000/locations/'+ idLocation, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+
+    })
+    .then((resp) => resp.json()) // Transform the data into json
+    .then(function(data) { // Here you get the data to modify as you please
+        
+        console.log(data);
+        document.getElementById('locName').innerHTML+= `${data.name.toUpperCase()}`;
+
+        
+        //ID
+        let li = document.createElement('li');
+        let span = document.createElement('span');
+        span.innerHTML = `<label for="_id" style="margin-right: 130px">_id: </label>`;
+        span.innerHTML += `<label id="_id" style="margin-right: 130px">${data._id}</label>`;
+        li.appendChild(span);
+        ul.appendChild(li);
+    
+        //NOME
+        li = document.createElement('li');
+        span = document.createElement('span');
+        span.innerHTML = `<label for="name" style="margin-right: 130px">name: </label>`;
+        span.innerHTML += `<label id="name" style="margin-right: 130px">${data.name}</label>`;
+        li.appendChild(span);
+        ul.appendChild(li);
+
+        //INDIRIZZO
+        li = document.createElement('li');
+        span = document.createElement('span');
+        span.innerHTML = `<label for="address" style="margin-right: 130px">address: </label>`;
+        span.innerHTML += `<label id="address" style="margin-right: 130px">${data.address}</label>`;
+        li.appendChild(span);
+        ul.appendChild(li);
+
+        //CITTA
+        li = document.createElement('li');
+        span = document.createElement('span');
+        span.innerHTML = `<label for="city" style="margin-right: 130px">city: </label>`;
+        span.innerHTML += `<label id="city" style="margin-right: 130px">${data.city}</label>`;
+        li.appendChild(span);
+        ul.appendChild(li);
+
+        //DESCRIZIONE
+        li = document.createElement('li');
+        span = document.createElement('span');
+        span.innerHTML = `<label for="description" style="margin-right: 130px">description: </label>`;
+        span.innerHTML += `<label id="descriprtion" style="margin-right: 130px">${data.description}</label>`;
+        li.appendChild(span);
+        ul.appendChild(li);
+
+        //IMMAGINE
+
+        //CATEGORIA
+
+
+    })
+    .catch( error => console.error(error) );// If there is any error you will catch them here
 }
