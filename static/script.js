@@ -68,8 +68,8 @@ function addLocation() {
 
 function loadLocations() {
 
-    const ul = document.getElementById("locations");
-    ul.innerHTML = '';
+    const div = document.getElementById("locations");
+    div.innerHTML = '';
 
     fetch('../locations')
         .then((resp) => resp.json()) // Transform the data into json
@@ -79,22 +79,14 @@ function loadLocations() {
 
             return data.locations.map(function (location) { // Map through the results and for each run the code below
 
-                let li = document.createElement('li');
-                li.innerHTML = `<a href="location.html?id=${location._id}">${location.name}</a>`;
-                /*let div = document.createElement('div');
-                div.innerHTML = `<a href="location/id?${location._id}">${location.name}</a>`;
-                div.innerHTML += `<form action="location/id?${location._id}">`;
-                div.innerHTML += `<button type="submit">Visualizza luogo</button>`;
-                div.innerHTML += `</form>`;*/
-
-                // Append all our elements
-                //li.appendChild(div);
-                ul.appendChild(li);
-               // ul.appendChild(div);
+                let div2 = document.createElement('div');
+                div2.className = "loc";
+                //div2.addEventListener('click', window.open(`location.html?id=${location._id}`));
+                div2.innerHTML = `<a href="location.html?id=${location._id}">${location.name}</a>`;
+                div.appendChild(div2);
             })
         })
         .catch(error => console.error(error));// If there is any error you will catch them here
-
 }
 
 

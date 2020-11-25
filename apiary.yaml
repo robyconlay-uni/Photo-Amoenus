@@ -106,7 +106,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Location'
-          
+    patch:
+      description: >-
+        Changes any value of a location
+      summary: Change values of location
+      parameters:
+        id: mongoose.Types.ObjectId
+      requestBody:
+        content:
+          application/json:
+
+      responses:
+        '200':
+          description: 'Location pathced'
+        '500':
+          description: 'Error in patching location'
+
+
+
 components:
   schemas:
     Location:
