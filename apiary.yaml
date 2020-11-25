@@ -1,8 +1,9 @@
 openapi: 3.0.0
 info:
   version: '1.0'
-  title: "User Story #1"
-  description: Voglio poter vedere le foto scattate in una determinata location per farmi un’idea del posto
+  title: "Sprint #1"
+  description: Voglio poter vedere le foto scattate in una determinata location per farmi un’idea del posto, 
+    potermi registrare, creare nuove location  
   license:
     name: MIT
 servers:
@@ -36,7 +37,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Location'
-  /locations/:
+  /locations:
     get:
       description: >-
         Gets information about all existing locations
@@ -67,8 +68,9 @@ paths:
               required:
                 - name
                 - address
+                - city
                 - description
-                - image
+                - locationImage
                 - category
               proprieties:
                 _id:
@@ -80,10 +82,13 @@ paths:
                 address:
                   type: string
                   description: 'address of the location'
+                city:
+                  type: string
+                  description: 'city of the location'
                 description:
                   type: string
                   description: 'description of the location'
-                image:
+                locationImage:
                   type: string
                   description: 'path of the image related to location'
                 category:
@@ -106,43 +111,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Location'
-          
-components:
-  schemas:
-    Location:
-      type: object
-      required:
-        - id
-        - name
-        - address
-        - description
-        - image
-        - category
-        - likes
-      properties:
-        id:
-          type: String
-          description: 'ID of the location'
-        name:
-          type: String
-          description: 'Name of the location'
-        address:
-          type: String
-          description: 'Address of the location'
-        description:
-          type: String
-          description: 'Short description of the location'
-        image:
-          type: String
-          description: 'Representative image of the location'
-        category:
-          type: String
-          description: 'Most Representative category of the location'
-        likes:
-          type: Number
-          description: 'Number of people who likes this element'  
-          
-/registration:
+  /registration:
     post:
       description: >-
         Creates a new user in the system.
@@ -178,14 +147,14 @@ components:
               schema:
                 type: string
               description: Link to the newly created student.
-	'500':
+	      '500':
           description: 'Error in creating a new user'
           headers:
             content:
             application/json:
               schema:
                 $ref: '#/components/schemas/registration'
-	'422':
+	      '422':
           description: 'User already exist'
           headers:
             content:
@@ -202,9 +171,6 @@ components:
         - email
         - password
       properties:
-        id:
-          type: String
-          description: 'ID of the location'
         username:
           type: String
           description: 'Name of the location'
@@ -214,3 +180,39 @@ components:
         password:
           type: String
           description: 'Password of the user'
+    locationScheme:
+      type: object
+      required:
+        - id
+        - name
+        - address
+        - city
+        - description
+        - locationImage
+        - category
+        - likes
+      properties:
+        id:
+          type: String
+          description: 'ID of the location'
+        name:
+          type: String
+          description: 'Name of the location'
+        address:
+          type: String
+          description: 'Address of the location'
+        city:
+          type: String
+          description: 'City of the location'
+        description:
+          type: String
+          description: 'Short description of the location'
+        image:
+          type: String
+          description: 'Representative image of the location'
+        category:
+          type: String
+          description: 'Most Representative category of the location'
+        likes:
+          type: Number
+          description: 'Number of people who likes this element'  
