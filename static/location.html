@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <script src="script.js">
+        </script>
+
+        <style>
+            h2 {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body onload="loadLocation(window.location.href)">
+
+        <h2 id="name"></h2>
+        <div id="address"></div>
+        <div id="city"></div>
+        <div id="description"></div>
+        <div id="locationImage"></div>
+        <div id="category"></div>
+        <div><span id="likes"></span> persone pensano che questo elemento sia stato utile</div>
+
+        <button id="likeButton" onclick="upvote(window.location.href)" type="button">Mi è stato utile</button>
+
+    </body>
+</html>
