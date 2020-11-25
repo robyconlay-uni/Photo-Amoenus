@@ -64,6 +64,28 @@ function addLocation() {
         })
         .catch(error => console.error(error)); // If there is any error you will catch them here
 
+}
+
+
+function registration() {
+
+    //get the form object
+    var username = document.getElementById("regUser").value;
+    var emailuser = document.getElementById("regEmail").value;
+    var passworduser = document.getElementById("regPd").value;
+    var password2 = document.getElementById("regPdConf").value;
+
+
+    fetch('../lib/user/registration', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify( { 
+            user: username,
+            email: emailuser,
+            password: passworduser
+        } ),
+    })
+
 };
 
 function loadLocations() {
@@ -88,7 +110,6 @@ function loadLocations() {
         })
         .catch(error => console.error(error));// If there is any error you will catch them here
 }
-
 
 function loadLocation(url_string) {
     var url = new URL(url_string);
@@ -146,4 +167,29 @@ async function upvote(url_string) {
         .catch(err => {
             console.log(err);
         });
+
+function registration() {
+
+    //get the form object
+    var username = document.getElementById("regUser").value;
+    var emailuser = document.getElementById("regEmail").value;
+    var passworduser = document.getElementById("regPd").value;
+    var password2 = document.getElementById("regPdConf").value;
+
+
+    fetch('../lib/user/registration', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify( { 
+            user: username,
+            email: emailuser,
+            password: passworduser
+        } ),
+    })
+    .then((resp) => resp.json())
+    .then(function(data) {
+        
+
+
+    });
 }
