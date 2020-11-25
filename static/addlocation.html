@@ -4,7 +4,7 @@
         <title>Aggiungi una location</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src=script.js></script>            
+        <script src="script.js"></script>            
 
     </head>
     <body style="font-family: roboto; font-size: 20px">
@@ -16,15 +16,17 @@
         </div>
 
 
-        <form method="post" action="/locations" name="addLocationForm" id="addLocationForm"> 
+        <form><!--method="POST" action="/locations" name="addLocationForm" id="addLocationForm"-->
             
             <br><br><br>
             <div style="text-align: left; margin-top: 40px; margin-left: 50px">
                 <label for="nome" style="margin-right: 130px">Inserisci nome del luogo</label>
-                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="nome" onchange="addLocation()"><br>
-
+                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="nome" ></br> <!--onchange="addLocation()"-->
                 <label for="posizione" style="margin-right: 130px">Inserisci la posizione</label>
                 <input type="text" style="width: 400px; height: 40px; margin: 10px" id="posizione"><br>
+
+                <label for="città" style="margin-right: 130px">Inserisci la città</label>
+                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="città"><br>
                 
                 <label for="descrizione">Inserisci una breve descrizione del luogo</label>
                 <input type="text" style="height: 200px; width: 600px; margin: 10px" id="descrizione"><br>
@@ -42,6 +44,9 @@
                 <input type="file" id="myFile" style="margin-top: 40px;" onchange="myFunction()" >
                 <p id="demo" style="margin-top: 40px;" id="immagine"></p><br><br>
                 
+                <label for="categoria" style="margin-right: 130px">Inserisci la categoria</label>
+                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="categoria"><br>
+
                 <label for="descrizione2">Inserisci una breve descrizione della macchina fotografica utilizzata o del supporto,
                                         aggiungendo dettagli a piacere
                 </label>
@@ -60,7 +65,7 @@
             </div>
             
             <div style="text-align: right; margin-top: 50px; margin-right: 100px">
-                <input type="submit" value="Aggiungi!" onclick="addLocation()" style="width: 200px; height: 50px">
+                <button type="button" value="Aggiungi!"  onclick="addLocation()" style="width: 200px; height: 50px" >Aggiungi!</button>
             </div>
 
         </form>

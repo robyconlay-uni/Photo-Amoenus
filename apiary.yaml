@@ -1,8 +1,9 @@
 openapi: 3.0.0
 info:
   version: '1.0'
-  title: "User Story #1"
-  description: Voglio poter vedere le foto scattate in una determinata location per farmi un’idea del posto
+  title: "Sprint #1"
+  description: Voglio poter vedere le foto scattate in una determinata location per farmi un’idea del posto, 
+    potermi registrare, creare nuove location  
   license:
     name: MIT
 servers:
@@ -36,7 +37,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Location'
-  /locations/:
+  /locations:
     get:
       description: >-
         Gets information about all existing locations
@@ -67,8 +68,9 @@ paths:
               required:
                 - name
                 - address
+                - city
                 - description
-                - image
+                - locationImage
                 - category
               proprieties:
                 _id:
@@ -80,10 +82,13 @@ paths:
                 address:
                   type: string
                   description: 'address of the location'
+                city:
+                  type: string
+                  description: 'city of the location'
                 description:
                   type: string
                   description: 'description of the location'
-                image:
+                locationImage:
                   type: string
                   description: 'path of the image related to location'
                 category:
@@ -121,19 +126,84 @@ paths:
           description: 'Location pathced'
         '500':
           description: 'Error in patching location'
-
-
+/registration:
+    post:
+      description: >-
+        Creates a new user in the system.
+      summary: Register a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+		            - id
+		            - username
+                - email
+		            - password
+              properties:
+		            id:
+                  type: objectId
+                  description: 'Id of the user'
+		            username:
+                  type: string
+                  description: 'Username that will be shown in the site'
+                email:
+                  type: string
+                  description: 'Email address of the user'
+		            password:
+                  type: string
+                  description: 'Password to access to the account'
+      responses:                                                         //questa parte non ancora implementata
+        '201':
+          description: 'User created'
+          headers:
+            'Location':
+              schema:
+                type: string
+              description: Link to the newly created student.
+	      '500':
+          description: 'Error in creating a new user'
+          headers:
+            content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/registration'
+	      '422':
+          description: 'User already exist'
+          headers:
+            content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/registration'
 
 components:
-  schemas:
-    Location:
+    userScheme:
+      type: object
+      required:
+        - id
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: String
+          description: 'Name of the location'
+        email:
+          type: String
+          description: 'Email of the user'
+        password:
+          type: String
+          description: 'Password of the user'
+    locationScheme:
       type: object
       required:
         - id
         - name
         - address
+        - city
         - description
-        - image
+        - locationImage
         - category
         - likes
       properties:
@@ -146,6 +216,9 @@ components:
         address:
           type: String
           description: 'Address of the location'
+        city:
+          type: String
+          description: 'City of the location'
         description:
           type: String
           description: 'Short description of the location'
@@ -158,76 +231,3 @@ components:
         likes:
           type: Number
           description: 'Number of people who likes this element'  
-          
-/registration:
-    post:
-      description: >-
-        Creates a new user in the system.
-      summary: Register a new user
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-		- id
-		- username
-                - email
-		- password
-              properties:
-		id:
-                  type: objectId
-                  description: 'Id of the user'
-		username:
-                  type: string
-                  description: 'Username that will be shown in the site'
-                email:
-                  type: string
-                  description: 'Email address of the user'
-		password:
-                  type: string
-                  description: 'Password to access to the account'
-      responses:                                                         //questa parte non ancora implementata
-        '201':
-          description: 'User created'
-          headers:
-            'Location':
-              schema:
-                type: string
-              description: Link to the newly created student.
-	'500':
-          description: 'Error in creating a new user'
-          headers:
-            content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/registration'
-	'422':
-          description: 'User already exist'
-          headers:
-            content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/registration'
-components:
-  schemas:
-    userScheme:
-      type: object
-      required:
-        - id
-        - username
-        - email
-        - password
-      properties:
-        id:
-          type: String
-          description: 'ID of the location'
-        username:
-          type: String
-          description: 'Name of the location'
-        email:
-          type: String
-          description: 'Email of the user'
-        password:
-          type: String
-          description: 'Password of the user'

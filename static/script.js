@@ -1,5 +1,9 @@
 //here goes the script for the html page
-function myFunction() {
+
+/**
+ * Gestisce l'aggiunta di un file(immagine)
+ */
+function myFunction(){
     var x = document.getElementById("myFile");
     var txt = "";
     if ('files' in x) {
@@ -9,7 +13,8 @@ function myFunction() {
             for (var i = 0; i < x.files.length; i++) {
                 txt += "<br><strong>" + (i + 1) + ". file</strong><br>";
                 var file = x.files[i];
-                if ((file.name.indexOf("jpg") != -1) || (file.name.indexOf("png") != -1)) {
+                if((file.name.indexOf("jpg") != -1) || (file.name.indexOf("png") != -1) || (file.name.indexOf("jpeg") != -1)){
+
                     if ('name' in file) {
                         txt += "name: " + file.name + "<br>";
                     }
@@ -17,7 +22,7 @@ function myFunction() {
                         txt += "size: " + file.size + " bytes <br>";
                     }
                 } else {
-                    txt = "Formato non supportato! Inserire solo file .jpg o .png";
+                    txt = "Formato non supportato! Inserire solo file .jpg, .jpeg o .png";
                 }
             }
         }
@@ -30,34 +35,45 @@ function myFunction() {
         }
     }
     document.getElementById("demo").innerHTML = txt;
-    if (txt == "Formato non supportato! Inserire solo file .jpg o .png") {
+
+    if(txt == "Formato non supportato! Inserire solo file .jpg, .jpeg o .png"){
         x.value = "";
     }
 }
 
-function addLocation() {
+
+/**
+ * Aggiunge una location
+ */
+function addLocation(){
+    
+    //Importo inserimenti da form HTML
     var nameLoc = document.getElementById("nome").value;
     var addressLoc = document.getElementById("posizione").value;
+    var cityLoc = document.getElementById("città").value;
     var descLoc = document.getElementById("descrizione").value;
-    var imgLoc = document.getElementById("myFile");
-    var catLoc = "";
+    var imgLoc = document.getElementById("myFile").files[0];
+    var catLoc = document.getElementById("categoria").value;
     var likesLoc = 0;
 
-    console.log(nameLoc);
+    //Creo un oggetto FormData e ci aggiungo i parametri chiave-valore
+    const formData = new FormData();
+    formData.append('name', nameLoc);
+    formData.append('address', addressLoc);
+    formData.append('city', cityLoc);
+    formData.append('description', descLoc);
+    formData.append('locationImage', imgLoc);
+    formData.append('category', catLoc);
 
-    fetch('../locations', {
+    fetch('../locations', { //Se non specificato header creato da browser, in questo caso form-data
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            name: nameLoc,
-            address: addressLoc,
-            description: descLoc,
-            locationImage: imgLoc,
-            category: catLoc,
-            likes: likesLoc
-        }),
+        body: formData  //passo il form-data
     })
-        .then((resp) => {
+    .then((resp) => {
+        console.log(resp);
+        return;
+    })
+    .then((resp) => {
             console.log(resp);
             //loadBooks();
             return;
@@ -66,7 +82,9 @@ function addLocation() {
 
 }
 
-
+/**
+ * Registra un nuovo utente
+ */
 function registration() {
 
     //get the form object
@@ -88,6 +106,10 @@ function registration() {
 
 };
 
+
+/**
+ * Carica l'elenco completo delle locations
+ */
 function loadLocations() {
 
     const div = document.getElementById("locations");
@@ -169,6 +191,7 @@ async function upvote(url_string) {
         });
 }
 
+
 function registration() {
 
     //get the form object
@@ -187,7 +210,9 @@ function registration() {
             password: passworduser
         }),
     })
-        .then((resp) => resp.json())
-        .then(function (data) {
-        });
+    .then((resp) => resp.json())
+    .then(function(data) {
+       
+    });
+
 }
