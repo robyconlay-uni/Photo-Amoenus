@@ -14,6 +14,7 @@ function myFunction(){
                 txt += "<br><strong>" + (i + 1) + ". file</strong><br>";
                 var file = x.files[i];
                 if((file.name.indexOf("jpg") != -1) || (file.name.indexOf("png") != -1) || (file.name.indexOf("jpeg") != -1)){
+
                     if ('name' in file) {
                         txt += "name: " + file.name + "<br>";
                     }
@@ -34,6 +35,7 @@ function myFunction(){
         }
     }
     document.getElementById("demo").innerHTML = txt;
+
     if(txt == "Formato non supportato! Inserire solo file .jpg, .jpeg o .png"){
         x.value = "";
     }
@@ -71,7 +73,7 @@ function addLocation(){
         console.log(resp);
         return;
     })
-        .then((resp) => {
+    .then((resp) => {
             console.log(resp);
             //loadBooks();
             return;
@@ -94,12 +96,12 @@ function registration() {
 
     fetch('../lib/user/registration', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify( { 
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
             user: username,
             email: emailuser,
             password: passworduser
-        } ),
+        }),
     })
 
 };
@@ -187,6 +189,8 @@ async function upvote(url_string) {
         .catch(err => {
             console.log(err);
         });
+}
+
 
 function registration() {
 
@@ -199,17 +203,16 @@ function registration() {
 
     fetch('../lib/user/registration', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify( { 
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
             user: username,
             email: emailuser,
             password: passworduser
-        } ),
+        }),
     })
     .then((resp) => resp.json())
     .then(function(data) {
-        
-
-
+       
     });
+
 }

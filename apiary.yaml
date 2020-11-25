@@ -126,7 +126,7 @@ paths:
           description: 'Location pathced'
         '500':
           description: 'Error in patching location'
-  /registration:
+/registration:
     post:
       description: >-
         Creates a new user in the system.
@@ -176,40 +176,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/registration'
+
 components:
-  schemas:
-    Location:
-      type: object
-      required:
-        - id
-        - name
-        - address
-        - description
-        - image
-        - category
-        - likes
-      properties:
-        id:
-          type: String
-          description: 'ID of the location'
-        name:
-          type: String
-          description: 'Name of the location'
-        address:
-          type: String
-          description: 'Address of the location'
-        description:
-          type: String
-          description: 'Short description of the location'
-        image:
-          type: String
-          description: 'Representative image of the location'
-        category:
-          type: String
-          description: 'Most Representative category of the location'
-        likes:
-          type: Number
-          description: 'Number of people who likes this element'  
     userScheme:
       type: object
       required:
