@@ -71,6 +71,7 @@ function addLocation(){
     })
     .then((resp) => {
         console.log(resp);
+        window.open('addDone.html');
         return;
     })
     .catch(error => console.error(error)); // If there is any error you will catch them here
