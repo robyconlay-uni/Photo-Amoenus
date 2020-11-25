@@ -4,10 +4,15 @@
         <meta charset="UTF-8">
         <title>Title</title>
         <script src="script.js">
-            document.onload(loadLocations());
         </script>
+
+        <style>
+            h2 {
+                text-align: center;
+            }
+        </style>
     </head>
-    <body onload="loadLocation(req.param(id))">
+    <body onload="loadLocation(window.location.href)">
 
         <h2 id="name"></h2>
         <div id="address"></div>
@@ -15,9 +20,9 @@
         <div id="description"></div>
         <div id="locationImage"></div>
         <div id="category"></div>
-        <div id="likes"></div>
+        <div><span id="likes"></span> persone pensano che questo elemento sia stato utile</div>
 
-        <button onclick="upvote(req.param(id))" type="button"></button>
+        <button id="likeButton" onclick="upvote(window.location.href)" type="button">Mi è stato utile</button>
 
     </body>
 </html>

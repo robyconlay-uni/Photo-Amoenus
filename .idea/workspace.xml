@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2040d891-17cc-4eb2-8a8e-4fd7a6c196b5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/locations.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/locations.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/location.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/location.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/script.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/searchlocation.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/searchlocation.html" afterDir="false" />
     </list>
@@ -42,7 +44,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1606209719025</updated>
-      <workItem from="1606209721042" duration="10881000" />
+      <workItem from="1606209721042" duration="15603000" />
+      <workItem from="1606298993906" duration="4749000" />
     </task>
     <servers />
   </component>
@@ -54,5 +57,13 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1606239266848" />
+    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1606301798175">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/0.-1080.1920.1040@0.0.1920.1040" timestamp="1606301798175" />
+    <state x="-7" y="-1094" width="1915" height="1027" maximized="true" key="dock-window-1" timestamp="1606303059448">
+      <screen x="0" y="-1080" width="1920" height="1040" />
+    </state>
+    <state x="-7" y="-1094" width="1915" height="1027" maximized="true" key="dock-window-1/0.0.1920.1040/0.-1080.1920.1040@0.0.1920.1040" timestamp="1606303059448" />
   </component>
 </project>

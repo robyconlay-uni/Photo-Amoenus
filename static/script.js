@@ -77,18 +77,20 @@ function loadLocations() {
 
             // console.log(data);
 
-            return data.map(function (location) { // Map through the results and for each run the code below
+            return data.locations.map(function (location) { // Map through the results and for each run the code below
 
                 let li = document.createElement('li');
-                let span = document.createElement('span');
-                span.innerHTML = `<a href="${location._id}">${location.name}</a>`;
-                span.innerHTML += `<form action="location/id?${location._id}">`;
-                span.innerHTML += `<button type="submit">Visualizza luogo</button>`;
-                span.innerHTML += `</form>`;
+                li.innerHTML = `<a href="location.html?id=${location._id}">${location.name}</a>`;
+                /*let div = document.createElement('div');
+                div.innerHTML = `<a href="location/id?${location._id}">${location.name}</a>`;
+                div.innerHTML += `<form action="location/id?${location._id}">`;
+                div.innerHTML += `<button type="submit">Visualizza luogo</button>`;
+                div.innerHTML += `</form>`;*/
 
                 // Append all our elements
-                li.appendChild(span);
+                //li.appendChild(div);
                 ul.appendChild(li);
+               // ul.appendChild(div);
             })
         })
         .catch(error => console.error(error));// If there is any error you will catch them here
@@ -96,36 +98,42 @@ function loadLocations() {
 }
 
 
-function loadLocation(id) {
+function loadLocation(url_string) {
+    var url = new URL(url_string);
+    var id = url.searchParams.get("id");
     fetch('../locations/' + id)
         .then(res => res.json())
         .then(data => {
-            document.getElementById("name").innerHTML = data.name;
-            document.getElementById("address").innerHTML = data.address;
-            document.getElementById("city").innerHTML = data.city;
-            document.getElementById("description").innerHTML = data.description;
-            document.getElementById("locationImage").innerHTML = data.locationImage;
-            document.getElementById("category").innerHTML = data.category;
-            document.getElementById("likes").innerHTML = data.likes;
+            document.getElementById("name").innerHTML = data.location.name;
+            document.getElementById("address").innerHTML = data.location.address;
+            document.getElementById("city").innerHTML = data.location.city;
+            document.getElementById("description").innerHTML = data.location.description;
+            document.getElementById("locationImage").innerHTML = "null"
+            document.getElementById("category").innerHTML = data.location.category;
+            document.getElementById("likes").innerHTML = data.location.likes;
+        })
+        .catch(err => {
+            console.log(err);
         });
 }
 
-function upvote() {
+async function upvote(url_string) {
+    var url = new URL(url_string);
+    var id = url.searchParams.get("id");
 
-    var upvotes = 0;
-    fetch('../locations/' + id)
-        .then(response => response.json())
+    var upvotes = 1;
+    await fetch('../locations/' + id)
+        .then(res => res.json())
         .then(data => {
             console.log(data);
-            if (data.likes) {
-                upvotes = data.likes + 1;
+            if (data.location.likes) {
+                upvotes = data.location.likes + 1;
             } else {
                 upvotes = 1;
             }
-            document.getElementById('upvotes').value = upvotes;
+            document.getElementById('likes').innerHTML = upvotes;
         });
 
-    //console.log('chiamata ad upvote');
     fetch('../locations/' + id, {
         headers: {
             "Content-type": 'application/json'
@@ -141,10 +149,9 @@ function upvote() {
         )
         .then(res => {
             console.log(res);
-
+            document.getElementById("likeButton").disabled = true;
         })
         .catch(err => {
             console.log(err);
-            //show error for upvoting
         });
 }
