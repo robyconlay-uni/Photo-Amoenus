@@ -1,5 +1,6 @@
 # SEII_project_26
 ![](https://travis-ci.com/robyconlay-uni/Photo-Amoenus.svg?token=fvKtL7ZqYB3fRRxzP5pT&branch=main)
+
 Repository per il progetto di Ingegneria del Software 2
 
 ## Utilizzo 
