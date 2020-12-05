@@ -222,14 +222,15 @@ function loadReports() {
         .then((resp) => resp.json()) // Transform the data into json
         .then(function (data) { // Here you get the data to modify as you please
 
-            // console.log(data);
+             console.log(data);
 
-            return data.reports.map(function (reports) { // Map through the results and for each run the code below
+            return data.reports.map(function (report) { // Map through the results and for each run the code below
 
                 let div2 = document.createElement('div');
                 div2.className = "rep";
                 //div2.addEventListener('click', window.open(`location.html?id=${location._id}`));
-                div2.innerHTML = `<a href="reportList.html?id=${report._email}">${report.text}</a>`;
+                div2.innerHTML = `<a href="reportList.html?id=${report.id}">Email: ${report.email}<br>
+                Report: ${report.text}<br><br></a>`;
                 div.appendChild(div2);
             })
         })
