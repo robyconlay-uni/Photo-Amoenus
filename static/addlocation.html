@@ -30,42 +30,44 @@
                 
                 <label for="descrizione">Inserisci una breve descrizione del luogo</label>
                 <input type="text" style="height: 200px; width: 600px; margin: 10px" id="descrizione"><br>
+
+                <!--<input type="button" value="Aggiungi tag" ><br><br><br>-->
+                <label for="categoria" style="margin-right: 130px">Inserisci la categoria</label>
+                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="categoria"><br>
+
+                <label for="ragg">Raggiungibilità:</label>
+                <input type="radio" id="ragg" style="margin-left: 50px">A piedi
+                <input type="radio" id="ragg" style="margin-left: 50px">In bicicletta
+                <input type="radio" id="ragg" style="margin-left: 50px">In macchina
+                <input type="radio" id="ragg" style="margin-left: 50px">Con mezzi pubblici
+                <br><br><br>
             </div>
             <div style="text-align: left; margin-top: 40px; margin-left: 50px">
-                <input type="button" value="Aggiungi tag" ><br><br><br>
                 
-                <label for="ragg">Raggiungibilità:</label>
-                <input type="radio" name="ragg" style="margin-left: 50px">A piedi
-                <input type="radio" name="ragg" style="margin-left: 50px">In bicicletta
-                <input type="radio" name="ragg" style="margin-left: 50px">In macchina
-                <input type="radio" name="ragg" style="margin-left: 50px">Con mezzi pubblici
-                <br><br><br>
                 
                 <input type="file" id="myFile" style="margin-top: 40px;" onchange="myFunction()" >
                 <p id="demo" style="margin-top: 40px;" id="immagine"></p><br><br>
                 
-                <label for="categoria" style="margin-right: 130px">Inserisci la categoria</label>
-                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="categoria"><br>
 
-                <label for="descrizione2">Inserisci una breve descrizione della macchina fotografica utilizzata o del supporto,
+                <label for="photoDescription">Inserisci una breve descrizione della macchina fotografica utilizzata o del supporto,
                                         aggiungendo dettagli a piacere
                 </label>
-                <input type="text" style="height: 200px; width: 600px; margin: 10px"><br>
+                <input type="text" style="height: 200px; width: 600px; margin: 10px" id="photoDescription"><br>
                 
                 <label for="orario" style="margin-right: 60px">Inserisci l'orario di scatto</label>
-                <input type="text" style="width: 400px; height: 40px; margin: 10px"><br>
+                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="orario"><br>
                 
-                <label for="ampm">Momento della giornata:</label>
-                <input type="radio" name="ampm" style="margin-left: 70px">A.M.
+                <!--<label for="ampm">Momento della giornata:</label>-->
+                <!--<input type="radio" name="ampm" style="margin-left: 70px">A.M.
                 <input type="radio" name="ampm" style="margin-left: 50px">P.M.
-                <br>
+                <br>-->
                 
                 <label for="data" style="margin-right: 130px">Data dello scatto</label>
-                <input type="text" style="width: 400px; height: 40px; margin: 10px"><br>
+                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="data"><br>
             </div>
             
             <div style="text-align: right; margin-top: 50px; margin-right: 100px">
-                <button type="button" value="Aggiungi!"  onclick="addLocation()" style="width: 200px; height: 50px" >Aggiungi!</button>
+                <button type="button" value="Aggiungi!" onclick="addLocation()" style="width: 200px; height: 50px" >Aggiungi!</button>
             </div>
 
         </form>
