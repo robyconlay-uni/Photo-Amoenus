@@ -116,6 +116,12 @@ function registration() {
  */
 function loadLocations() {
 
+    const filtri = {
+        "category": document.getElementById("categoria").value,
+        "city": document.getElementById("citta").value,
+        "raggiungibilita": document.getElementById("raggiung").value
+    };
+
     const div = document.getElementById("locations");
     div.innerHTML = '';
 
