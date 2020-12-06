@@ -107,7 +107,7 @@ function registration() {
     var password2 = document.getElementById("regPdConf").value;
 
 
-    fetch('../lib/user/registration', {
+    fetch('../user/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify( { 
@@ -118,9 +118,17 @@ function registration() {
     })
     .then((resp) => resp.json())
     .then(function(data) {
-        
-
-
+        let mes = data.message;
+        if (mes.localeCompare("User created") == 0) {
+            document.write("<div id='center'><h1>Registrazione avvenuta con successo!</h1><br><a href='index.html'>Torna alla home</a></div>");
+        } else if (mes.localeCompare("user already exist") == 0) {
+            document.write("<div id='center'><h1>Utente già esistente!</h1><br><a href='registration.html'>Torna alla registrazione</a></div>");
+        } else {
+            document.write("<div id='center'><h1>Errore nella fase di registrazione!</h1><br><a href='registration.html'>Torna alla registrazione</a></div>");
+        }
+        console.log(mes);
     });
+    
+    
 
 }
