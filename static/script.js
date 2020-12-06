@@ -53,7 +53,7 @@ function addLocation(){
     var cityLoc = document.getElementById("città").value;
     var descLoc = document.getElementById("descrizione").value;
     var catLoc = document.getElementById("categoria").value;
-    //var raggiungibilitaLoc = document.getElementById("ragg").value;
+    var raggiungibilitaLoc = Array.from(document.getElementById("ragg").selectedOptions).map(el=>el.value);
     var imgLoc = document.getElementById("myFile").files[0];
     var photoDescLoc = document.getElementById("photoDescription").value;
     var oraLoc = document.getElementById("orario").value;
@@ -67,7 +67,7 @@ function addLocation(){
     formData.append('city', cityLoc);
     formData.append('description', descLoc);
     formData.append('category', catLoc);
-    //formData.append('raggiungibilita', raggiungibilitaLoc);
+    formData.append('raggiungibilita', raggiungibilitaLoc);
     formData.append('locationImage', imgLoc);
     formData.append('photoDesc', photoDescLoc);
     formData.append('hour', oraLoc);
@@ -147,8 +147,12 @@ function loadLocation(url_string) {
             document.getElementById("address").innerHTML = data.location.address;
             document.getElementById("city").innerHTML = data.location.city;
             document.getElementById("description").innerHTML = data.location.description;
-            document.getElementById("locationImage").innerHTML = "null"
             document.getElementById("category").innerHTML = data.location.category;
+            document.getElementById("raggiungibilita").innerHTML = data.location.raggiungibilita;
+            document.getElementById("locationImage").innerHTML = "null";
+            document.getElementById("photoDesc").innerHTML = data.location.photoDesc;
+            document.getElementById("hour").innerHTML = data.location.hour;
+            document.getElementById("date").innerHTML = data.location.date;
             document.getElementById("likes").innerHTML = data.location.likes;
         })
         .catch(err => {

@@ -32,14 +32,27 @@
                 <input type="text" style="height: 200px; width: 600px; margin: 10px" id="descrizione"><br>
 
                 <!--<input type="button" value="Aggiungi tag" ><br><br><br>-->
-                <label for="categoria" style="margin-right: 130px">Inserisci la categoria</label>
-                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="categoria"><br>
+                <label for="categoria" style="margin-right: 130px">Inserisci la categoria:</label>
+                <!--<input type="text" style="width: 400px; height: 40px; margin: 10px" id="categoria"><br>-->
+                <select name="categoria" id="categoria">
+                    <option value="Paesaggio">Paesaggio</option>
+                    <option value="Urbano">Urbano</option>
+                    <option value="Monumento">Monumento</option>
+                    <option value="Lago">Lago</option>
+                    <option value="Mare">Mare</option>
+                    <option value="Montagna">Montagna</option>
+                </select>
+
+                <br><br>
 
                 <label for="ragg">Raggiungibilità:</label>
-                <input type="radio" id="ragg" style="margin-left: 50px">A piedi
-                <input type="radio" id="ragg" style="margin-left: 50px">In bicicletta
-                <input type="radio" id="ragg" style="margin-left: 50px">In macchina
-                <input type="radio" id="ragg" style="margin-left: 50px">Con mezzi pubblici
+                <select name="ragg" id="ragg" multiple="multiple">
+                    <option value="Piedi">Piedi</option>
+                    <option value="Bicicletta">Bicicletta</option>
+                    <option value="Macchina">Macchina</option>
+                    <option value="Mezzi pubblici">Mezzi pubblici</option>
+                    <!--<input type="radio" id="ragg" style="margin-left: 50px">Con mezzi pubblici-->
+                </select>
                 <br><br><br>
             </div>
             <div style="text-align: left; margin-top: 40px; margin-left: 50px">
@@ -55,7 +68,7 @@
                 <input type="text" style="height: 200px; width: 600px; margin: 10px" id="photoDescription"><br>
                 
                 <label for="orario" style="margin-right: 60px">Inserisci l'orario di scatto</label>
-                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="orario"><br>
+                <input type="time" style="width: 400px; height: 40px; margin: 10px" id="orario"><br>
                 
                 <!--<label for="ampm">Momento della giornata:</label>-->
                 <!--<input type="radio" name="ampm" style="margin-left: 70px">A.M.
@@ -63,7 +76,7 @@
                 <br>-->
                 
                 <label for="data" style="margin-right: 130px">Data dello scatto</label>
-                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="data"><br>
+                <input type="date" style="width: 400px; height: 40px; margin: 10px" id="data"><br>
             </div>
             
             <div style="text-align: right; margin-top: 50px; margin-right: 100px">
