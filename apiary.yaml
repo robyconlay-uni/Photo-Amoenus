@@ -141,3 +141,76 @@ components:
         likes:
           type: Number
           description: 'Number of people who likes this element'  
+          
+/registration:
+    post:
+      description: >-
+        Creates a new user in the system.
+      summary: Register a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+		- id
+		- username
+                - email
+		- password
+              properties:
+		id:
+                  type: objectId
+                  description: 'Id of the user'
+		username:
+                  type: string
+                  description: 'Username that will be shown in the site'
+                email:
+                  type: string
+                  description: 'Email address of the user'
+		password:
+                  type: string
+                  description: 'Password to access to the account'
+      responses:                                                         //questa parte non ancora implementata
+        '201':
+          description: 'User created'
+          headers:
+            'Location':
+              schema:
+                type: string
+              description: Link to the newly created student.
+	'500':
+          description: 'Error in creating a new user'
+          headers:
+            content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/registration'
+	'422':
+          description: 'User already exist'
+          headers:
+            content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/registration'
+components:
+  schemas:
+    userScheme:
+      type: object
+      required:
+        - id
+        - username
+        - email
+        - password
+      properties:
+        id:
+          type: String
+          description: 'ID of the location'
+        username:
+          type: String
+          description: 'Name of the location'
+        email:
+          type: String
+          description: 'Email of the user'
+        password:
+          type: String
+          description: 'Password of the user'
