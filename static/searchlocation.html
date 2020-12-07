@@ -52,7 +52,18 @@
                 <option value="Mezzi pubblici">Mezzi pubblici</option>
             </select>
         </div>
-
+        <br>
+        <div>
+            <label for="ordine" style="text-align: center">Ordine:</label>
+            <select name="ordine" id="ordine" onchange="loadLocations()">
+                <option value=null selected>Inserimento</option>
+                <option value="name">A-Z</option>
+                <option value="-name">Z-A</option>
+                <option value="-date">Più Recente</option>
+                <option value="date">Più Vecchio</option>
+            </select>
+        </div>
+        <br><br>
         <h2>Locations:</h2>
         <div id="locations"></div>
 
