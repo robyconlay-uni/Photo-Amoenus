@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script>
+        function loadFavourites() {
+            fetch('/lib/favourites/')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.favourites.length == 0) {
+                        document.getElementById("favourites").innerHTML = "Nessun preferito ancora aggiunto";
+                    } else {
+                        favElement = document.getElementById("favourites");
+                        favElement.innerHTML = "";
+
+                        fetch('../locations')
+                            .then(res => res.json())
+                            .then(locationsData => {
+                                locationsData.locations.map(location => {
+                                    if (data.favourites.includes(location._id)) {
+                                        let div = document.createElement('div');
+                                        div.className = "loc";
+                                        div.innerHTML = `<a href="location.html?id=${location._id}">${location.name}</a>`;
+                                        favElement.appendChild(div);
+                                    }
+                                })
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            });
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    </script>
+</head>
+
+<body onload="loadFavourites(window.location.href)">
+    <h2 id="titolo">Qui trovi i tuoi preferiti</h2>
+
+    <div id="favourites"></div>
+
+</body>
+
+</html>
