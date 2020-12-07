@@ -94,18 +94,24 @@ function addLocation(){
 function loadLocations() {
     var url ='../locations?';
 
+    //FILTRI E ORDINAMENTO messi come parametri nel URL
+    var order = document.getElementById("ordine").value;
     var category = document.getElementById("categoria").value;
     var city = document.getElementById("citta").value;
     var raggiungibilita = document.getElementById("raggiung").value;
+    if(order != "null"){
+        url = url + "order=" + order;
+    }
     if(category != "null"){
+        if(order != "null"){ url = url + "&";}
         url = url + "category=" + category;
     }
     if(city!= "null"){
-        if(category != "null"){ url = url + "&";}
+        if(order != "null" || category != "null"){ url = url + "&";}
         url = url + "city=" + city;
     }
     if(raggiungibilita != "null"){
-        if(category!= "null" || city!= "null"){ url = url + "&";}
+        if(order != "null" || category!= "null" || city!= "null"){ url = url + "&";}
         url = url + "raggiungibilita=" + raggiungibilita;
     }
     console.log(url);
