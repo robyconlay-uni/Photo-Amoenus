@@ -13,7 +13,7 @@ function myFunction(){
             for (var i = 0; i < x.files.length; i++) {
                 txt += "<br><strong>" + (i + 1) + ". file</strong><br>";
                 var file = x.files[i];
-                if((file.name.indexOf("jpg") != -1) || (file.name.indexOf("png") != -1) || (file.name.indexOf("jpeg") != -1)){
+                if((file.name.indexOf("jpg") != -1) || (file.name.indexOf("png") != -1) || (file.name.indexOf("jpeg") != -1) || (file.name.indexOf("JPG") != -1)){
 
                     if ('name' in file) {
                         txt += "name: " + file.name + "<br>";
@@ -22,7 +22,7 @@ function myFunction(){
                         txt += "size: " + file.size + " bytes <br>";
                     }
                 } else {
-                    txt = "Formato non supportato! Inserire solo file .jpg, .jpeg o .png";
+                    txt = "Formato non supportato! Inserire solo file .jpg, .jpeg o .png o .JPG";
                 }
             }
         }
@@ -36,7 +36,7 @@ function myFunction(){
     }
     document.getElementById("demo").innerHTML = txt;
 
-    if(txt == "Formato non supportato! Inserire solo file .jpg, .jpeg o .png"){
+    if(txt == "Formato non supportato! Inserire solo file .jpg, .jpeg o .png o .JPG"){
         x.value = "";
     }
 }
@@ -52,8 +52,12 @@ function addLocation(){
     var addressLoc = document.getElementById("posizione").value;
     var cityLoc = document.getElementById("città").value;
     var descLoc = document.getElementById("descrizione").value;
-    var imgLoc = document.getElementById("myFile").files[0];
     var catLoc = document.getElementById("categoria").value;
+    var raggiungibilitaLoc = Array.from(document.getElementById("ragg").selectedOptions).map(el=>el.value);
+    var imgLoc = document.getElementById("myFile").files[0];
+    var photoDescLoc = document.getElementById("photoDescription").value;
+    var oraLoc = document.getElementById("orario").value;
+    var dataLoc = document.getElementById("data").value;
     var likesLoc = 0;
 
     //Creo un oggetto FormData e ci aggiungo i parametri chiave-valore
@@ -62,8 +66,12 @@ function addLocation(){
     formData.append('address', addressLoc);
     formData.append('city', cityLoc);
     formData.append('description', descLoc);
-    formData.append('locationImage', imgLoc);
     formData.append('category', catLoc);
+    formData.append('raggiungibilita', raggiungibilitaLoc);
+    formData.append('locationImage', imgLoc);
+    formData.append('photoDesc', photoDescLoc);
+    formData.append('hour', oraLoc);
+    formData.append('date', dataLoc);
 
     fetch('../locations', { //Se non specificato header creato da browser, in questo caso form-data
         method: 'POST',
@@ -71,7 +79,7 @@ function addLocation(){
     })
     .then((resp) => {
         console.log(resp);
-        window.open('addDone.html');
+        window.open('addDone.html', '_self');
         return;
     })
     .catch(error => console.error(error)); // If there is any error you will catch them here
@@ -107,11 +115,28 @@ function registration() {
  * Carica l'elenco completo delle locations
  */
 function loadLocations() {
+    var url ='../locations?';
+
+    var category = document.getElementById("categoria").value;
+    var city = document.getElementById("citta").value;
+    var raggiungibilita = document.getElementById("raggiung").value;
+    if(category != "null"){
+        url = url + "category=" + category;
+    }
+    if(city!= "null"){
+        if(category != "null"){ url = url + "&";}
+        url = url + "city=" + city;
+    }
+    if(raggiungibilita != "null"){
+        if(category!= "null" || city!= "null"){ url = url + "&";}
+        url = url + "raggiungibilita=" + raggiungibilita;
+    }
+    console.log(url);
 
     const div = document.getElementById("locations");
     div.innerHTML = '';
 
-    fetch('../locations')
+    fetch(url)
         .then((resp) => resp.json()) // Transform the data into json
         .then(function (data) { // Here you get the data to modify as you please
 
@@ -139,8 +164,12 @@ function loadLocation(url_string) {
             document.getElementById("address").innerHTML = data.location.address;
             document.getElementById("city").innerHTML = data.location.city;
             document.getElementById("description").innerHTML = data.location.description;
-            document.getElementById("locationImage").innerHTML = "null"
             document.getElementById("category").innerHTML = data.location.category;
+            document.getElementById("raggiungibilita").innerHTML = data.location.raggiungibilita;
+            document.getElementById("locationImage").innerHTML = "null";
+            document.getElementById("photoDesc").innerHTML = data.location.photoDesc;
+            document.getElementById("hour").innerHTML = data.location.hour;
+            document.getElementById("date").innerHTML = data.location.date;
             document.getElementById("likes").innerHTML = data.location.likes;
         })
         .catch(err => {
