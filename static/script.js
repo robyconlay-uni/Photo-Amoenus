@@ -115,17 +115,28 @@ function registration() {
  * Carica l'elenco completo delle locations
  */
 function loadLocations() {
+    var url ='../locations?';
 
-    const filtri = {
-        "category": document.getElementById("categoria").value,
-        "city": document.getElementById("citta").value,
-        "raggiungibilita": document.getElementById("raggiung").value
-    };
+    var category = document.getElementById("categoria").value;
+    var city = document.getElementById("citta").value;
+    var raggiungibilita = document.getElementById("raggiung").value;
+    if(category != "null"){
+        url = url + "category=" + category;
+    }
+    if(city!= "null"){
+        if(category != "null"){ url = url + "&";}
+        url = url + "city=" + city;
+    }
+    if(raggiungibilita != "null"){
+        if(category!= "null" || city!= "null"){ url = url + "&";}
+        url = url + "raggiungibilita=" + raggiungibilita;
+    }
+    console.log(url);
 
     const div = document.getElementById("locations");
     div.innerHTML = '';
 
-    fetch('../locations')
+    fetch(url)
         .then((resp) => resp.json()) // Transform the data into json
         .then(function (data) { // Here you get the data to modify as you please
 
