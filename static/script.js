@@ -86,33 +86,6 @@ function addLocation(){
 
 }
 
-<<<<<<< HEAD
-/**
- * Registra un nuovo utente
- */
-function registration() {
-
-    //get the form object
-    var username = document.getElementById("regUser").value;
-    var emailuser = document.getElementById("regEmail").value;
-    var passworduser = document.getElementById("regPd").value;
-    var password2 = document.getElementById("regPdConf").value;
-
-
-    fetch('../lib/user/registration', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            user: username,
-            email: emailuser,
-            password: passworduser
-        }),
-    })
-
-};
-=======
-
->>>>>>> registration
 
 
 /**
@@ -241,9 +214,6 @@ function registration() {
     })
     .then((resp) => resp.json())
     .then(function(data) {
-<<<<<<< HEAD
-       
-=======
         let mes = data.message;
         if (mes.localeCompare("User created") == 0) {
             document.write("<div id='center'><h1>Registrazione avvenuta con successo!</h1><br><a href='index.html'>Torna alla home</a></div>");
@@ -253,9 +223,58 @@ function registration() {
             document.write("<div id='center'><h1>Errore nella fase di registrazione!</h1><br><a href='registration.html'>Torna alla registrazione</a></div>");
         }
         console.log(mes);
->>>>>>> registration
     });
     
     
 
 }
+
+function Popup() {
+    var stili = "top=10, left=10, width=400, height=250, status=no, menubar=no, toolbar=no scrollbars=no";
+    var testo = window.open("", "", stili);
+    
+    testo.document.write("<html>");
+    testo.document.write(" <head>");
+    testo.document.write(" <title>Report</title>");
+    testo.document.write(" <basefont size=2 face=Tahoma>");
+    testo.document.write(" </head>");
+    testo.document.write("<body topmargin=50>");
+    testo.document.write("<div align=center>Report this picture for:</div>");
+    testo.document.write("<form action='Report()' name='report'>");
+    testo.document.write("<input type='radio' id='1' name='reports' value='uno'>");
+    testo.document.write("<label>Inappropriate picture</label><br>");
+    testo.document.write("<input type='radio' id='2' name='reports' value='due'>");
+    testo.document.write("<label>Misinformation about the place</label><br>");
+    testo.document.write("<input type='radio' id='3' name='reports' value='tre'>");
+    testo.document.write("<label>Violation of privacy</label><br><br>");
+    testo.document.write("<input type='submit' value='Submit'>");
+    testo.document.write("</form>");
+    testo.document.write("</body>");
+    testo.document.write("</html>");
+    }
+    
+    function Report() {
+        var choice;
+        /*
+        if (document.getElementById('1').checked) {
+            choice = document.getElementById('1').value
+            console.log('1');
+        } else if (document.getElementById('2').checked) {
+            choice = document.getElementById('2').value
+        } else if (document.getElementById('3').checked) {
+            choice = document.getElementById('3').value
+        } */
+    
+    var radios = document.getElementsByName('reports');
+    
+    for (var i = 0, length = radios.length; i < length; i++) {
+      if (radios[i].checked) {
+     
+        choice = radios[i].value;
+    
+        break;
+      }
+    }
+        console.log(choice);
+        fetch('../user/registration?report=' + choice);
+    }
