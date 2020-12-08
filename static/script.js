@@ -78,30 +78,6 @@ function addLocation(){
 
 }
 
-/**
- * Registra un nuovo utente
- */
-function registration() {
-
-    //get the form object
-    var username = document.getElementById("regUser").value;
-    var emailuser = document.getElementById("regEmail").value;
-    var passworduser = document.getElementById("regPd").value;
-    var password2 = document.getElementById("regPdConf").value;
-
-
-    fetch('../lib/user/registration', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            user: username,
-            email: emailuser,
-            password: passworduser
-        }),
-    })
-
-};
-
 
 /**
  * Carica l'elenco completo delle locations
@@ -187,6 +163,9 @@ async function upvote(url_string) {
         });
 }
 
+/**
+ * Registra un nuovo utente
+ */
 
 function registration() {
 
@@ -210,5 +189,37 @@ function registration() {
     .then(function(data) {
        
     });
+
+}
+
+/**
+ * Log In
+ */
+function login() {
+
+
+let logemail = document.getElementById("loginEmail").value;
+let logpassword = document.getElementById("loginPd").value;
+
+fetch('../user/login', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+        email: logemail,
+        password: logpassword
+    }),
+})
+.then((resp) => resp.json())
+.then(function(data) {
+    let mes = data.message;
+    if (mes.localeCompare("Auth successful") == 0) {
+        document.write("<div id='center'><h1>Log in avvenuto con successo!</h1><br><a href='index.html'>Torna alla home</a></div>");
+    } else if (mes.localeCompare("Auth failed") == 0) {
+        document.write("<div id='center'><h1>Log in non riuscito!</h1><br><a href='login.html'>Torna al LogIn</a></div>");
+    } else {
+        document.write("<div id='center'><h1>Errore!</h1><br><a href='login.html'>Torna al LogIn</a></div>");
+    }
+    console.log(mes);
+});
 
 }
