@@ -35,7 +35,7 @@
                 <label for="categoria" style="margin-right: 130px">Inserisci la categoria:</label>
                 <!--<input type="text" style="width: 400px; height: 40px; margin: 10px" id="categoria"><br>-->
                 <select name="categoria" id="categoria">
-                    <option value=null selected>Seleziona</option>
+                    <option value="" selected>Seleziona</option> <!-- value="" (undefined) così mi dà errore in caso non fosse specificato (null non funziona)-->
                     <option value="Paesaggio">Paesaggio</option>
                     <option value="Urbano">Urbano</option>
                     <option value="Monumento">Monumento</option>
