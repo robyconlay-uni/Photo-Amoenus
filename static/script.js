@@ -77,12 +77,22 @@ function addLocation(){
         method: 'POST',
         body: formData  //passo il form-data
     })
+    .then((resp) => resp.json())
     .then((resp) => {
-        console.log(resp);
-        window.open('addDone.html', '_self');
-        return;
+        let mes = resp.message;
+        if (mes.localeCompare('Location created') == 0) {
+            /*window.alert("Location aggiunta con successo!");
+            window.open(`location.html?id=${resp.createdLocation._id}`, '_self');*/
+            //console.log(resp);
+            document.write(`<div id='center'><h1>Location aggiunta con successo!</h1><br><a href="location.html?id=${resp.createdLocation._id}">Vai alla location</a></div>`);
+        }else{
+            window.alert("Errore inserimento location, ricontrollare i campi");
+        }
     })
-    .catch(error => console.error(error)); // If there is any error you will catch them here
+    .catch(error => {
+        console.error(error);
+        window.alert("Errore inserimento location, ricontrollare i campi");
+    }); // If there is any error you will catch them here
 
 }
 
