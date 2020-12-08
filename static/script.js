@@ -203,7 +203,7 @@ async function upvote(url_string) {
 function registration() {
 
     //get the form object
-    var username = document.getElementById("regUser").value;
+    var user_name = document.getElementById("regUser").value;
     var emailuser = document.getElementById("regEmail").value;
     var passworduser = document.getElementById("regPd").value;
     var password2 = document.getElementById("regPdConf").value;
@@ -213,7 +213,7 @@ function registration() {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-            user: username,
+            username: user_name,
             email: emailuser,
             password: passworduser
         }),
@@ -236,7 +236,7 @@ function registration() {
 }
 
 function Popup() {
-    var stili = "top=10, left=10, width=400, height=250, status=no, menubar=no, toolbar=no scrollbars=no";
+    var stili = "top=200, left=300, width=400, height=250, status=no, menubar=no, toolbar=no scrollbars=no";
     var testo = window.open("", "", stili);
     
     testo.document.write("<html>");
