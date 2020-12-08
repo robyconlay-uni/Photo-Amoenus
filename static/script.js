@@ -86,7 +86,10 @@ function addLocation(){
 
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> authentication
 
 /**
  * Carica l'elenco completo delle locations
@@ -199,6 +202,9 @@ async function upvote(url_string) {
         });
 }
 
+/**
+ * Registra un nuovo utente
+ */
 
 function registration() {
 
@@ -235,6 +241,7 @@ function registration() {
 
 }
 
+<<<<<<< HEAD
 function Popup() {
     var stili = "top=200, left=300, width=400, height=250, status=no, menubar=no, toolbar=no scrollbars=no";
     var testo = window.open("", "", stili);
@@ -284,3 +291,36 @@ function Popup() {
         console.log(choice);
         fetch('../user/registration?report=' + choice);
     }
+=======
+/**
+ * Log In
+ */
+function login() {
+
+
+let logemail = document.getElementById("loginEmail").value;
+let logpassword = document.getElementById("loginPd").value;
+
+fetch('../user/login', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+        email: logemail,
+        password: logpassword
+    }),
+})
+.then((resp) => resp.json())
+.then(function(data) {
+    let mes = data.message;
+    if (mes.localeCompare("Auth successful") == 0) {
+        document.write("<div id='center'><h1>Log in avvenuto con successo!</h1><br><a href='index.html'>Torna alla home</a></div>");
+    } else if (mes.localeCompare("Auth failed") == 0) {
+        document.write("<div id='center'><h1>Log in non riuscito!</h1><br><a href='login.html'>Torna al LogIn</a></div>");
+    } else {
+        document.write("<div id='center'><h1>Errore!</h1><br><a href='login.html'>Torna al LogIn</a></div>");
+    }
+    console.log(mes);
+});
+
+}
+>>>>>>> authentication
