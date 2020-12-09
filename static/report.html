@@ -21,11 +21,11 @@ testo.document.write(" </head>");
 testo.document.write("<body topmargin=50>");
 testo.document.write("<div align=center>Report this picture for:</div>");
 testo.document.write("<form action='Report()' name='report'>");
-testo.document.write("<input type='radio' id='1' name='reports' value='uno'>");
+testo.document.write("<input type='radio' id='1' name='reports' value='Inappropriate picture'>");
 testo.document.write("<label>Inappropriate picture</label><br>");
-testo.document.write("<input type='radio' id='2' name='reports' value='due'>");
+testo.document.write("<input type='radio' id='2' name='reports' value='Misinformation about the place'>");
 testo.document.write("<label>Misinformation about the place</label><br>");
-testo.document.write("<input type='radio' id='3' name='reports' value='tre'>");
+testo.document.write("<input type='radio' id='3' name='reports' value='Violation of privacy'>");
 testo.document.write("<label>Violation of privacy</label><br><br>");
 testo.document.write("<input type='submit' value='Submit'>");
 testo.document.write("</form>");
@@ -35,15 +35,6 @@ testo.document.write("</html>");
 
 function Report() {
     var choice;
-    /*
-    if (document.getElementById('1').checked) {
-        choice = document.getElementById('1').value
-        console.log('1');
-    } else if (document.getElementById('2').checked) {
-        choice = document.getElementById('2').value
-    } else if (document.getElementById('3').checked) {
-        choice = document.getElementById('3').value
-    } */
 
 var radios = document.getElementsByName('reports');
 
@@ -55,8 +46,28 @@ for (var i = 0, length = radios.length; i < length; i++) {
     break;
   }
 }
-    console.log(choice);
-    fetch('../user/registration?report=' + choice);
+    
+console.log(choice);
+
+    fetch('../report', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify( { 
+            email: emailuser,
+            report: choice 
+        })
+        
+    })
+    .then((resp) => resp.json()) // Transform the data into json
+    .then(function(data) { // Here you get the data to modify as you please
+    let mes = data.message;
+    if (mes.localeCompare("Report created") == 0) {
+        testo.document.write("<h2>Report inviato con sucesso!</h2>");
+    } else {
+        testo.document.write("<h2>Errore!</h2>");
+    }
+});
+    
 }
 
 

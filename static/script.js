@@ -1,7 +1,5 @@
 //here goes the script for the html page
-
-/**
- * Gestisce l'aggiunta di un file(immagine)
+ /* Gestisce l'aggiunta di un file(immagine)
  */
 function myFunction(){
     var x = document.getElementById("myFile");
@@ -199,6 +197,9 @@ async function upvote(url_string) {
         });
 }
 
+/**
+ * Registra un nuovo utente
+ */
 
 function registration() {
 
@@ -235,43 +236,17 @@ function registration() {
 
 }
 
-function Popup() {
+function Popup(url_location) {
+    var url = new URL(url_location);
+    var id = url.searchParams.get("id");
     var stili = "top=200, left=300, width=400, height=250, status=no, menubar=no, toolbar=no scrollbars=no";
-    var testo = window.open("", "", stili);
-    
-    testo.document.write("<html>");
-    testo.document.write(" <head>");
-    testo.document.write(" <title>Report</title>");
-    testo.document.write(" <basefont size=2 face=Tahoma>");
-    testo.document.write(" </head>");
-    testo.document.write("<body topmargin=50>");
-    testo.document.write("<div align=center>Report this picture for:</div>");
-    testo.document.write("<form action='Report()' name='report'>");
-    testo.document.write("<input type='radio' id='1' name='reports' value='uno'>");
-    testo.document.write("<label>Inappropriate picture</label><br>");
-    testo.document.write("<input type='radio' id='2' name='reports' value='due'>");
-    testo.document.write("<label>Misinformation about the place</label><br>");
-    testo.document.write("<input type='radio' id='3' name='reports' value='tre'>");
-    testo.document.write("<label>Violation of privacy</label><br><br>");
-    testo.document.write("<input type='submit' value='Submit'>");
-    testo.document.write("</form>");
-    testo.document.write("</body>");
-    testo.document.write("</html>");
+    window.open("popupReport.html?id=" + id, "", stili);
     }
     
     function Report() {
         var choice;
-        /*
-        if (document.getElementById('1').checked) {
-            choice = document.getElementById('1').value
-            console.log('1');
-        } else if (document.getElementById('2').checked) {
-            choice = document.getElementById('2').value
-        } else if (document.getElementById('3').checked) {
-            choice = document.getElementById('3').value
-        } */
     
-    var radios = document.getElementsByName('reports');
+        var radios = document.getElementsByName('reports');
     
     for (var i = 0, length = radios.length; i < length; i++) {
       if (radios[i].checked) {
@@ -281,6 +256,111 @@ function Popup() {
         break;
       }
     }
-        console.log(choice);
-        fetch('../user/registration?report=' + choice);
+    var url = new URL(window.location.href);
+    var id = url.searchParams.get("id");
+    console.log(choice);
+    let tok = getCookie("token");
+    var obj = {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + tok, 'Content-Type': 'application/json'},
+        body: JSON.stringify( { 
+            id_picture : id,
+            report: choice 
+        })
+    };
+        fetch('../report', obj )
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) { // Here you get the data to modify as you please
+        let mes = data.message;
+        if (mes.localeCompare("Report created") == 0) {
+            document.write("<h2>Report inviato con sucesso!</h2><br><br><button onclick='Close()'>Chiudi</button>");
+        } else {
+            document.write("<h2>Errore!</h2><br><br><button onclick='Close()'>Chiudi</button>");
+        }
+    });
+ 
     }
+//to close the pop up
+function Close() {
+    window.close();
+}
+/**
+ * Log In
+ */
+function login() {
+
+
+let logemail = document.getElementById("loginEmail").value;
+let logpassword = document.getElementById("loginPd").value;
+
+fetch('../user/login', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+        email: logemail,
+        password: logpassword
+    }),
+})
+.then((resp) => resp.json())
+.then(function(data) {
+    setCookie("token",data.token,1);
+    let mes = data.message;
+    if (mes.localeCompare("Auth successful") == 0) {
+        document.write("<div id='center'><h1>Log in avvenuto con successo!</h1><br><a href='index.html'>Torna alla home</a></div>");
+    } else if (mes.localeCompare("Auth failed") == 0) {
+        document.write("<div id='center'><h1>Log in non riuscito!</h1><br><a href='login.html'>Torna al LogIn</a></div>");
+    } else {
+        document.write("<div id='center'><h1>Errore!</h1><br><a href='login.html'>Torna al LogIn</a></div>");
+    }
+    console.log(mes);
+    
+});
+
+}
+
+// Part for the cookies if ever needed-----------
+function setCookie(name,value,hours) {
+    var expires = "";
+    if (hours) {
+        var date = new Date();
+        date.setTime(date.getTime() + (hours*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+function eraseCookie(name) {   
+    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+function loadReports() {
+
+    const div = document.getElementById("reports");
+    div.innerHTML = '';
+
+    fetch('../checkReports')
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function (data) { // Here you get the data to modify as you please
+
+             console.log(data);
+
+            return data.reports.map(function (report) { // Map through the results and for each run the code below
+
+                let div2 = document.createElement('div');
+                div2.className = "rep";
+                //div2.addEventListener('click', window.open(`location.html?id=${location._id}`));
+                div2.innerHTML = `Email: ${report.email}<br>Report: ${report.text}<br>Picture Id: ${report.id_picture}<br><br>`;
+                div.appendChild(div2);
+            })
+        })
+        .catch(error => console.error(error));// If there is any error you will catch them here
+}
