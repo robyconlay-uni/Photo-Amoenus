@@ -341,3 +341,27 @@ function getCookie(name) {
 function eraseCookie(name) {   
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
+
+function loadReports() {
+
+    const div = document.getElementById("reports");
+    div.innerHTML = '';
+
+    fetch('../checkReports')
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function (data) { // Here you get the data to modify as you please
+
+             console.log(data);
+
+            return data.reports.map(function (report) { // Map through the results and for each run the code below
+
+                let div2 = document.createElement('div');
+                div2.className = "rep";
+                //div2.addEventListener('click', window.open(`location.html?id=${location._id}`));
+                div2.innerHTML = `<a href="reportList.html?id=${report.id}">Email: ${report.email}<br>
+                Report: ${report.text}<br><br></a>`;
+                div.appendChild(div2);
+            })
+        })
+        .catch(error => console.error(error));// If there is any error you will catch them here
+}
