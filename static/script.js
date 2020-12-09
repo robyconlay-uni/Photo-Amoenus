@@ -217,8 +217,6 @@ function registration() {
     var emailuser = document.getElementById("regEmail").value;
     var passworduser = document.getElementById("regPd").value;
     var password2 = document.getElementById("regPdConf").value;
-
-
     fetch('../user/signup', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
