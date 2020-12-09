@@ -358,8 +358,7 @@ function loadReports() {
                 let div2 = document.createElement('div');
                 div2.className = "rep";
                 //div2.addEventListener('click', window.open(`location.html?id=${location._id}`));
-                div2.innerHTML = `<a href="reportList.html?id=${report.id}">Email: ${report.email}<br>
-                Report: ${report.text}<br><br></a>`;
+                div2.innerHTML = `Email: ${report.email}<br>Report: ${report.text}<br>Picture Id: ${report.id_picture}<br><br>`;
                 div.appendChild(div2);
             })
         })
