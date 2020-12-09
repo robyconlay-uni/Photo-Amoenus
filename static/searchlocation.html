@@ -25,6 +25,45 @@
     <body style="text-align: left" onload="loadLocations()">
 
         <h1 id="locName" style="text-align: center">Elenco dei luoghi disponibili</h1>
+        <div>
+            <label for="filtri" style="text-align: center">Filtri:</label>
+            
+            <select name="citta" id="citta" onchange="loadLocations()">
+                <option value=null selected>Seleziona Città</option>
+                <option value="Trento">Trento</option>
+                <option value="Verona">Verona</option>
+            </select>
+
+            <select name="categoria" id="categoria" onchange="loadLocations()">
+                <option value=null selected>Seleziona Categoria</option>
+                <option value="Paesaggio">Paesaggio</option>
+                <option value="Urbano">Urbano</option>
+                <option value="Monumento">Monumento</option>
+                <option value="Lago">Lago</option>
+                <option value="Mare">Mare</option>
+                <option value="Montagna">Montagna</option>
+            </select>
+
+            <select name="raggiung" id="raggiung" onchange="loadLocations()">
+                <option value=null selected>Seleziona Raggiungibilità</option>
+                <option value="Piedi">Piedi</option>
+                <option value="Bicicletta">Bicicletta</option>
+                <option value="Macchina">Macchina</option>
+                <option value="Mezzi pubblici">Mezzi pubblici</option>
+            </select>
+        </div>
+        <br>
+        <div>
+            <label for="ordine" style="text-align: center">Ordine:</label>
+            <select name="ordine" id="ordine" onchange="loadLocations()">
+                <option value=null selected>Inserimento</option>
+                <option value="name">A-Z</option>
+                <option value="-name">Z-A</option>
+                <option value="-date">Più Recente</option>
+                <option value="date">Più Vecchio</option>
+            </select>
+        </div>
+        <br><br>
         <h2>Locations:</h2>
         <div id="locations"></div>
 
