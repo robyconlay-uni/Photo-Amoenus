@@ -13,7 +13,7 @@ function myFunction(){
             for (var i = 0; i < x.files.length; i++) {
                 txt += "<br><strong>" + (i + 1) + ". file</strong><br>";
                 var file = x.files[i];
-                if((file.name.indexOf("jpg") != -1) || (file.name.indexOf("png") != -1) || (file.name.indexOf("jpeg") != -1)){
+                if((file.name.indexOf("jpg") != -1) || (file.name.indexOf("png") != -1) || (file.name.indexOf("jpeg") != -1) || (file.name.indexOf("JPG") != -1)){
 
                     if ('name' in file) {
                         txt += "name: " + file.name + "<br>";
@@ -22,7 +22,7 @@ function myFunction(){
                         txt += "size: " + file.size + " bytes <br>";
                     }
                 } else {
-                    txt = "Formato non supportato! Inserire solo file .jpg, .jpeg o .png";
+                    txt = "Formato non supportato! Inserire solo file .jpg, .jpeg o .png o .JPG";
                 }
             }
         }
@@ -36,7 +36,7 @@ function myFunction(){
     }
     document.getElementById("demo").innerHTML = txt;
 
-    if(txt == "Formato non supportato! Inserire solo file .jpg, .jpeg o .png"){
+    if(txt == "Formato non supportato! Inserire solo file .jpg, .jpeg o .png o .JPG"){
         x.value = "";
     }
 }
@@ -52,8 +52,12 @@ function addLocation(){
     var addressLoc = document.getElementById("posizione").value;
     var cityLoc = document.getElementById("città").value;
     var descLoc = document.getElementById("descrizione").value;
-    var imgLoc = document.getElementById("myFile").files[0];
     var catLoc = document.getElementById("categoria").value;
+    var raggiungibilitaLoc = Array.from(document.getElementById("ragg").selectedOptions).map(el=>el.value);
+    var imgLoc = document.getElementById("myFile").files[0];
+    var photoDescLoc = document.getElementById("photoDescription").value;
+    var oraLoc = document.getElementById("orario").value;
+    var dataLoc = document.getElementById("data").value;
     var likesLoc = 0;
 
     //Creo un oggetto FormData e ci aggiungo i parametri chiave-valore
@@ -62,8 +66,12 @@ function addLocation(){
     formData.append('address', addressLoc);
     formData.append('city', cityLoc);
     formData.append('description', descLoc);
-    formData.append('locationImage', imgLoc);
     formData.append('category', catLoc);
+    formData.append('raggiungibilita', raggiungibilitaLoc);
+    formData.append('locationImage', imgLoc);
+    formData.append('photoDesc', photoDescLoc);
+    formData.append('hour', oraLoc);
+    formData.append('date', dataLoc);
 
     fetch('../locations', { //Se non specificato header creato da browser, in questo caso form-data
         method: 'POST',
@@ -71,47 +79,47 @@ function addLocation(){
     })
     .then((resp) => {
         console.log(resp);
-        window.open('addDone.html');
+        window.open('addDone.html', '_self');
         return;
     })
     .catch(error => console.error(error)); // If there is any error you will catch them here
 
 }
 
-/**
- * Registra un nuovo utente
- */
-function registration() {
-
-    //get the form object
-    var username = document.getElementById("regUser").value;
-    var emailuser = document.getElementById("regEmail").value;
-    var passworduser = document.getElementById("regPd").value;
-    var password2 = document.getElementById("regPdConf").value;
-
-
-    fetch('../lib/user/registration', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            user: username,
-            email: emailuser,
-            password: passworduser
-        }),
-    })
-
-};
 
 
 /**
  * Carica l'elenco completo delle locations
  */
 function loadLocations() {
+    var url ='../locations?';
+
+    //FILTRI E ORDINAMENTO messi come parametri nel URL
+    var order = document.getElementById("ordine").value;
+    var category = document.getElementById("categoria").value;
+    var city = document.getElementById("citta").value;
+    var raggiungibilita = document.getElementById("raggiung").value;
+    if(order != "null"){
+        url = url + "order=" + order;
+    }
+    if(category != "null"){
+        if(order != "null"){ url = url + "&";}
+        url = url + "category=" + category;
+    }
+    if(city!= "null"){
+        if(order != "null" || category != "null"){ url = url + "&";}
+        url = url + "city=" + city;
+    }
+    if(raggiungibilita != "null"){
+        if(order != "null" || category!= "null" || city!= "null"){ url = url + "&";}
+        url = url + "raggiungibilita=" + raggiungibilita;
+    }
+    console.log(url);
 
     const div = document.getElementById("locations");
     div.innerHTML = '';
 
-    fetch('../locations')
+    fetch(url)
         .then((resp) => resp.json()) // Transform the data into json
         .then(function (data) { // Here you get the data to modify as you please
 
@@ -139,8 +147,12 @@ function loadLocation(url_string) {
             document.getElementById("address").innerHTML = data.location.address;
             document.getElementById("city").innerHTML = data.location.city;
             document.getElementById("description").innerHTML = data.location.description;
-            document.getElementById("locationImage").innerHTML = "null"
             document.getElementById("category").innerHTML = data.location.category;
+            document.getElementById("raggiungibilita").innerHTML = data.location.raggiungibilita;
+            document.getElementById("locationImage").innerHTML = "null";
+            document.getElementById("photoDesc").innerHTML = data.location.photoDesc;
+            document.getElementById("hour").innerHTML = data.location.hour;
+            document.getElementById("date").innerHTML = data.location.date;
             document.getElementById("likes").innerHTML = data.location.likes;
         })
         .catch(err => {
@@ -191,24 +203,84 @@ async function upvote(url_string) {
 function registration() {
 
     //get the form object
-    var username = document.getElementById("regUser").value;
+    var user_name = document.getElementById("regUser").value;
     var emailuser = document.getElementById("regEmail").value;
     var passworduser = document.getElementById("regPd").value;
     var password2 = document.getElementById("regPdConf").value;
 
 
-    fetch('../lib/user/registration', {
+    fetch('../user/signup', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-            user: username,
+            username: user_name,
             email: emailuser,
             password: passworduser
         }),
     })
     .then((resp) => resp.json())
     .then(function(data) {
-       
+        let mes = data.message;
+        if (mes.localeCompare("User created") == 0) {
+            document.write("<div id='center'><h1>Registrazione avvenuta con successo!</h1><br><a href='index.html'>Torna alla home</a></div>");
+        } else if (mes.localeCompare("user already exist") == 0) {
+            document.write("<div id='center'><h1>Utente già esistente!</h1><br><a href='registration.html'>Torna alla registrazione</a></div>");
+        } else {
+            document.write("<div id='center'><h1>Errore nella fase di registrazione!</h1><br><a href='registration.html'>Torna alla registrazione</a></div>");
+        }
+        console.log(mes);
     });
+    
+    
 
 }
+
+function Popup() {
+    var stili = "top=200, left=300, width=400, height=250, status=no, menubar=no, toolbar=no scrollbars=no";
+    var testo = window.open("", "", stili);
+    
+    testo.document.write("<html>");
+    testo.document.write(" <head>");
+    testo.document.write(" <title>Report</title>");
+    testo.document.write(" <basefont size=2 face=Tahoma>");
+    testo.document.write(" </head>");
+    testo.document.write("<body topmargin=50>");
+    testo.document.write("<div align=center>Report this picture for:</div>");
+    testo.document.write("<form action='Report()' name='report'>");
+    testo.document.write("<input type='radio' id='1' name='reports' value='uno'>");
+    testo.document.write("<label>Inappropriate picture</label><br>");
+    testo.document.write("<input type='radio' id='2' name='reports' value='due'>");
+    testo.document.write("<label>Misinformation about the place</label><br>");
+    testo.document.write("<input type='radio' id='3' name='reports' value='tre'>");
+    testo.document.write("<label>Violation of privacy</label><br><br>");
+    testo.document.write("<input type='submit' value='Submit'>");
+    testo.document.write("</form>");
+    testo.document.write("</body>");
+    testo.document.write("</html>");
+    }
+    
+    function Report() {
+        var choice;
+        /*
+        if (document.getElementById('1').checked) {
+            choice = document.getElementById('1').value
+            console.log('1');
+        } else if (document.getElementById('2').checked) {
+            choice = document.getElementById('2').value
+        } else if (document.getElementById('3').checked) {
+            choice = document.getElementById('3').value
+        } */
+    
+    var radios = document.getElementsByName('reports');
+    
+    for (var i = 0, length = radios.length; i < length; i++) {
+      if (radios[i].checked) {
+     
+        choice = radios[i].value;
+    
+        break;
+      }
+    }
+        console.log(choice);
+        fetch('../user/registration?report=' + choice);
+    }
