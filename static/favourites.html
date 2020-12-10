@@ -7,31 +7,43 @@
 
     <script>
         function loadFavourites() {
-            fetch('/lib/favourites/')
-                .then(res => res.json())
-                .then(data => {
-                    if (data.favourites.length == 0) {
+            fetch('/lib/favourites/', {
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                    "Authorization": token
+                })
+            })
+                .then(res => {
+                    if (res.status == 404) {
                         document.getElementById("favourites").innerHTML = "Nessun preferito ancora aggiunto";
+                        return "";
                     } else {
-                        favElement = document.getElementById("favourites");
-                        favElement.innerHTML = "";
-
-                        fetch('../locations')
-                            .then(res => res.json())
-                            .then(locationsData => {
-                                locationsData.locations.map(location => {
-                                    if (data.favourites.includes(location._id)) {
-                                        let div = document.createElement('div');
-                                        div.className = "loc";
-                                        div.innerHTML = `<a href="location.html?id=${location._id}">${location.name}</a>`;
-                                        favElement.appendChild(div);
-                                    }
-                                })
-                            })
-                            .catch(err => {
-                                console.log(err);
-                            });
+                        return res.json();
                     }
+                })
+                .then(data => {
+                    console.log(data);
+                    if (data == "")
+                        return;
+
+                    favElement = document.getElementById("favourites");
+                    favElement.innerHTML = "";
+
+                    fetch('../locations')
+                        .then(res => res.json())
+                        .then(locationsData => {
+                            locationsData.locations.map(location => {
+                                if (data.favourites.includes(location._id)) {
+                                    let div = document.createElement('div');
+                                    div.className = "loc";
+                                    div.innerHTML = `<a href="location.html?id=${location._id}">${location.name}</a>`;
+                                    favElement.appendChild(div);
+                                }
+                            })
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
                 })
                 .catch(err => {
                     console.log(err);
