@@ -1,4 +1,5 @@
 //here goes the script for the html page
+
  /* Gestisce l'aggiunta di un file(immagine)
  */
 function myFunction(){
@@ -135,6 +136,9 @@ function loadLocations() {
         .catch(error => console.error(error));// If there is any error you will catch them here
 }
 
+/**
+ * Carica una specifica location
+ */
 function loadLocation(url_string) {
     var url = new URL(url_string);
     var id = url.searchParams.get("id");
@@ -158,6 +162,9 @@ function loadLocation(url_string) {
         });
 }
 
+/**
+ * Gestitsce la funzione del bottone 'mi è stato utile'
+ */
 async function upvote(url_string) {
     var url = new URL(url_string);
     var id = url.searchParams.get("id");
@@ -200,7 +207,6 @@ async function upvote(url_string) {
 /**
  * Registra un nuovo utente
  */
-
 function registration() {
 
     //get the form object
@@ -223,7 +229,7 @@ function registration() {
     .then(function(data) {
         let mes = data.message;
         if (mes.localeCompare("User created") == 0) {
-            document.write("<div id='center'><h1>Registrazione avvenuta con successo!</h1><br><a href='index.html'>Torna alla home</a></div>");
+            document.write("<div id='center'><h1>Registrazione avvenuta con successo!</h1><br><h3>Ora prova a fare log In!</h3><br><a href='login.html'>Vai alla pagina di log in</a></div>");
         } else if (mes.localeCompare("user already exist") == 0) {
             document.write("<div id='center'><h1>Utente già esistente!</h1><br><a href='registration.html'>Torna alla registrazione</a></div>");
         } else {
@@ -236,13 +242,19 @@ function registration() {
 
 }
 
+/**
+ * Gestisce il popup del form per compilare un report
+ */
 function Popup(url_location) {
     var url = new URL(url_location);
     var id = url.searchParams.get("id");
     var stili = "top=200, left=300, width=400, height=250, status=no, menubar=no, toolbar=no scrollbars=no";
     window.open("popupReport.html?id=" + id, "", stili);
     }
-    
+
+/**
+ * Funzine per gestire i report
+*/
     function Report() {
         var choice;
     
@@ -284,6 +296,7 @@ function Popup(url_location) {
 function Close() {
     window.close();
 }
+
 /**
  * Log In
  */
@@ -304,6 +317,7 @@ fetch('../user/login', {
 .then((resp) => resp.json())
 .then(function(data) {
     setCookie("token",data.token,1);
+    setCookie("email",data.email,1);
     let mes = data.message;
     if (mes.localeCompare("Auth successful") == 0) {
         document.write("<div id='center'><h1>Log in avvenuto con successo!</h1><br><a href='index.html'>Torna alla home</a></div>");
@@ -316,6 +330,15 @@ fetch('../user/login', {
     
 });
 
+}
+
+/**
+ * Log Out
+ */
+function Logout() {
+  eraseCookie('token');
+  eraseCookie('email');
+  location.reload();
 }
 
 // Part for the cookies if ever needed-----------
@@ -341,7 +364,11 @@ function getCookie(name) {
 function eraseCookie(name) {   
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
+// ---------------------
 
+/**
+ * Carica l'elenco completo dei Reports
+ */
 function loadReports() {
 
     const div = document.getElementById("reports");
@@ -363,4 +390,18 @@ function loadReports() {
             })
         })
         .catch(error => console.error(error));// If there is any error you will catch them here
+}
+
+/**
+ * Controlla, in base a chi si è loggato, quali risorse della home gli sono visibili
+ */
+function loadButtons() {
+    let mail = getCookie('email');
+    if (mail != null) {
+        document.getElementById('logoutButton').style.display = 'block';
+    }
+    if (mail.localeCompare('manager@hotmail.it') == 0) {
+        document.getElementById('reportListButton').style.display = 'block';
+    }
+
 }
