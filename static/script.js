@@ -152,36 +152,92 @@ function loadLocation(url_string) {
             document.getElementById("hour").innerHTML = data.location.hour;
             document.getElementById("date").innerHTML = data.location.date;
             document.getElementById("likes").innerHTML = data.location.likes;
-            document.getElementById("favouriteButton")
+            setButtonState(id);
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-function setButtonState(id) {
-    favButton = document.getElementById("favouriteButton");
+const setButtonState = function (id) {
+    favDiv = document.getElementById("favourite");
 
     fetch("/lib/favourites/", {
-        headers = new Headers({
+        headers: new Headers({
             'Content-Type': 'application/json',
-            'Authentication': 'Bearer ' + getCookie('token')
+            'Authorization': 'Bearer ' + getCookie('token')
         })
     })
         .then(res => {
             if (res.status == 404) {
-                //favButton.innerHTML = 
+                console.log("404");
+                favDiv.innerHTML = `<button type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
+                return "";
             } else {
                 return res.json();
             }
-        } 
-        .then(data => {
         })
-                .catch(err => {
-                    console.log(err);
-                });
+        .then(data => {
+            if (data != "") {
+                var found = false;
+                for (var fav in data.favourites) {
+                    if (id == fav._id) {
+                        console.log(id, fav._id, "id is in fav");
+                        found = true;
+                    }
+                }
+                if (found) {
+                    favDiv.innerHTML = `<button type="button" id="favButton" onclick="removeFavourite('${id}')">Rimuovi dai preferiti</button>`;
+                } else {
+                    favDiv.innerHTML = `<button type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
+                }
+                console.log(id, data);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
 
 }
+
+
+function addFavourite(id) {
+
+    fetch('/lib/favourites/add/' + id, {
+        method: 'PATCH',
+        headers: new Headers({
+            'Content-type': 'application/json',
+            'Authorization': "Bearer " + getCookie("token")
+        })
+    })
+        .then(res => {
+            if (res.ok) {
+                document.getElementById("favourite").innerHTML = `<button type="button" id="favButton" onclick="removeFavourite('${id}')">Rimuovi dai preferiti</button>`;
+            }
+
+        })
+        .catch(error => console.error(error));
+}
+
+function removeFavourite(id) {
+
+    fetch('/lib/favourites/remove/' + id, {
+        method: 'PATCH',
+        headers: new Headers({
+            'Content-type': 'application/json',
+            'Authorization': "Bearer " + getCookie("token")
+        })
+    })
+        .then(res => {
+            if (res.ok) {
+                document.getElementById("favourite").innerHTML = `<button type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
+            }
+
+        })
+        .catch(error => console.error(error));
+}
+
+
 
 async function upvote(url_string) {
     var url = new URL(url_string);
@@ -390,17 +446,3 @@ function loadReports() {
         .catch(error => console.error(error));// If there is any error you will catch them here
 }
 
-
-function addFavourite(url_string) {
-    var url = new URL(url_string);
-    var id = url.searchParams.get("id");
-
-    fetch('/lib/favourites/add', {
-        method: 'PATCH',
-        headers: new Headers({
-            'Content-type': 'application/json',
-            //'Authorization': "Bearer " + getCookie("token") 
-        })
-    })
-        .catch(error => console.error(error));
-}
