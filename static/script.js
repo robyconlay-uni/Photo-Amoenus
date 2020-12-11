@@ -1,9 +1,7 @@
 //here goes the script for the html page
-
-/**
- * Gestisce l'aggiunta di un file(immagine)
- */
-function myFunction(){
+/* Gestisce l'aggiunta di un file(immagine)
+*/
+function myFunction() {
     var x = document.getElementById("myFile");
     var txt = "";
     if ('files' in x) {
@@ -13,7 +11,7 @@ function myFunction(){
             for (var i = 0; i < x.files.length; i++) {
                 txt += "<br><strong>" + (i + 1) + ". file</strong><br>";
                 var file = x.files[i];
-                if((file.name.indexOf("jpg") != -1) || (file.name.indexOf("png") != -1) || (file.name.indexOf("jpeg") != -1)){
+                if ((file.name.indexOf("jpg") != -1) || (file.name.indexOf("png") != -1) || (file.name.indexOf("jpeg") != -1) || (file.name.indexOf("JPG") != -1)) {
 
                     if ('name' in file) {
                         txt += "name: " + file.name + "<br>";
@@ -22,7 +20,7 @@ function myFunction(){
                         txt += "size: " + file.size + " bytes <br>";
                     }
                 } else {
-                    txt = "Formato non supportato! Inserire solo file .jpg, .jpeg o .png";
+                    txt = "Formato non supportato! Inserire solo file .jpg, .jpeg o .png o .JPG";
                 }
             }
         }
@@ -36,7 +34,7 @@ function myFunction(){
     }
     document.getElementById("demo").innerHTML = txt;
 
-    if(txt == "Formato non supportato! Inserire solo file .jpg, .jpeg o .png"){
+    if (txt == "Formato non supportato! Inserire solo file .jpg, .jpeg o .png o .JPG") {
         x.value = "";
     }
 }
@@ -45,15 +43,19 @@ function myFunction(){
 /**
  * Aggiunge una location
  */
-function addLocation(){
-    
+function addLocation() {
+
     //Importo inserimenti da form HTML
     var nameLoc = document.getElementById("nome").value;
     var addressLoc = document.getElementById("posizione").value;
     var cityLoc = document.getElementById("città").value;
     var descLoc = document.getElementById("descrizione").value;
-    var imgLoc = document.getElementById("myFile").files[0];
     var catLoc = document.getElementById("categoria").value;
+    var raggiungibilitaLoc = Array.from(document.getElementById("ragg").selectedOptions).map(el => el.value);
+    var imgLoc = document.getElementById("myFile").files[0];
+    var photoDescLoc = document.getElementById("photoDescription").value;
+    var oraLoc = document.getElementById("orario").value;
+    var dataLoc = document.getElementById("data").value;
     var likesLoc = 0;
 
     //Creo un oggetto FormData e ci aggiungo i parametri chiave-valore
@@ -62,56 +64,60 @@ function addLocation(){
     formData.append('address', addressLoc);
     formData.append('city', cityLoc);
     formData.append('description', descLoc);
-    formData.append('locationImage', imgLoc);
     formData.append('category', catLoc);
+    formData.append('raggiungibilita', raggiungibilitaLoc);
+    formData.append('locationImage', imgLoc);
+    formData.append('photoDesc', photoDescLoc);
+    formData.append('hour', oraLoc);
+    formData.append('date', dataLoc);
 
     fetch('../locations', { //Se non specificato header creato da browser, in questo caso form-data
         method: 'POST',
         body: formData  //passo il form-data
     })
-    .then((resp) => {
-        console.log(resp);
-        window.open('addDone.html');
-        return;
-    })
-    .catch(error => console.error(error)); // If there is any error you will catch them here
+        .then((resp) => {
+            console.log(resp);
+            window.open('addDone.html', '_self');
+            return;
+        })
+        .catch(error => console.error(error)); // If there is any error you will catch them here
 
 }
 
-/**
- * Registra un nuovo utente
- */
-function registration() {
-
-    //get the form object
-    var username = document.getElementById("regUser").value;
-    var emailuser = document.getElementById("regEmail").value;
-    var passworduser = document.getElementById("regPd").value;
-    var password2 = document.getElementById("regPdConf").value;
-
-
-    fetch('../lib/user/registration', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            user: username,
-            email: emailuser,
-            password: passworduser
-        }),
-    })
-
-};
 
 
 /**
  * Carica l'elenco completo delle locations
  */
 function loadLocations() {
+    var url = '../locations?';
+
+    //FILTRI E ORDINAMENTO messi come parametri nel URL
+    var order = document.getElementById("ordine").value;
+    var category = document.getElementById("categoria").value;
+    var city = document.getElementById("citta").value;
+    var raggiungibilita = document.getElementById("raggiung").value;
+    if (order != "null") {
+        url = url + "order=" + order;
+    }
+    if (category != "null") {
+        if (order != "null") { url = url + "&"; }
+        url = url + "category=" + category;
+    }
+    if (city != "null") {
+        if (order != "null" || category != "null") { url = url + "&"; }
+        url = url + "city=" + city;
+    }
+    if (raggiungibilita != "null") {
+        if (order != "null" || category != "null" || city != "null") { url = url + "&"; }
+        url = url + "raggiungibilita=" + raggiungibilita;
+    }
+    console.log(url);
 
     const div = document.getElementById("locations");
     div.innerHTML = '';
 
-    fetch('../locations')
+    fetch(url)
         .then((resp) => resp.json()) // Transform the data into json
         .then(function (data) { // Here you get the data to modify as you please
 
@@ -139,13 +145,42 @@ function loadLocation(url_string) {
             document.getElementById("address").innerHTML = data.location.address;
             document.getElementById("city").innerHTML = data.location.city;
             document.getElementById("description").innerHTML = data.location.description;
-            document.getElementById("locationImage").innerHTML = "null"
             document.getElementById("category").innerHTML = data.location.category;
+            document.getElementById("raggiungibilita").innerHTML = data.location.raggiungibilita;
+            document.getElementById("locationImage").innerHTML = "null";
+            document.getElementById("photoDesc").innerHTML = data.location.photoDesc;
+            document.getElementById("hour").innerHTML = data.location.hour;
+            document.getElementById("date").innerHTML = data.location.date;
             document.getElementById("likes").innerHTML = data.location.likes;
+            document.getElementById("favouriteButton")
         })
         .catch(err => {
             console.log(err);
         });
+}
+
+function setButtonState(id) {
+    favButton = document.getElementById("favouriteButton");
+
+    fetch("/lib/favourites/", {
+        headers = new Headers({
+            'Content-Type': 'application/json',
+            'Authentication': 'Bearer ' + getCookie('token')
+        })
+    })
+        .then(res => {
+            if (res.status == 404) {
+                //favButton.innerHTML = 
+            } else {
+                return res.json();
+            }
+        } 
+        .then(data => {
+        })
+                .catch(err => {
+                    console.log(err);
+                });
+
 }
 
 async function upvote(url_string) {
@@ -187,28 +222,185 @@ async function upvote(url_string) {
         });
 }
 
+/**
+ * Registra un nuovo utente
+ */
 
 function registration() {
 
     //get the form object
-    var username = document.getElementById("regUser").value;
+    var user_name = document.getElementById("regUser").value;
     var emailuser = document.getElementById("regEmail").value;
     var passworduser = document.getElementById("regPd").value;
     var password2 = document.getElementById("regPdConf").value;
 
 
-    fetch('../lib/user/registration', {
+    fetch('../user/signup', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            user: username,
+            username: user_name,
             email: emailuser,
             password: passworduser
         }),
     })
-    .then((resp) => resp.json())
-    .then(function(data) {
-       
-    });
+        .then((resp) => resp.json())
+        .then(function (data) {
+            let mes = data.message;
+            if (mes.localeCompare("User created") == 0) {
+                document.write("<div id='center'><h1>Registrazione avvenuta con successo!</h1><br><a href='index.html'>Torna alla home</a></div>");
+            } else if (mes.localeCompare("user already exist") == 0) {
+                document.write("<div id='center'><h1>Utente già esistente!</h1><br><a href='registration.html'>Torna alla registrazione</a></div>");
+            } else {
+                document.write("<div id='center'><h1>Errore nella fase di registrazione!</h1><br><a href='registration.html'>Torna alla registrazione</a></div>");
+            }
+            console.log(mes);
+        });
 
+
+
+}
+
+function Popup(url_location) {
+    var url = new URL(url_location);
+    var id = url.searchParams.get("id");
+    var stili = "top=200, left=300, width=400, height=250, status=no, menubar=no, toolbar=no scrollbars=no";
+    window.open("popupReport.html?id=" + id, "", stili);
+}
+
+function Report() {
+    var choice;
+
+    var radios = document.getElementsByName('reports');
+
+    for (var i = 0, length = radios.length; i < length; i++) {
+        if (radios[i].checked) {
+
+            choice = radios[i].value;
+
+            break;
+        }
+    }
+    var url = new URL(window.location.href);
+    var id = url.searchParams.get("id");
+    console.log(choice);
+    let tok = getCookie("token");
+    var obj = {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + tok, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            id_picture: id,
+            report: choice
+        })
+    };
+    fetch('../report', obj)
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function (data) { // Here you get the data to modify as you please
+            let mes = data.message;
+            if (mes.localeCompare("Report created") == 0) {
+                document.write("<h2>Report inviato con sucesso!</h2><br><br><button onclick='Close()'>Chiudi</button>");
+            } else {
+                document.write("<h2>Errore!</h2><br><br><button onclick='Close()'>Chiudi</button>");
+            }
+        });
+
+}
+//to close the pop up
+function Close() {
+    window.close();
+}
+/**
+ * Log In
+ */
+function login() {
+
+
+    let logemail = document.getElementById("loginEmail").value;
+    let logpassword = document.getElementById("loginPd").value;
+
+    fetch('../user/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            email: logemail,
+            password: logpassword
+        }),
+    })
+        .then((resp) => resp.json())
+        .then(function (data) {
+            setCookie("token", data.token, 1);
+            let mes = data.message;
+            if (mes.localeCompare("Auth successful") == 0) {
+                document.write("<div id='center'><h1>Log in avvenuto con successo!</h1><br><a href='index.html'>Torna alla home</a></div>");
+            } else if (mes.localeCompare("Auth failed") == 0) {
+                document.write("<div id='center'><h1>Log in non riuscito!</h1><br><a href='login.html'>Torna al LogIn</a></div>");
+            } else {
+                document.write("<div id='center'><h1>Errore!</h1><br><a href='login.html'>Torna al LogIn</a></div>");
+            }
+            console.log(mes);
+
+        });
+
+}
+
+// Part for the cookies if ever needed-----------
+function setCookie(name, value, hours) {
+    var expires = "";
+    if (hours) {
+        var date = new Date();
+        date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+function eraseCookie(name) {
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+function loadReports() {
+
+    const div = document.getElementById("reports");
+    div.innerHTML = '';
+
+    fetch('../checkReports')
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function (data) { // Here you get the data to modify as you please
+
+            console.log(data);
+
+            return data.reports.map(function (report) { // Map through the results and for each run the code below
+
+                let div2 = document.createElement('div');
+                div2.className = "rep";
+                //div2.addEventListener('click', window.open(`location.html?id=${location._id}`));
+                div2.innerHTML = `Email: ${report.email}<br>Report: ${report.text}<br>Picture Id: ${report.id_picture}<br><br>`;
+                div.appendChild(div2);
+            })
+        })
+        .catch(error => console.error(error));// If there is any error you will catch them here
+}
+
+
+function addFavourite(url_string) {
+    var url = new URL(url_string);
+    var id = url.searchParams.get("id");
+
+    fetch('/lib/favourites/add', {
+        method: 'PATCH',
+        headers: new Headers({
+            'Content-type': 'application/json',
+            //'Authorization': "Bearer " + getCookie("token") 
+        })
+    })
+        .catch(error => console.error(error));
 }
