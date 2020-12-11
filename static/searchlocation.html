@@ -3,7 +3,8 @@
 
     <head>
         <script src="script.js"></script>
-        <style>
+        <link rel="stylesheet" type="text/css" href="stylesheet.css">
+        <!-- <style>
             .loc{
                 font-size: 26px;
                 padding: 50px;
@@ -16,16 +17,14 @@
             a:visited{
                 color: blue;
             }
-            a:hover{
-
-            }
-        </style>
+           
+        </style> -->
     </head>
 
     <body style="text-align: left" onload="loadLocations()">
 
         <h1 id="locName" style="text-align: center">Elenco dei luoghi disponibili</h1>
-        <div>
+        <div class="container"> 
             <label for="filtri" style="text-align: center">Filtri:</label>
             
             <select name="citta" id="citta" onchange="loadLocations()">
