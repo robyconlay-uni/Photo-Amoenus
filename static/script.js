@@ -152,10 +152,35 @@ function loadLocation(url_string) {
             document.getElementById("hour").innerHTML = data.location.hour;
             document.getElementById("date").innerHTML = data.location.date;
             document.getElementById("likes").innerHTML = data.location.likes;
+            document.getElementById("favouriteButton")
         })
         .catch(err => {
             console.log(err);
         });
+}
+
+function setButtonState(id) {
+    favButton = document.getElementById("favouriteButton");
+
+    fetch("/lib/favourites/", {
+        headers = new Headers({
+            'Content-Type': 'application/json',
+            'Authentication': 'Bearer ' + getCookie('token')
+        })
+    })
+        .then(res => {
+            if (res.status == 404) {
+                //favButton.innerHTML = 
+            } else {
+                return res.json();
+            }
+        } 
+        .then(data => {
+        })
+                .catch(err => {
+                    console.log(err);
+                });
+
 }
 
 async function upvote(url_string) {
@@ -374,7 +399,7 @@ function addFavourite(url_string) {
         method: 'PATCH',
         headers: new Headers({
             'Content-type': 'application/json',
-            //'Authorization': "Bearer " + getCookie() 
+            //'Authorization': "Bearer " + getCookie("token") 
         })
     })
         .catch(error => console.error(error));

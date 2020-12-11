@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
-    <script>
+    <script src="script.js">
         function loadFavourites() {
             fetch('/lib/favourites/', {
                 headers: new Headers({
@@ -38,6 +38,11 @@
                                     div.className = "loc";
                                     div.innerHTML = `<a href="location.html?id=${location._id}">${location.name}</a>`;
                                     favElement.appendChild(div);
+                                    
+                                    let button = document.createElement('button');
+                                    button.type = "button";
+                                    button.onclick(setButtonState(location._id));
+                                    favElement.appendChild(button);
                                 }
                             })
                         })
@@ -53,6 +58,9 @@
 </head>
 
 <body onload="loadFavourites(window.location.href)">
+    <form action="index.html">
+        <button type="submit">Torna alla frontpage</button>
+    </form>
     <h2 id="titolo">Qui trovi i tuoi preferiti</h2>
 
     <div id="favourites"></div>
