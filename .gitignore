@@ -1,12 +1,16 @@
 
 # Created by https://www.gitignore.io/api/node,windows,linux,visualstudiocode
 
-### JetBrains IDE###
 
-.idea/
 
 ### Linux ###
 *~
+
+# jest auto generated directory
+coverage/
+
+# JetBrains IDE###
+.idea/
 
 # temporary files which can be created if a process still has a handle open of a deleted file
 .fuse_hidden*
@@ -76,9 +80,6 @@ typings/
 
 # Yarn Integrity file
 .yarn-integrity
-
-# dotenv environment variables file
-.env
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
