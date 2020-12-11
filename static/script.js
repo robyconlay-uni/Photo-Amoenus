@@ -179,14 +179,7 @@ const setButtonState = function (id) {
         })
         .then(data => {
             if (data != "") {
-                var found = false;
-                for (var fav in data.favourites) {
-                    if (id == fav._id) {
-                        console.log(id, fav._id, "id is in fav");
-                        found = true;
-                    }
-                }
-                if (found) {
+                if (data.favourites.includes(id)) {
                     favDiv.innerHTML = `<button type="button" id="favButton" onclick="removeFavourite('${id}')">Rimuovi dai preferiti</button>`;
                 } else {
                     favDiv.innerHTML = `<button type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
