@@ -12,7 +12,7 @@ function myFunction(){
             for (var i = 0; i < x.files.length; i++) {
                 txt += "<br><strong>" + (i + 1) + ". file</strong><br>";
                 var file = x.files[i];
-                if((file.name.indexOf("jpg") != -1) || (file.name.indexOf("png") != -1) || (file.name.indexOf("jpeg") != -1) || (file.name.indexOf("JPG") != -1)){
+                if ((file.name.indexOf("jpg") != -1) || (file.name.indexOf("png") != -1) || (file.name.indexOf("jpeg") != -1) || (file.name.indexOf("JPG") != -1)) {
 
                     if ('name' in file) {
                         txt += "name: " + file.name + "<br>";
@@ -35,7 +35,7 @@ function myFunction(){
     }
     document.getElementById("demo").innerHTML = txt;
 
-    if(txt == "Formato non supportato! Inserire solo file .jpg, .jpeg o .png o .JPG"){
+    if (txt == "Formato non supportato! Inserire solo file .jpg, .jpeg o .png o .JPG") {
         x.value = "";
     }
 }
@@ -44,15 +44,15 @@ function myFunction(){
 /**
  * Aggiunge una location
  */
-function addLocation(){
-    
+function addLocation() {
+
     //Importo inserimenti da form HTML
     var nameLoc = document.getElementById("nome").value;
     var addressLoc = document.getElementById("posizione").value;
     var cityLoc = document.getElementById("città").value;
     var descLoc = document.getElementById("descrizione").value;
     var catLoc = document.getElementById("categoria").value;
-    var raggiungibilitaLoc = Array.from(document.getElementById("ragg").selectedOptions).map(el=>el.value);
+    var raggiungibilitaLoc = Array.from(document.getElementById("ragg").selectedOptions).map(el => el.value);
     var imgLoc = document.getElementById("myFile").files[0];
     var photoDescLoc = document.getElementById("photoDescription").value;
     var oraLoc = document.getElementById("orario").value;
@@ -76,12 +76,12 @@ function addLocation(){
         method: 'POST',
         body: formData  //passo il form-data
     })
-    .then((resp) => {
-        console.log(resp);
-        window.open('addDone.html', '_self');
-        return;
-    })
-    .catch(error => console.error(error)); // If there is any error you will catch them here
+        .then((resp) => {
+            console.log(resp);
+            window.open('addDone.html', '_self');
+            return;
+        })
+        .catch(error => console.error(error)); // If there is any error you will catch them here
 
 }
 
@@ -91,26 +91,26 @@ function addLocation(){
  * Carica l'elenco completo delle locations
  */
 function loadLocations() {
-    var url ='../locations?';
+    var url = '../locations?';
 
     //FILTRI E ORDINAMENTO messi come parametri nel URL
     var order = document.getElementById("ordine").value;
     var category = document.getElementById("categoria").value;
     var city = document.getElementById("citta").value;
     var raggiungibilita = document.getElementById("raggiung").value;
-    if(order != "null"){
+    if (order != "null") {
         url = url + "order=" + order;
     }
-    if(category != "null"){
-        if(order != "null"){ url = url + "&";}
+    if (category != "null") {
+        if (order != "null") { url = url + "&"; }
         url = url + "category=" + category;
     }
-    if(city!= "null"){
-        if(order != "null" || category != "null"){ url = url + "&";}
+    if (city != "null") {
+        if (order != "null" || category != "null") { url = url + "&"; }
         url = url + "city=" + city;
     }
-    if(raggiungibilita != "null"){
-        if(order != "null" || category!= "null" || city!= "null"){ url = url + "&";}
+    if (raggiungibilita != "null") {
+        if (order != "null" || category != "null" || city != "null") { url = url + "&"; }
         url = url + "raggiungibilita=" + raggiungibilita;
     }
     console.log(url);
@@ -156,10 +156,81 @@ function loadLocation(url_string) {
             document.getElementById("hour").innerHTML = data.location.hour;
             document.getElementById("date").innerHTML = data.location.date;
             document.getElementById("likes").innerHTML = data.location.likes;
+            setButtonState(id);
         })
         .catch(err => {
             console.log(err);
         });
+}
+
+const setButtonState = function (id) {
+    favDiv = document.getElementById("favourite");
+
+    fetch("/lib/favourites/", {
+        headers: new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getCookie('token')
+        })
+    })
+        .then(res => {
+            if (res.status == 404) {
+                console.log("404");
+                favDiv.innerHTML = `<button type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
+                return "";
+            } else {
+                return res.json();
+            }
+        })
+        .then(data => {
+            if (data != "") {
+                if (data.favourites.includes(id)) {
+                    favDiv.innerHTML = `<button type="button" id="favButton" onclick="removeFavourite('${id}')">Rimuovi dai preferiti</button>`;
+                } else {
+                    favDiv.innerHTML = `<button type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
+                }
+                console.log(id, data);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
+}
+
+function addFavourite(id) {
+
+    fetch('/lib/favourites/add/' + id, {
+        method: 'PATCH',
+        headers: new Headers({
+            'Content-type': 'application/json',
+            'Authorization': "Bearer " + getCookie("token")
+        })
+    })
+        .then(res => {
+            if (res.ok) {
+                document.getElementById("favourite").innerHTML = `<button type="button" id="favButton" onclick="removeFavourite('${id}')">Rimuovi dai preferiti</button>`;
+            }
+
+        })
+        .catch(error => console.error(error));
+}
+
+function removeFavourite(id) {
+
+    fetch('/lib/favourites/remove/' + id, {
+        method: 'PATCH',
+        headers: new Headers({
+            'Content-type': 'application/json',
+            'Authorization': "Bearer " + getCookie("token")
+        })
+    })
+        .then(res => {
+            if (res.ok) {
+                document.getElementById("favourite").innerHTML = `<button type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
+            }
+
+        })
+        .catch(error => console.error(error));
 }
 
 /**
@@ -218,7 +289,7 @@ function registration() {
 
     fetch('../user/signup', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             username: user_name,
             email: emailuser,
@@ -237,9 +308,6 @@ function registration() {
         }
         console.log(mes);
     });
-    
-    
-
 }
 
 /**
@@ -261,12 +329,12 @@ function Popup(url_location) {
         var radios = document.getElementsByName('reports');
     
     for (var i = 0, length = radios.length; i < length; i++) {
-      if (radios[i].checked) {
-     
-        choice = radios[i].value;
-    
-        break;
-      }
+        if (radios[i].checked) {
+
+            choice = radios[i].value;
+
+            break;
+        }
     }
     var url = new URL(window.location.href);
     var id = url.searchParams.get("id");
@@ -274,24 +342,24 @@ function Popup(url_location) {
     let tok = getCookie("token");
     var obj = {
         method: 'POST',
-        headers: { 'Authorization': 'Bearer ' + tok, 'Content-Type': 'application/json'},
-        body: JSON.stringify( { 
-            id_picture : id,
-            report: choice 
+        headers: { 'Authorization': 'Bearer ' + tok, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            id_picture: id,
+            report: choice
         })
     };
-        fetch('../report', obj )
+    fetch('../report', obj)
         .then((resp) => resp.json()) // Transform the data into json
-        .then(function(data) { // Here you get the data to modify as you please
-        let mes = data.message;
-        if (mes.localeCompare("Report created") == 0) {
-            document.write("<h2>Report inviato con sucesso!</h2><br><br><button onclick='Close()'>Chiudi</button>");
-        } else {
-            document.write("<h2>Errore!</h2><br><br><button onclick='Close()'>Chiudi</button>");
-        }
-    });
- 
-    }
+        .then(function (data) { // Here you get the data to modify as you please
+            let mes = data.message;
+            if (mes.localeCompare("Report created") == 0) {
+                document.write("<h2>Report inviato con sucesso!</h2><br><br><button onclick='Close()'>Chiudi</button>");
+            } else {
+                document.write("<h2>Errore!</h2><br><br><button onclick='Close()'>Chiudi</button>");
+            }
+        });
+
+}
 //to close the pop up
 function Close() {
     window.close();
@@ -301,7 +369,6 @@ function Close() {
  * Log In
  */
 function login() {
-
 
 let logemail = document.getElementById("loginEmail").value;
 let logpassword = document.getElementById("loginPd").value;
@@ -342,27 +409,27 @@ function Logout() {
 }
 
 // Part for the cookies if ever needed-----------
-function setCookie(name,value,hours) {
+function setCookie(name, value, hours) {
     var expires = "";
     if (hours) {
         var date = new Date();
-        date.setTime(date.getTime() + (hours*60*60*1000));
+        date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
         expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 function getCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
     }
     return null;
 }
-function eraseCookie(name) {   
-    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+function eraseCookie(name) {
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 // ---------------------
 
@@ -378,7 +445,7 @@ function loadReports() {
         .then((resp) => resp.json()) // Transform the data into json
         .then(function (data) { // Here you get the data to modify as you please
 
-             console.log(data);
+            console.log(data);
 
             return data.reports.map(function (report) { // Map through the results and for each run the code below
 
