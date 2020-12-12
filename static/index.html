@@ -5,7 +5,7 @@
   <script src="script.js"></script>
 </head>
 
-<body>
+<body onload="loadButtons()">
   <h1>Photo Amoenus</h1>
   <form action="searchlocation.html">
     <button type="submit">Search</button>
@@ -13,6 +13,7 @@
   <form action="login.html">
     <button type="submit">Login</button> <!-- change to logout if user is logged-->
   </form>
+  <button type="submit" id = "logoutButton" style="display: none;" onclick="Logout()" >Log Out</button> <!-- change to logout if user is logged-->
   <form action="registration.html">
     <button type="submit">Registration</button> 
   </form>
@@ -20,7 +21,7 @@
     <button type="submit">Preferiti</button>
   </form>
   <form action="reportList.html">
-    <button type="submit">Report list</button> <!-- change to logout if user is logged-->
+    <button type="submit" id = "reportListButton" style="display: none;" >Report list</button> <!-- change to logout if user is logged-->
   </form>
 
 

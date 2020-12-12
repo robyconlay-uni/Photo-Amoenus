@@ -4,11 +4,16 @@
         <title>Aggiungi una location</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="script.js"></script>            
+        <script src="script.js"></script>      
+        <link rel="stylesheet" type="text/css" href="stylesheet.css">      
 
     </head>
-    <body style="font-family: roboto; font-size: 20px">
-        <div  style="text-align: center"><h1>Aggiungi un luogo</h1></div>
+    <body>
+        <div class= "container"><h1> Aggiungi un luogo</h1>
+            <p>Compila il modulo per aggiungere il tuo luogo</p>
+            <hr>
+        </div>
+        
         <div  style="text-align: center">
             
             <img src="https://www.informagiovani-italia.com/images/mappa_trento.jpg" style="max-width: 400px">
@@ -19,17 +24,17 @@
         <form><!--method="POST" action="/locations" name="addLocationForm" id="addLocationForm"-->
             
             <br><br><br>
-            <div style="text-align: left; margin-top: 40px; margin-left: 50px">
-                <label for="nome" style="margin-right: 130px">Inserisci nome del luogo</label>
-                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="nome" ></br> <!--onchange="addLocation()"-->
-                <label for="posizione" style="margin-right: 130px">Inserisci la posizione</label>
-                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="posizione"><br>
+            <div>
+                <label for="nome"><br>Inserisci nome del luogo</br></label>
+                <input type="text" id="nome" ></br> <!--onchange="addLocation()"-->
+                <label for="posizione"><br>Inserisci la posizione</br></label>
+                <input type="text" id="posizione"><br>
 
-                <label for="città" style="margin-right: 130px">Inserisci la città</label>
-                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="città"><br>
+                <label for="città"> <br> Inserisci la città</br></label>
+                <input type="text" id="città"><br>
                 
                 <label for="descrizione">Inserisci una breve descrizione del luogo</label>
-                <input type="text" style="height: 200px; width: 600px; margin: 10px" id="descrizione"><br>
+                <input class= "description" type="text" id="descrizione"><br>
 
                 <!--<input type="button" value="Aggiungi tag" ><br><br><br>-->
                 <label for="categoria" style="margin-right: 130px">Inserisci la categoria:</label>
