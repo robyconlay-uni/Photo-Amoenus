@@ -383,11 +383,11 @@ fetch('../user/login', {
 })
 .then((resp) => resp.json())
 .then(function(data) {
-    setCookie("token",data.token,1);
-    setCookie("email",data.email,1);
     let mes = data.message;
     if (mes.localeCompare("Auth successful") == 0) {
         document.write("<head><link rel='stylesheet' type='text/css' href='stylesheet.css'></head><body><div id='center' class='popup'><h1>Log in avvenuto con successo!</h1><form action='index.html'><button class= 'registerbtn' type='submit'> Torna alla home page </button></form> </body>");
+        setCookie("token",data.token,1);
+        setCookie("email",logemail,1);
     } else if (mes.localeCompare("Auth failed") == 0) {
         document.write("<div id='center'><h1>Log in non riuscito!</h1><br><a href='login.html'>Torna al LogIn</a></div>");
     } else {
@@ -465,10 +465,11 @@ function loadReports() {
 function loadButtons() {
     let mail = getCookie('email');
     if (mail != null) {
-        document.getElementById('logoutButton').style.display = 'block';
-    }
-    if (mail.localeCompare('manager@hotmail.it') == 0) {
+        document.getElementById("logoutButton").style.display = 'block';
+    
+    if (mail.localeCompare("manager@hotmail.it") == 0) {
         document.getElementById('reportListButton').style.display = 'block';
     }
+}
 
 }
