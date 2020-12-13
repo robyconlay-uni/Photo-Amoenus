@@ -3,6 +3,12 @@
 
     <head>
         <script src="script.js"></script>
+        <script>
+            function start(){
+                findCity();
+                loadLocations();
+            }
+        </script>
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
         <!-- <style>
             .loc{
@@ -21,7 +27,7 @@
         </style> -->
     </head>
 
-    <body style="text-align: left" onload="loadLocations()">
+    <body style="text-align: left" onload="start()">
 
         <h1 id="locName" style="text-align: center">Elenco dei luoghi disponibili</h1>
         <div class="container"> 
@@ -29,8 +35,7 @@
             
             <select name="citta" id="citta" onchange="loadLocations()">
                 <option value=null selected>Seleziona Città</option>
-                <option value="Trento">Trento</option>
-                <option value="Verona">Verona</option>
+                <!--Le altre opzioni le carica dinamicamente dal database-->
             </select>
 
             <select name="categoria" id="categoria" onchange="loadLocations()">
