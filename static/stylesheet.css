@@ -29,6 +29,18 @@ body {
     background-color: #ddd;
     outline: none;
   }
+
+  textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    background-color: #f1f1f1;
+    resize: none;
+  }
+  textarea:focus {
+    background-color: #ddd;
+    outline: none;
+  }
 /*da sistemare*/
   .description{
       width: 100%;
