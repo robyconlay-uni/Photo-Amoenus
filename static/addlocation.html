@@ -34,7 +34,7 @@
                 <input type="text" id="città"><br>
                 
                 <label for="descrizione">Inserisci una breve descrizione del luogo</label>
-                <input class= "description" type="text" id="descrizione"><br>
+                <textarea  class= "description"  id="descrizione"></textarea><br>
 
                 <!--<input type="button" value="Aggiungi tag" ><br><br><br>-->
                 <label for="categoria" style="margin-right: 130px">Inserisci la categoria:</label>
@@ -71,7 +71,7 @@
                 <label for="photoDescription">Inserisci una breve descrizione della macchina fotografica utilizzata o del supporto,
                                         aggiungendo dettagli a piacere
                 </label>
-                <input type="text" style="height: 200px; width: 600px; margin: 10px" id="photoDescription"><br>
+                <textarea style="height: 200px; width: 600px; margin: 10px" id="photoDescription"></textarea><br>
                 
                 <label for="orario" style="margin-right: 60px">Inserisci l'orario di scatto</label>
                 <input type="time" style="width: 400px; height: 40px; margin: 10px" id="orario"><br>
@@ -86,7 +86,7 @@
             </div>
             
             <div style="text-align: right; margin-top: 50px; margin-right: 100px">
-                <button type="button" value="Aggiungi!" onclick="addLocation()" style="width: 200px; height: 50px" >Aggiungi!</button>
+                <button type="button" value="Aggiungi!" onclick='addLocation()' style="width: 200px; height: 50px" >Aggiungi!</button>
             </div>
 
         </form>
