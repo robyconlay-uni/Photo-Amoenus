@@ -96,6 +96,29 @@ function addLocation() {
 }
 
 
+/**
+ * Trova le città attualmente presenti nel database
+ */
+function findCity(){
+    const select = document.getElementById("citta");
+    var a = new Set();
+    fetch('/locations')
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function (data) {
+
+            return data.locations.map(function (location) { // Map through the results and for each run the code below
+                if(! a.has(location.city)){
+                    a.add(location.city);
+                    console.log(location.city);
+                    let option = document.createElement('option');
+                    option.value = location.city;
+                    option.text= location.city;
+                    select.appendChild(option);
+                }
+            })
+        })
+        .catch(error => console.error(error));
+};
 
 /**
  * Carica l'elenco completo delle locations
