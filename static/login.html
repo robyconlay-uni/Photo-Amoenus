@@ -4,12 +4,14 @@
 <head>
     <script src="script.js"></script>
 </head>
-
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
 <body>
     <form action="user/login" method="post" name="loginform" id="loginform">
-        <input name="email" id="loginEmail" value="a@g.com">
-        <input name="pwd" id="loginPd" type="password" value="password">
-        <button type="button" onclick="login()">Accedi</button>
+        <p>Email:</p>
+        <input name="email" id="loginEmail" type="text" value="">
+        <p>Password:</p>
+        <input name="pwd" id="loginPd" type="password" value="">
+        <button class="registerbtn"type="button" onclick="login()">Accedi</button>
     </form>
 
 
