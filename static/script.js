@@ -1,5 +1,7 @@
 //here goes the script for the html page
 
+const { json } = require("body-parser");
+
  /* Gestisce l'aggiunta di un file(immagine)
  */
 function myFunction(){
@@ -74,7 +76,10 @@ function addLocation() {
 
     fetch('../locations', { //Se non specificato header creato da browser, in questo caso form-data
         method: 'POST',
-        body: formData  //passo il form-data
+        headers: {
+            'Authorization': 'Bearer ' + getCookie('token'),
+        },
+        body: formData     
     })
     .then((resp) => resp.json())
     .then((resp) => {
@@ -339,7 +344,7 @@ function registration() {
             username: user_name,
             email: emailuser,
             password: passworduser
-        }),
+        })
     })
     .then((resp) => resp.json())
     .then(function(data) {
@@ -428,11 +433,11 @@ fetch('../user/login', {
 })
 .then((resp) => resp.json())
 .then(function(data) {
-    setCookie("token",data.token,1);
-    setCookie("email",data.email,1);
     let mes = data.message;
     if (mes.localeCompare("Auth successful") == 0) {
         document.write("<head><link rel='stylesheet' type='text/css' href='stylesheet.css'></head><body><div id='center' class='popup'><h1>Log in avvenuto con successo!</h1><form action='index.html'><button class= 'registerbtn' type='submit'> Torna alla home page </button></form> </body>");
+        setCookie("token",data.token,1);
+        setCookie("email",logemail,1);
     } else if (mes.localeCompare("Auth failed") == 0) {
         document.write("<div id='center'><h1>Log in non riuscito!</h1><br><a href='login.html'>Torna al LogIn</a></div>");
     } else {
@@ -510,10 +515,12 @@ function loadReports() {
 function loadButtons() {
     let mail = getCookie('email');
     if (mail != null) {
-        document.getElementById('logoutButton').style.display = 'block';
+        document.getElementById("logoutButton").style.display = 'block'; // show logout button
+        document.getElementById("addLocButton").style.display = 'block'; //show add location button
+    
+    if (mail.localeCompare("manager@hotmail.it") == 0) {
+        document.getElementById('reportListButton').style.display = 'block'; //show report list button only to manager account
     }
-    if (mail.localeCompare('manager@hotmail.it') == 0) {
-        document.getElementById('reportListButton').style.display = 'block';
-    }
+}
 
 }
