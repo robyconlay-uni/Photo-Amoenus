@@ -435,7 +435,7 @@ fetch('../user/login', {
 .then(function(data) {
     let mes = data.message;
     if (mes.localeCompare("Auth successful") == 0) {
-        document.write("<head><link rel='stylesheet' type='text/css' href='stylesheet.css'></head><body><div id='center' class='popup'><h1>Log in avvenuto con successo!</h1><form action='index.html'><button class= 'registerbtn' type='submit'> Torna alla home page </button></form> </body>");
+        document.write("<html><head><link rel='stylesheet' type='text/css' href='stylesheet.css'></head><body><div id='center' class='popup'><h1>Log in avvenuto con successo!</h1><form action='index.html'><button class= 'registerbtn' type='submit'> Torna alla home page </button></form> </body></html>");
         setCookie("token",data.token,1);
         setCookie("email",logemail,1);
     } else if (mes.localeCompare("Auth failed") == 0) {

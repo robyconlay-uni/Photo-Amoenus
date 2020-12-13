@@ -101,10 +101,10 @@ body {
 }
 
 .popup{
-    font-size: 50px;
+    font-size: 25px;
     text-align: center;
-    margin-top: 25%;
-    margin-bottom: 25%;
+    margin-top: 15%;
+    margin-bottom: 15%;
 }
 /*da controllare*/
 .popupLogin{
