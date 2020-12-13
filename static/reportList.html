@@ -2,27 +2,23 @@
 <html>
 
     <head>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+
         <script src="script.js"></script>
-        <style>
-            .loc{
-                font-size: 26px;
-                padding: 50px;
-                border: black solid 1px;
-            }
-            a:link{
-                 color: black;
-                text-decoration: none;
-            }
-            a:visited{
-                color: blue;
-            }
-        </style>
+        
     </head>
 
     <body style="text-align: left" onload="loadReports()">
-
-        <h1 id="repName" style="text-align: center">Elenco dei Reports</h1>
-        <h2>Reports trovati:</h2>
+        <div class="header">
+            <h1 id="repName" class="titles"> Elenco dei report</h1>
+            <p style="margin-left: 10px; width: 40%; display: inline-block;">Report trovati:</p>
+        </div>
+        <div class="header-center">
+            <a href="index.html">
+            <img src="logo.png" >
+            </a>
+            
+        </div>
         <div id="reports"></div>
 
 

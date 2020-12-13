@@ -28,17 +28,25 @@
     </head>
 
     <body style="text-align: left" onload="start()">
-
-        <h1 id="locName" style="text-align: center">Elenco dei luoghi disponibili</h1>
-        <div class="container"> 
-            <label for="filtri" style="text-align: center">Filtri:</label>
+        <div class="header">
+            <h1 class="titles"> Luoghi disponibili</h1>
+        </div>
+        <div class="header-center">
+            <a href="index.html">
+            <img src="logo.png" >
+            </a>
             
-            <select name="citta" id="citta" onchange="loadLocations()">
+        </div>
+        
+        <div class="container"> 
+            <label for="filtri">Filtri:</label>
+            
+            <select class="dropdownMenu"name="citta" id="citta" onchange="loadLocations()">
                 <option value=null selected>Seleziona Città</option>
                 <!--Le altre opzioni le carica dinamicamente dal database-->
             </select>
 
-            <select name="categoria" id="categoria" onchange="loadLocations()">
+            <select class="dropdownMenu" name="categoria" id="categoria" onchange="loadLocations()">
                 <option value=null selected>Seleziona Categoria</option>
                 <option value="Paesaggio">Paesaggio</option>
                 <option value="Urbano">Urbano</option>
@@ -48,7 +56,7 @@
                 <option value="Montagna">Montagna</option>
             </select>
 
-            <select name="raggiung" id="raggiung" onchange="loadLocations()">
+            <select  class="dropdownMenu"name="raggiung" id="raggiung" onchange="loadLocations()">
                 <option value=null selected>Seleziona Raggiungibilità</option>
                 <option value="Piedi">Piedi</option>
                 <option value="Bicicletta">Bicicletta</option>
@@ -59,7 +67,7 @@
         <br>
         <div>
             <label for="ordine" style="text-align: center">Ordine:</label>
-            <select name="ordine" id="ordine" onchange="loadLocations()">
+            <select class="dropdownMenu" name="ordine" id="ordine" onchange="loadLocations()">
                 <option value=null selected>Inserimento</option>
                 <option value="name">A-Z</option>
                 <option value="-name">Z-A</option>
