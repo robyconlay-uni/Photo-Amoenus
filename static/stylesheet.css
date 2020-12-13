@@ -155,3 +155,31 @@ body {
   margin-bottom: 20px;
 
 }
+
+.locationData{
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 0;
+  display: inline-block;
+  border: none;
+  vertical-align: top;
+  background: #f1f1f1;
+}
+
+.locationbtn{
+  float :right; 
+  height: 100px;
+  width: 100px;
+  background-color: #4CAF50;
+  color: black;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  opacity: 0.9;
+  margin-right: 8px;
+}
+
+.locationbtn:hover{
+  opacity: 1;
+}
