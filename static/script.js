@@ -77,7 +77,7 @@ function addLocation() {
     fetch('../locations', { //Se non specificato header creato da browser, in questo caso form-data
         method: 'POST',
         headers: {
-            'Authorization': 'Bearer ' + getCookie('token')
+            'Authorization': 'Bearer ' + getCookie('token'),
         },
         body: formData     
     })
