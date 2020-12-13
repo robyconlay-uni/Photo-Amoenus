@@ -76,16 +76,49 @@ function addLocation() {
         method: 'POST',
         body: formData  //passo il form-data
     })
-        .then((resp) => {
-            console.log(resp);
-            window.open('addDone.html', '_self');
-            return;
-        })
-        .catch(error => console.error(error)); // If there is any error you will catch them here
+    .then((resp) => resp.json())
+    .then((resp) => {
+        let mes = resp.message;
+        if (mes.localeCompare('Location created') == 0) {
+            /*window.alert("Location aggiunta con successo!");
+            window.open(`location.html?id=${resp.createdLocation._id}`, '_self');*/
+            //console.log(resp);
+            document.write(`<div id='center'><h1>Location aggiunta con successo!</h1><br><a href="location.html?id=${resp.createdLocation._id}">Vai alla location</a></div>`);
+        }else{
+            window.alert("Errore inserimento location, ricontrollare i campi");
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        window.alert("Errore inserimento location, ricontrollare i campi");
+    }); // If there is any error you will catch them here
 
 }
 
 
+/**
+ * Trova le città attualmente presenti nel database
+ */
+function findCity(){
+    const select = document.getElementById("citta");
+    var a = new Set();
+    fetch('/locations')
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function (data) {
+
+            return data.locations.map(function (location) { // Map through the results and for each run the code below
+                if(! a.has(location.city)){
+                    a.add(location.city);
+                    console.log(location.city);
+                    let option = document.createElement('option');
+                    option.value = location.city;
+                    option.text= location.city;
+                    select.appendChild(option);
+                }
+            })
+        })
+        .catch(error => console.error(error));
+};
 
 /**
  * Carica l'elenco completo delle locations
@@ -143,19 +176,33 @@ function loadLocation(url_string) {
     var url = new URL(url_string);
     var id = url.searchParams.get("id");
     fetch('../locations/' + id)
+        //.then(res => res.formData())
         .then(res => res.json())
-        .then(data => {
-            document.getElementById("name").innerHTML = data.location.name;
-            document.getElementById("address").innerHTML = data.location.address;
-            document.getElementById("city").innerHTML = data.location.city;
-            document.getElementById("description").innerHTML = data.location.description;
-            document.getElementById("category").innerHTML = data.location.category;
-            document.getElementById("raggiungibilita").innerHTML = data.location.raggiungibilita;
-            document.getElementById("locationImage").innerHTML = "null";
-            document.getElementById("photoDesc").innerHTML = data.location.photoDesc;
-            document.getElementById("hour").innerHTML = data.location.hour;
-            document.getElementById("date").innerHTML = data.location.date;
-            document.getElementById("likes").innerHTML = data.location.likes;
+        .then(res => {
+            console.log(res.location);
+            
+            //Funzione per convertire il buffer dell'immagine in stringa base64
+            function toBase64(arr) {
+                arr = new Uint8Array(arr);
+                return btoa(
+                   arr.reduce((data, byte) => data + String.fromCharCode(byte), '')
+                );
+            }
+            const buffer = toBase64(res.file.img.data.data);
+            const type = res.file.img.contentType;
+            
+            
+            document.getElementById("name").innerHTML = res.location.name;
+            document.getElementById("address").innerHTML = res.location.address;
+            document.getElementById("city").innerHTML = res.location.city;
+            document.getElementById("description").innerHTML = res.location.description;
+            document.getElementById("category").innerHTML = res.location.category;
+            document.getElementById("raggiungibilita").innerHTML = res.location.raggiungibilita;
+            document.getElementById("locationImage").innerHTML =`<img src="data:${type};base64,${buffer}" width="900" height="600"></img>`;
+            document.getElementById("photoDesc").innerHTML = res.location.photoDesc;
+            document.getElementById("hour").innerHTML = res.location.hour;
+            document.getElementById("date").innerHTML = res.location.date;
+            document.getElementById("likes").innerHTML = res.location.likes;
             setButtonState(id);
         })
         .catch(err => {
@@ -172,30 +219,30 @@ const setButtonState = function (id) {
             'Authorization': 'Bearer ' + getCookie('token')
         })
     })
-        .then(res => {
-            if (res.status == 404) {
-                console.log("404");
-                favDiv.innerHTML = `<button type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
-                return "";
+    .then(res => {
+        if (res.status == 404) {
+            console.log("404");
+            favDiv.innerHTML = `<button type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
+            return "";
+        } else {
+            return res.json();
+        }
+    })
+    .then(data => {
+        if (data != "") {
+            if (data.favourites.includes(id)) {
+                favDiv.innerHTML = `<button type="button" id="favButton" onclick="removeFavourite('${id}')">Rimuovi dai preferiti</button>`;
             } else {
-                return res.json();
+                favDiv.innerHTML = `<button type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
             }
-        })
-        .then(data => {
-            if (data != "") {
-                if (data.favourites.includes(id)) {
-                    favDiv.innerHTML = `<button type="button" id="favButton" onclick="removeFavourite('${id}')">Rimuovi dai preferiti</button>`;
-                } else {
-                    favDiv.innerHTML = `<button type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
-                }
-                console.log(id, data);
-            }
-        })
-        .catch(err => {
-            console.log(err);
-        });
+            console.log(id, data);
+        }
+    })
+    .catch(err => {
+        console.log(err);
+    });
+};
 
-}
 
 function addFavourite(id) {
 
@@ -243,10 +290,10 @@ async function upvote(url_string) {
     var upvotes = 1;
     await fetch('../locations/' + id)
         .then(res => res.json())
-        .then(data => {
-            console.log(data);
-            if (data.location.likes) {
-                upvotes = data.location.likes + 1;
+        .then(res => {
+            console.log(res.location);
+            if (res.location.likes) {
+                upvotes = res.location.likes + 1;
             } else {
                 upvotes = 1;
             }
@@ -285,8 +332,6 @@ function registration() {
     var emailuser = document.getElementById("regEmail").value;
     var passworduser = document.getElementById("regPd").value;
     var password2 = document.getElementById("regPdConf").value;
-
-
     fetch('../user/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
