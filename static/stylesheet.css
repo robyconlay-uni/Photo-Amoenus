@@ -20,8 +20,10 @@ body {
     margin: 5px 0 22px 0;
     display: inline-block;
     border: none;
+    vertical-align: top;
     background: #f1f1f1;
   }
+  
   
   input[type=text]:focus, input[type=password]:focus {
     background-color: #ddd;
@@ -45,7 +47,7 @@ body {
       height: 150px;
       padding: 15px;
       margin: 5px 0 22px 0;
-      
+      vertical-align: top;
       border: none;
       background: #f1f1f1;
   }
@@ -114,8 +116,42 @@ body {
 
 .titles{
     font-size: 40px;
-    margin: 8px 0;
+    margin-right: 10px;
     padding: 10px;
-    text-align: center;
-    background-color: #4CAF50;
+    width:40%;
+   /* display: inline-block;*/
+}
+
+
+
+.dropdownMenu{
+  text-align: center;
+  -webkit-appearance: menulist-button;
+  height: 50px;
+  width: 200px;
+}
+
+.header{
+  float: left;
+  overflow: hidden;
+  box-sizing: border-box;
+  height: 250px;
+  width: 50%;
+  background-color:#cfe7d0 ;
+  margin-bottom: 20px;
+}
+
+#center{
+  text-align: center;
+}
+
+
+.header-center{
+  width: 50%;
+  float: right;
+  height: 250px;
+  display: inline-block;
+  background-color:#cfe7d0;
+  margin-bottom: 20px;
+
 }
