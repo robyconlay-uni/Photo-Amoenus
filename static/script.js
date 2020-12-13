@@ -12,7 +12,7 @@ function myFunction(){
             for (var i = 0; i < x.files.length; i++) {
                 txt += "<br><strong>" + (i + 1) + ". file</strong><br>";
                 var file = x.files[i];
-                if((file.name.indexOf("jpg") != -1) || (file.name.indexOf("png") != -1) || (file.name.indexOf("jpeg") != -1) || (file.name.indexOf("JPG") != -1)){
+                if ((file.name.indexOf("jpg") != -1) || (file.name.indexOf("png") != -1) || (file.name.indexOf("jpeg") != -1) || (file.name.indexOf("JPG") != -1)) {
 
                     if ('name' in file) {
                         txt += "name: " + file.name + "<br>";
@@ -35,7 +35,7 @@ function myFunction(){
     }
     document.getElementById("demo").innerHTML = txt;
 
-    if(txt == "Formato non supportato! Inserire solo file .jpg, .jpeg o .png o .JPG"){
+    if (txt == "Formato non supportato! Inserire solo file .jpg, .jpeg o .png o .JPG") {
         x.value = "";
     }
 }
@@ -44,15 +44,15 @@ function myFunction(){
 /**
  * Aggiunge una location
  */
-function addLocation(){
-    
+function addLocation() {
+
     //Importo inserimenti da form HTML
     var nameLoc = document.getElementById("nome").value;
     var addressLoc = document.getElementById("posizione").value;
     var cityLoc = document.getElementById("città").value;
     var descLoc = document.getElementById("descrizione").value;
     var catLoc = document.getElementById("categoria").value;
-    var raggiungibilitaLoc = Array.from(document.getElementById("ragg").selectedOptions).map(el=>el.value);
+    var raggiungibilitaLoc = Array.from(document.getElementById("ragg").selectedOptions).map(el => el.value);
     var imgLoc = document.getElementById("myFile").files[0];
     var photoDescLoc = document.getElementById("photoDescription").value;
     var oraLoc = document.getElementById("orario").value;
@@ -76,41 +76,74 @@ function addLocation(){
         method: 'POST',
         body: formData  //passo il form-data
     })
+    .then((resp) => resp.json())
     .then((resp) => {
-        console.log(resp);
-        window.open('addDone.html', '_self');
-        return;
+        let mes = resp.message;
+        if (mes.localeCompare('Location created') == 0) {
+            /*window.alert("Location aggiunta con successo!");
+            window.open(`location.html?id=${resp.createdLocation._id}`, '_self');*/
+            //console.log(resp);
+            document.write(`<div id='center'><h1>Location aggiunta con successo!</h1><br><a href="location.html?id=${resp.createdLocation._id}">Vai alla location</a></div>`);
+        }else{
+            window.alert("Errore inserimento location, ricontrollare i campi");
+        }
     })
-    .catch(error => console.error(error)); // If there is any error you will catch them here
+    .catch(error => {
+        console.error(error);
+        window.alert("Errore inserimento location, ricontrollare i campi");
+    }); // If there is any error you will catch them here
 
 }
 
 
+/**
+ * Trova le città attualmente presenti nel database
+ */
+function findCity(){
+    const select = document.getElementById("citta");
+    var a = new Set();
+    fetch('/locations')
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function (data) {
+
+            return data.locations.map(function (location) { // Map through the results and for each run the code below
+                if(! a.has(location.city)){
+                    a.add(location.city);
+                    console.log(location.city);
+                    let option = document.createElement('option');
+                    option.value = location.city;
+                    option.text= location.city;
+                    select.appendChild(option);
+                }
+            })
+        })
+        .catch(error => console.error(error));
+};
 
 /**
  * Carica l'elenco completo delle locations
  */
 function loadLocations() {
-    var url ='../locations?';
+    var url = '../locations?';
 
     //FILTRI E ORDINAMENTO messi come parametri nel URL
     var order = document.getElementById("ordine").value;
     var category = document.getElementById("categoria").value;
     var city = document.getElementById("citta").value;
     var raggiungibilita = document.getElementById("raggiung").value;
-    if(order != "null"){
+    if (order != "null") {
         url = url + "order=" + order;
     }
-    if(category != "null"){
-        if(order != "null"){ url = url + "&";}
+    if (category != "null") {
+        if (order != "null") { url = url + "&"; }
         url = url + "category=" + category;
     }
-    if(city!= "null"){
-        if(order != "null" || category != "null"){ url = url + "&";}
+    if (city != "null") {
+        if (order != "null" || category != "null") { url = url + "&"; }
         url = url + "city=" + city;
     }
-    if(raggiungibilita != "null"){
-        if(order != "null" || category!= "null" || city!= "null"){ url = url + "&";}
+    if (raggiungibilita != "null") {
+        if (order != "null" || category != "null" || city != "null") { url = url + "&"; }
         url = url + "raggiungibilita=" + raggiungibilita;
     }
     console.log(url);
@@ -143,23 +176,108 @@ function loadLocation(url_string) {
     var url = new URL(url_string);
     var id = url.searchParams.get("id");
     fetch('../locations/' + id)
+        //.then(res => res.formData())
         .then(res => res.json())
-        .then(data => {
-            document.getElementById("name").innerHTML = data.location.name;
-            document.getElementById("address").innerHTML = data.location.address;
-            document.getElementById("city").innerHTML = data.location.city;
-            document.getElementById("description").innerHTML = data.location.description;
-            document.getElementById("category").innerHTML = data.location.category;
-            document.getElementById("raggiungibilita").innerHTML = data.location.raggiungibilita;
-            document.getElementById("locationImage").innerHTML = "null";
-            document.getElementById("photoDesc").innerHTML = data.location.photoDesc;
-            document.getElementById("hour").innerHTML = data.location.hour;
-            document.getElementById("date").innerHTML = data.location.date;
-            document.getElementById("likes").innerHTML = data.location.likes;
+        .then(res => {
+            console.log(res.location);
+            
+            //Funzione per convertire il buffer dell'immagine in stringa base64
+            function toBase64(arr) {
+                arr = new Uint8Array(arr);
+                return btoa(
+                   arr.reduce((data, byte) => data + String.fromCharCode(byte), '')
+                );
+            }
+            const buffer = toBase64(res.file.img.data.data);
+            const type = res.file.img.contentType;
+            
+            
+            document.getElementById("name").innerHTML = res.location.name;
+            document.getElementById("address").innerHTML = res.location.address;
+            document.getElementById("city").innerHTML = res.location.city;
+            document.getElementById("description").innerHTML = res.location.description;
+            document.getElementById("category").innerHTML = res.location.category;
+            document.getElementById("raggiungibilita").innerHTML = res.location.raggiungibilita;
+            document.getElementById("locationImage").innerHTML =`<img src="data:${type};base64,${buffer}" width="900" height="600"></img>`;
+            document.getElementById("photoDesc").innerHTML = res.location.photoDesc;
+            document.getElementById("hour").innerHTML = res.location.hour;
+            document.getElementById("date").innerHTML = res.location.date;
+            document.getElementById("likes").innerHTML = res.location.likes;
+            setButtonState(id);
         })
         .catch(err => {
             console.log(err);
         });
+}
+
+const setButtonState = function (id) {
+    favDiv = document.getElementById("favourite");
+
+    fetch("/lib/favourites/", {
+        headers: new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getCookie('token')
+        })
+    })
+    .then(res => {
+        if (res.status == 404) {
+            console.log("404");
+            favDiv.innerHTML = `<button type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
+            return "";
+        } else {
+            return res.json();
+        }
+    })
+    .then(data => {
+        if (data != "") {
+            if (data.favourites.includes(id)) {
+                favDiv.innerHTML = `<button type="button" id="favButton" onclick="removeFavourite('${id}')">Rimuovi dai preferiti</button>`;
+            } else {
+                favDiv.innerHTML = `<button type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
+            }
+            console.log(id, data);
+        }
+    })
+    .catch(err => {
+        console.log(err);
+    });
+};
+
+
+function addFavourite(id) {
+
+    fetch('/lib/favourites/add/' + id, {
+        method: 'PATCH',
+        headers: new Headers({
+            'Content-type': 'application/json',
+            'Authorization': "Bearer " + getCookie("token")
+        })
+    })
+        .then(res => {
+            if (res.ok) {
+                document.getElementById("favourite").innerHTML = `<button type="button" id="favButton" onclick="removeFavourite('${id}')">Rimuovi dai preferiti</button>`;
+            }
+
+        })
+        .catch(error => console.error(error));
+}
+
+function removeFavourite(id) {
+
+    fetch('/lib/favourites/remove/' + id, {
+        method: 'PATCH',
+        headers: new Headers({
+            'Content-type': 'application/json',
+            'Authorization': "Bearer " + getCookie("token")
+        })
+    })
+        .then(res => {
+            if (res.ok) {
+                document.getElementById("favourite").innerHTML = `<button type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
+            }
+
+        })
+        .catch(error => console.error(error));
 }
 
 /**
@@ -172,10 +290,10 @@ async function upvote(url_string) {
     var upvotes = 1;
     await fetch('../locations/' + id)
         .then(res => res.json())
-        .then(data => {
-            console.log(data);
-            if (data.location.likes) {
-                upvotes = data.location.likes + 1;
+        .then(res => {
+            console.log(res.location);
+            if (res.location.likes) {
+                upvotes = res.location.likes + 1;
             } else {
                 upvotes = 1;
             }
@@ -214,11 +332,9 @@ function registration() {
     var emailuser = document.getElementById("regEmail").value;
     var passworduser = document.getElementById("regPd").value;
     var password2 = document.getElementById("regPdConf").value;
-
-
     fetch('../user/signup', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             username: user_name,
             email: emailuser,
@@ -237,9 +353,6 @@ function registration() {
         }
         console.log(mes);
     });
-    
-    
-
 }
 
 /**
@@ -261,12 +374,12 @@ function Popup(url_location) {
         var radios = document.getElementsByName('reports');
     
     for (var i = 0, length = radios.length; i < length; i++) {
-      if (radios[i].checked) {
-     
-        choice = radios[i].value;
-    
-        break;
-      }
+        if (radios[i].checked) {
+
+            choice = radios[i].value;
+
+            break;
+        }
     }
     var url = new URL(window.location.href);
     var id = url.searchParams.get("id");
@@ -274,24 +387,24 @@ function Popup(url_location) {
     let tok = getCookie("token");
     var obj = {
         method: 'POST',
-        headers: { 'Authorization': 'Bearer ' + tok, 'Content-Type': 'application/json'},
-        body: JSON.stringify( { 
-            id_picture : id,
-            report: choice 
+        headers: { 'Authorization': 'Bearer ' + tok, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            id_picture: id,
+            report: choice
         })
     };
-        fetch('../report', obj )
+    fetch('../report', obj)
         .then((resp) => resp.json()) // Transform the data into json
-        .then(function(data) { // Here you get the data to modify as you please
-        let mes = data.message;
-        if (mes.localeCompare("Report created") == 0) {
-            document.write("<h2>Report inviato con sucesso!</h2><br><br><button onclick='Close()'>Chiudi</button>");
-        } else {
-            document.write("<h2>Errore!</h2><br><br><button onclick='Close()'>Chiudi</button>");
-        }
-    });
- 
-    }
+        .then(function (data) { // Here you get the data to modify as you please
+            let mes = data.message;
+            if (mes.localeCompare("Report created") == 0) {
+                document.write("<h2>Report inviato con sucesso!</h2><br><br><button onclick='Close()'>Chiudi</button>");
+            } else {
+                document.write("<h2>Errore!</h2><br><br><button onclick='Close()'>Chiudi</button>");
+            }
+        });
+
+}
 //to close the pop up
 function Close() {
     window.close();
@@ -301,7 +414,6 @@ function Close() {
  * Log In
  */
 function login() {
-
 
 let logemail = document.getElementById("loginEmail").value;
 let logpassword = document.getElementById("loginPd").value;
@@ -342,27 +454,27 @@ function Logout() {
 }
 
 // Part for the cookies if ever needed-----------
-function setCookie(name,value,hours) {
+function setCookie(name, value, hours) {
     var expires = "";
     if (hours) {
         var date = new Date();
-        date.setTime(date.getTime() + (hours*60*60*1000));
+        date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
         expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 function getCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
     }
     return null;
 }
-function eraseCookie(name) {   
-    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+function eraseCookie(name) {
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 // ---------------------
 
@@ -378,7 +490,7 @@ function loadReports() {
         .then((resp) => resp.json()) // Transform the data into json
         .then(function (data) { // Here you get the data to modify as you please
 
-             console.log(data);
+            console.log(data);
 
             return data.reports.map(function (report) { // Map through the results and for each run the code below
 

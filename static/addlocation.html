@@ -46,8 +46,8 @@
                 <div class="custom-select" style="width: 200px;">
                 <label for="categoria"><br>Inserisci la categoria:</br></label>
                 <!--<input type="text" style="width: 400px; height: 40px; margin: 10px" id="categoria"><br>-->
-                <select class= dropdownMenu name="categoria" id="categoria">
-                    <option value=null selected>Seleziona</option>
+                <select class= "dropdownMenu" name="categoria" id="categoria">
+                    <option value="" selected>Seleziona</option> <!-- value="" (undefined) così mi dà errore in caso non fosse specificato (null non funziona)-->
                     <option value="Paesaggio">Paesaggio</option>
                     <option value="Urbano">Urbano</option>
                     <option value="Monumento">Monumento</option>
@@ -71,7 +71,7 @@
             <div>
                 
                 <p>Inserire un immagine:</p>
-                <input  type="file" id="myFile" onchange="myFunction()" >
+                <input  type="file" id="myFile" onchange="myFunction()" required>
                 <p id="demo"  id="immagine"></p><br><br>
                 
 
