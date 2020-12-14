@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+
     <meta charset="UTF-8">
     <title>Title</title>
 
@@ -70,9 +72,17 @@
 </head>
 
 <body onload='loadFavourites()'>
-    <form action="index.html">
-        <button type="submit">Torna alla frontpage</button>
-    </form>
+    
+    <div class="header">
+        <h1 class="titles"> Preferiti</h1>
+        <p style="margin-left: 10px; width: 40%; display: inline-block;">Qui trovi i tuoi preferiti.</p>
+    </div>
+    <div class="header-center">
+        <a href="index.html">
+        <img src="logo.png" >
+        </a>
+        
+    </div>
     <h2 id="titolo">Qui trovi i tuoi preferiti</h2>
 
     <div id="favourites"></div>

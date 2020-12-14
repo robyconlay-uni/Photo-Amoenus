@@ -9,14 +9,20 @@
 
     </head>
     <body>
-        <div class= "container"><h1> Aggiungi un luogo</h1>
-            <p>Compila il modulo per aggiungere il tuo luogo</p>
-            <hr>
+        <div class="header">
+            <h1 class="titles"> Aggiungi un luogo</h1>
+            <p style="margin-left: 10px; width: 40%; display: inline-block;">Compila il modulo per aggiungere il tuo luogo</p>
+        </div>
+        <div class="header-center">
+            <img src="logo.png" >
+            
         </div>
         
-        <div  style="text-align: center">
+        <hr>
+        
+        <div class="container" id="center">
             
-            <img src="https://www.informagiovani-italia.com/images/mappa_trento.jpg" style="max-width: 400px">
+        <img src="https://www.informagiovani-italia.com/images/mappa_trento.jpg" style="max-width: 400px">
             
         </div>
 
@@ -34,12 +40,13 @@
                 <input type="text" id="città"><br>
                 
                 <label for="descrizione">Inserisci una breve descrizione del luogo</label>
-                <input class= "description" type="text" id="descrizione"><br>
+                <textarea  class= "description"  id="descrizione"></textarea><br>
 
                 <!--<input type="button" value="Aggiungi tag" ><br><br><br>-->
-                <label for="categoria" style="margin-right: 130px">Inserisci la categoria:</label>
+                <div class="custom-select" style="width: 200px;">
+                <label for="categoria"><br>Inserisci la categoria:</br></label>
                 <!--<input type="text" style="width: 400px; height: 40px; margin: 10px" id="categoria"><br>-->
-                <select name="categoria" id="categoria">
+                <select class= "dropdownMenu" name="categoria" id="categoria">
                     <option value="" selected>Seleziona</option> <!-- value="" (undefined) così mi dà errore in caso non fosse specificato (null non funziona)-->
                     <option value="Paesaggio">Paesaggio</option>
                     <option value="Urbano">Urbano</option>
@@ -48,11 +55,11 @@
                     <option value="Mare">Mare</option>
                     <option value="Montagna">Montagna</option>
                 </select>
-
+                </div>
                 <br><br>
-
-                <label for="ragg">Raggiungibilità:</label>
-                <select name="ragg" id="ragg" multiple="multiple">
+                <!-- da sistemare -->
+                <label for="ragg"><br>Raggiungibilità:</br></label>
+                <select class="dropdownMenu" name="ragg" id="ragg">
                     <option value="Piedi">Piedi</option>
                     <option value="Bicicletta">Bicicletta</option>
                     <option value="Macchina">Macchina</option>
@@ -61,32 +68,32 @@
                 </select>
                 <br><br><br>
             </div>
-            <div style="text-align: left; margin-top: 40px; margin-left: 50px">
+            <div>
                 
-                
-                <input type="file" id="myFile" style="margin-top: 40px;" onchange="myFunction()" required>
-                <p id="demo" style="margin-top: 40px;" id="immagine"></p><br><br>
+                <p>Inserire un immagine:</p>
+                <input  type="file" id="myFile" onchange="myFunction()" required>
+                <p id="demo"  id="immagine"></p><br><br>
                 
 
-                <label for="photoDescription">Inserisci una breve descrizione della macchina fotografica utilizzata o del supporto,
+                <label for="photoDescription"><br>Inserisci una breve descrizione della macchina fotografica utilizzata o del supporto,
                                         aggiungendo dettagli a piacere
                 </label>
-                <input type="text" style="height: 200px; width: 600px; margin: 10px" id="photoDescription"><br>
+                <textarea style="height: 200px; width: 600px; margin: 10px" id="photoDescription"></textarea><br>
                 
-                <label for="orario" style="margin-right: 60px">Inserisci l'orario di scatto</label>
-                <input type="time" style="width: 400px; height: 40px; margin: 10px" id="orario"><br>
+                <label for="orario" style="margin-right: 60px"><br>Inserisci l'orario di scatto</br></label>
+                <input type="time" style="height: 20px;" id="orario"><br>
                 
                 <!--<label for="ampm">Momento della giornata:</label>-->
                 <!--<input type="radio" name="ampm" style="margin-left: 70px">A.M.
                 <input type="radio" name="ampm" style="margin-left: 50px">P.M.
                 <br>-->
                 
-                <label for="data" style="margin-right: 130px">Data dello scatto</label>
-                <input type="date" style="width: 400px; height: 40px; margin: 10px" id="data"><br>
+                <label for="data"></label><br>Data dello scatto</br></label>
+                <input type="date" style="width: 120px; height: 20px; margin-bottom: 20px;" id="data"><br>
             </div>
             
-            <div style="text-align: right; margin-top: 50px; margin-right: 100px">
-                <button type="button" value="Aggiungi!" onclick="addLocation()" style="width: 200px; height: 50px" >Aggiungi!</button>
+            <div class="container">
+                <button class="registerbtn" type="button" value="Aggiungi!" onclick="addLocation()" >Aggiungi!</button>
             </div>
 
         </form>

@@ -6,21 +6,22 @@
 <title>Report</title>
 <basefont size=2 face=Tahoma>
 <script src='script.js'></script>
-
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
 </head>
 
 <body  topmargin=50>
  
      
-<div align=center>Report this picture for:</div>
+<div class="popup"align=center>
+<p>Report this picture for:</p>
 <input type='radio' id='1' name='reports' value='Inappropriate picture'>
 <label>Inappropriate picture</label><br>
 <input type='radio' id='2' name='reports' value='Misinformation about the place'>
 <label>Misinformation about the place</label><br>
 <input type='radio' id='3' name='reports' value='Violation of privacy'>
 <label>Violation of privacy</label><br><br>
-<button onclick='Report()' value='Submit'>Submit</button>
-
+<button class=registerbtn onclick='Report()' value='Submit'>Submit</button>
+</div>
 </body>
 
 </html>
