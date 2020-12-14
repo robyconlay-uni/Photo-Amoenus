@@ -16,7 +16,7 @@
     },
     "scripts": {
         "start": "nodemon index.js",
-        "test": "jest --watch --testEnvironment=node --forceExit --detectOpenHandles"
+        "test": "jest --watch --testEnvironment=node --forceExit --detectOpenHandles a"
     },
     "repository": {
         "type": "git",
