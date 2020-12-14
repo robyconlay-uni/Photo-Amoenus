@@ -60,14 +60,21 @@
                 </div>
                 <br><br>
                 <!-- da sistemare -->
-                <label for="ragg"><br>Raggiungibilità:</br></label>
-                <select class="dropdownMenu" name="ragg" id="ragg">
+                <label for="ragg"><br>Raggiungibilità:</br></label> 
+                <div class="multiselect">
+                    <label><input type="checkbox" id="ragg[0]" value="Piedi" />Piedi</label>
+                    <label><input type="checkbox" id="ragg[1]" value="Bicicletta" />Bicicletta</label>
+                    <label><input type="checkbox" id="ragg[2]" value="Macchina" />Macchina</label>
+                    <label><input type="checkbox" id="ragg[3]" value="Mezzi pubblici" />Mezzi pubblici</label>
+                </div>
+                <!--Funzionante ma poco pratica la selezione con Ctrl-->
+                <!--<select class="dropdownMenu" name="ragg" id="ragg" multiple="true">
                     <option value="Piedi">Piedi</option>
                     <option value="Bicicletta">Bicicletta</option>
                     <option value="Macchina">Macchina</option>
-                    <option value="Mezzi pubblici">Mezzi pubblici</option>
+                    <option value="Mezzi pubblici">Mezzi pubblici</option>-->
                     <!--<input type="radio" id="ragg" style="margin-left: 50px">Con mezzi pubblici-->
-                </select>
+                <!--</select>-->
                 <br><br><br>
             </div>
             <div>
