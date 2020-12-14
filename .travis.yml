@@ -27,3 +27,4 @@ after_deploy:
 # web: node src/server/index.js
 # web: node server.js
 - bash ./procfile_upd.sh
+
