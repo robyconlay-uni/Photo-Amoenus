@@ -88,7 +88,8 @@ function addLocation() {
             /*window.alert("Location aggiunta con successo!");
             window.open(`location.html?id=${resp.createdLocation._id}`, '_self');*/
             //console.log(resp);
-            document.write(`<div id='center'><h1>Location aggiunta con successo!</h1><br><a href="location.html?id=${resp.createdLocation._id}">Vai alla location</a></div>`);
+            document.write(`<head><link rel="stylesheet" type="text/css" href="stylesheet.css">
+            </head><div id='center'><h1>Location aggiunta con successo!</h1><br><a href="location.html?id=${resp.createdLocation._id}">Vai alla location</a></div>`);
         }else{
             window.alert("Errore inserimento location, ricontrollare i campi");
         }
