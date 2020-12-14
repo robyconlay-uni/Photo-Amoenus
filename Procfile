@@ -1,3 +1,3 @@
 web: node index.js
-test: jest
+test: jest --a
 
