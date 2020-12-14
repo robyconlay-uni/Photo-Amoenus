@@ -183,3 +183,35 @@ body {
 .locationbtn:hover{
   opacity: 1;
 }
+
+.homepagebtnr{
+  height: 200px;
+  width: 200px;
+  background-color: #4CAF50;
+  display: inline-block;
+  float: right;
+  font-size: 20px;
+}
+.homepagebtnr:hover{
+  opacity: 1;
+}
+
+.homepagebtnl:hover{
+  opacity: 1;
+}
+
+.homepagebtnl{
+  height: 200px;
+  width: 200px;
+  background-color: #4CAF50;
+  display: inline-block;
+  float: left;
+  font-size: 20px;
+}
+
+.containerhp{
+  margin-top: 100px;
+  display: inline-block;
+  width: 50%;
+  
+}

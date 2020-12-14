@@ -48,13 +48,25 @@ function myFunction(){
  */
 function addLocation() {
 
+    //Creo array Raggiungibilità
+    var a = new Array();
+    for(var i=0; i<4; i++){
+        var b = document.getElementById(`ragg[${i}]`);
+        if(b.checked){
+            a.push(b.value);
+        }
+    }
+    console.log(a);
+
     //Importo inserimenti da form HTML
     var nameLoc = document.getElementById("nome").value;
     var addressLoc = document.getElementById("posizione").value;
     var cityLoc = document.getElementById("città").value;
     var descLoc = document.getElementById("descrizione").value;
     var catLoc = document.getElementById("categoria").value;
-    var raggiungibilitaLoc = Array.from(document.getElementById("ragg").selectedOptions).map(el => el.value);
+    var raggiungibilitaLoc = Array.from(a);
+    //Codice funzionante per la select
+    //var raggiungibilitaLoc = Array.from(document.getElementById("ragg").selectedOptions).map(el => el.value);
     var imgLoc = document.getElementById("myFile").files[0];
     var photoDescLoc = document.getElementById("photoDescription").value;
     var oraLoc = document.getElementById("orario").value;
@@ -88,7 +100,8 @@ function addLocation() {
             /*window.alert("Location aggiunta con successo!");
             window.open(`location.html?id=${resp.createdLocation._id}`, '_self');*/
             //console.log(resp);
-            document.write(`<div id='center'><h1>Location aggiunta con successo!</h1><br><a href="location.html?id=${resp.createdLocation._id}">Vai alla location</a></div>`);
+            document.write(`<head><link rel="stylesheet" type="text/css" href="stylesheet.css">
+            </head><div id='center'><h1>Location aggiunta con successo!</h1><br><a href="location.html?id=${resp.createdLocation._id}">Vai alla location</a></div>`);
         }else{
             window.alert("Errore inserimento location, ricontrollare i campi");
         }
