@@ -174,6 +174,40 @@ function loadLocations() {
         .catch(error => console.error(error));// If there is any error you will catch them here
 }
 
+
+function setButtonState(id) {
+    favDiv = document.getElementById("favourite");
+
+    fetch("/lib/favourites/", {
+        headers: new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getCookie('token')
+        })
+    })
+    .then(res => {
+        if (res.status == 404) {
+            console.log("404");
+            favDiv.innerHTML = `<button type="button" id="favButton" class="registerbtn" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
+            return "";
+        } else {
+            return res.json();
+        }
+    })
+    .then(data => {
+        if (data != "") {
+            if (data.favourites.includes(id)) {
+                favDiv.innerHTML = `<button type="button" id="favButton" class="registerbtn" onclick="removeFavourite('${id}')">Rimuovi dai preferiti</button>`;
+            } else {
+                favDiv.innerHTML = `<button type="button" id="favButton" class="registerbtn" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
+            }
+            console.log(id, data);
+        }
+    })
+    .catch(err => {
+        console.log(err);
+    });
+};
+
 /**
  * Carica una specifica location
  */
@@ -208,48 +242,20 @@ function loadLocation(url_string) {
             document.getElementById("hour").innerHTML = res.location.hour;
             document.getElementById("date").innerHTML = res.location.date;
             document.getElementById("likes").innerHTML = res.location.likes;
-            setButtonState(id);
+            let mail = getCookie('email');
+            if (mail != null) {
+                setButtonState(id);
+            }
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-const setButtonState = function (id) {
-    favDiv = document.getElementById("favourite");
-
-    fetch("/lib/favourites/", {
-        headers: new Headers({
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + getCookie('token')
-        })
-    })
-    .then(res => {
-        if (res.status == 404) {
-            console.log("404");
-            favDiv.innerHTML = `<button type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
-            return "";
-        } else {
-            return res.json();
-        }
-    })
-    .then(data => {
-        if (data != "") {
-            if (data.favourites.includes(id)) {
-                favDiv.innerHTML = `<button type="button" id="favButton" onclick="removeFavourite('${id}')">Rimuovi dai preferiti</button>`;
-            } else {
-                favDiv.innerHTML = `<button type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
-            }
-            console.log(id, data);
-        }
-    })
-    .catch(err => {
-        console.log(err);
-    });
-};
-
 
 function addFavourite(id) {
+    //var url = new URL(url);
+    //var id = url.searchParams.get("id");
 
     fetch('/lib/favourites/add/' + id, {
         method: 'PATCH',
@@ -260,7 +266,7 @@ function addFavourite(id) {
     })
         .then(res => {
             if (res.ok) {
-                document.getElementById("favourite").innerHTML = `<button type="button" id="favButton" onclick="removeFavourite('${id}')">Rimuovi dai preferiti</button>`;
+                document.getElementById("favourite").innerHTML = `<button type="button" class="registerbtn" id="favButton" onclick="removeFavourite('${id}')">Rimuovi dai preferiti</button>`;
             }
 
         })
@@ -366,7 +372,7 @@ function registration() {
 function Popup(url_location) {
     var url = new URL(url_location);
     var id = url.searchParams.get("id");
-    var stili = "top=200, left=300, width=400, height=250, status=no, menubar=no, toolbar=no scrollbars=no";
+    var stili = "top=100, left=300, width=500, height=450, status=no, menubar=no, toolbar=no scrollbars=no";
     window.open("popupReport.html?id=" + id, "", stili);
     }
 
@@ -403,9 +409,9 @@ function Popup(url_location) {
         .then(function (data) { // Here you get the data to modify as you please
             let mes = data.message;
             if (mes.localeCompare("Report created") == 0) {
-                document.write("<h2>Report inviato con sucesso!</h2><br><br><button onclick='Close()'>Chiudi</button>");
+                document.write("<html><head><link rel='stylesheet' type='text/css' href='stylesheet.css'></head><body><div id='center'><h2>Report inviato con sucesso!</h2><br><br><button class=registerbtn onclick='Close()'>Chiudi</button></div></body></html>");
             } else {
-                document.write("<h2>Errore!</h2><br><br><button onclick='Close()'>Chiudi</button>");
+                document.write("<html><head><link rel='stylesheet' type='text/css' href='stylesheet.css'></head><body><div id='center'><h2>Errore!</h2><br><br><button class=registerbtn onclick='Close()'>Chiudi</button></div></body></html>");
             }
         });
 
@@ -439,9 +445,9 @@ fetch('../user/login', {
         setCookie("token",data.token,1);
         setCookie("email",logemail,1);
     } else if (mes.localeCompare("Auth failed") == 0) {
-        document.write("<div id='center'><h1>Log in non riuscito!</h1><br><a href='login.html'>Torna al LogIn</a></div>");
+        document.write("<html><head><link rel='stylesheet' type='text/css' href='stylesheet.css'></head><body><div id='center'><h1>Log in non riuscito!</h1><br><form action='login.html'><button class= 'registerbtn' type='submit'>Torna al LogIn</button></div></body></html>");
     } else {
-        document.write("<div id='center'><h1>Errore!</h1><br><a href='login.html'>Torna al LogIn</a></div>");
+        document.write("<html><head><link rel='stylesheet' type='text/css' href='stylesheet.css'></head><body><div id='center'><h1>Errore!</h1><br><form action='login.html'><button class= 'registerbtn' type='submit'>Torna al LogIn</body></div></body></html>");
     }
     console.log(mes);
     
