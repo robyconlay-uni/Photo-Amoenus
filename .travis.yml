@@ -1,3 +1,29 @@
 language: node_js
 node_js:
   - 14
+
+sudo: true
+ 
+branches:
+  only:
+  - main
+ 
+deploy:
+  # deploy app as api server
+  - provider: heroku
+    skip_cleanup: true
+    api-key:
+      secure: $HEROKU_API_KEY
+    app: photo-amoenus-api
+  # deploy app as front end website
+  - provider: heroku
+    skip_cleanup: true
+    api-key:
+      secure: $HEROKU_API_KEY
+    app: photo-amoenus-frontend
+ 
+after_deploy:
+# change settings in Procfile for client
+# web: node src/server/index.js
+# web: node server.js
+- bash ./procfile_upd.sh
