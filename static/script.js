@@ -187,7 +187,9 @@ function loadLocations() {
         .catch(error => console.error(error));// If there is any error you will catch them here
 }
 
-
+/**
+ * Si occupa della gestione del bottone dei preferiti nella pagina di una location
+ */
 function setButtonState(id) {
     favDiv = document.getElementById("favourite");
 
@@ -265,7 +267,9 @@ function loadLocation(url_string) {
         });
 }
 
-
+/**
+ * Aggiunge un luogo dai Preferiti
+ */
 function addFavourite(id) {
     //var url = new URL(url);
     //var id = url.searchParams.get("id");
@@ -286,6 +290,9 @@ function addFavourite(id) {
         .catch(error => console.error(error));
 }
 
+/**
+ * Rimuove un luogo dai Preferiti
+ */
 function removeFavourite(id) {
 
     fetch('/lib/favourites/remove/' + id, {
@@ -521,7 +528,7 @@ function loadReports() {
                 let div2 = document.createElement('div');
                 div2.className = "rep";
                 //div2.addEventListener('click', window.open(`location.html?id=${location._id}`));
-                div2.innerHTML = `Email: ${report.email}<br>Report: ${report.text}<br>Picture Id: ${report.id_picture}<br><br>`;
+                div2.innerHTML = `Email: ${report.email}<br>Report: ${report.text}<br>Picture Id: <a href='location.html?id=${report.id_picture}' style='color: dodgerblue'> ${report.id_picture}</a><br><br>`;
                 div.appendChild(div2);
             })
         })
@@ -536,7 +543,8 @@ function loadButtons() {
     if (mail != null) {
         document.getElementById("logoutButton").style.display = 'block'; // show logout button
         document.getElementById("addLocButton").style.display = 'block'; //show add location button
-    
+        document.getElementById("prefButton").style.display = 'block'; //show favorites button
+
     if (mail.localeCompare("manager@hotmail.it") == 0) {
         document.getElementById('reportListButton').style.display = 'block'; //show report list button only to manager account
     }
