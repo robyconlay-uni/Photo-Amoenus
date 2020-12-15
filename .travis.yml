@@ -4,9 +4,9 @@ node_js:
 
 sudo: true
  
-#branches:
-#  only:
-#  - main
+branches:
+  only:
+  - main
  
 deploy:
   # deploy app as api server
