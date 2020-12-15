@@ -376,11 +376,11 @@ function registration() {
     .then(function(data) {
         let mes = data.message;
         if (mes.localeCompare("User created") == 0) {
-            document.write("<div id='center'><h1>Registrazione avvenuta con successo!</h1><br><h3>Ora prova a fare log In!</h3><br><a href='login.html'>Vai alla pagina di log in</a></div>");
+            document.write(`<link rel="stylesheet" type="text/css" href="stylesheet.css"> <div id='center'><h1>Registrazione avvenuta con successo!</h1><br><h3>Ora prova a fare log In!</h3><br><a href='login.html'> <button style=" float: left"class="locationbtn"onclick="window.location.href='login.html';"> Torna al login</button></a></div>"`);
         } else if (mes.localeCompare("user already exist") == 0) {
             document.write("<div id='center'><h1>Utente già esistente!</h1><br><a href='registration.html'>Torna alla registrazione</a></div>");
         } else {
-            document.write("<div id='center'><h1>Errore nella fase di registrazione!</h1><br><a href='registration.html'>Torna alla registrazione</a></div>");
+            document.write(`<link rel="stylesheet" type="text/css" href="stylesheet.css"> <div id='center'><h1>Errore nella fase di registrazione!</h1><br><a href='registration.html'><button style=" float: left"class="locationbtn"onclick="window.location.href='registration.html';"> Torna al signup</button></a></div>`);
         }
         console.log(mes);
     });
