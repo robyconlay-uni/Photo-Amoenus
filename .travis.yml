@@ -6,20 +6,18 @@ sudo: true
  
 branches:
   only:
-  - /.*/
+    - main
  
 deploy:
   # deploy app as api server
   - provider: heroku
     skip_cleanup: true
-    api-key:
-      secure: $HEROKU_API_KEY
+    api-key: $HEROKU_API_KEY
     app: photo-amoenus-api
   # deploy app as front end website
   - provider: heroku
     skip_cleanup: true
-    api-key:
-      secure: $HEROKU_API_KEY
+    api-key: $HEROKU_API_KEY
     app: photo-amoenus-frontend
  
 after_deploy:
