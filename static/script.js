@@ -1,6 +1,5 @@
 //here goes the script for the html page
 
-const { json } = require("body-parser");
 
  /* Gestisce l'aggiunta di un file(immagine)
  */
@@ -544,10 +543,16 @@ function loadButtons() {
         document.getElementById("logoutButton").style.display = 'block'; // show logout button
         document.getElementById("addLocButton").style.display = 'block'; //show add location button
         document.getElementById("prefButton").style.display = 'block'; //show favorites button
+        document.getElementById("logButton").style.display = 'none'; //hide login button
+        document.getElementById("regButton").style.display = 'none'; //hide login button
+        
 
     if (mail.localeCompare("manager@hotmail.it") == 0) {
         document.getElementById('reportListButton').style.display = 'block'; //show report list button only to manager account
-    }
+    } 
+} else {
+    document.getElementById("logButton").style.display = 'block'; //show login button
+    document.getElementById("regButton").style.display = 'block'; //show login button
 }
 
 }
