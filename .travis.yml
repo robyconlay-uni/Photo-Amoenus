@@ -5,7 +5,8 @@ node_js:
 sudo: true
  
 branches:
-  all_branches: true
+  only:
+  - /.*/
  
 deploy:
   # deploy app as api server
