@@ -14,11 +14,15 @@ deploy:
     skip_cleanup: true
     api-key: $HEROKU_API_KEY
     app: photo-amoenus-api
+    on:
+      branch: main
   # deploy app as front end website
   - provider: heroku
     skip_cleanup: true
     api-key: $HEROKU_API_KEY
     app: photo-amoenus-frontend
+    on:
+      branch: main
  
 after_deploy:
 # change settings in Procfile for client
