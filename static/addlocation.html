@@ -4,14 +4,27 @@
         <title>Aggiungi una location</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="script.js"></script>            
+        <script src="script.js"></script>      
+        <link rel="stylesheet" type="text/css" href="stylesheet.css">      
 
     </head>
-    <body style="font-family: roboto; font-size: 20px">
-        <div  style="text-align: center"><h1>Aggiungi un luogo</h1></div>
-        <div  style="text-align: center">
+    <body>
+        <div class="header">
+            <h1 class="titles"> Aggiungi un luogo</h1>
+            <p style="margin-left: 10px; width: 40%; display: inline-block;">Compila il modulo per aggiungere il tuo luogo</p>
+        </div>
+        <div class="header-center">
+            <a href="index.html">
+                <img src="logo.png" >
+                </a>
             
-            <img src="https://www.informagiovani-italia.com/images/mappa_trento.jpg" style="max-width: 400px">
+        </div>
+        
+        <hr>
+        
+        <div class="container" id="center">
+            
+        <img src="https://www.informagiovani-italia.com/images/mappa_trento.jpg" style="max-width: 400px">
             
         </div>
 
@@ -19,53 +32,76 @@
         <form><!--method="POST" action="/locations" name="addLocationForm" id="addLocationForm"-->
             
             <br><br><br>
-            <div style="text-align: left; margin-top: 40px; margin-left: 50px">
-                <label for="nome" style="margin-right: 130px">Inserisci nome del luogo</label>
-                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="nome" ></br> <!--onchange="addLocation()"-->
-                <label for="posizione" style="margin-right: 130px">Inserisci la posizione</label>
-                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="posizione"><br>
+            <div>
+                <label for="nome"><br>Inserisci nome del luogo</br></label>
+                <input type="text" id="nome" ></br> <!--onchange="addLocation()"-->
+                <label for="posizione"><br>Inserisci la posizione</br></label>
+                <input type="text" id="posizione"><br>
 
-                <label for="città" style="margin-right: 130px">Inserisci la città</label>
-                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="città"><br>
+                <label for="città"> <br> Inserisci la città</br></label>
+                <input type="text" id="città"><br>
                 
                 <label for="descrizione">Inserisci una breve descrizione del luogo</label>
-                <input type="text" style="height: 200px; width: 600px; margin: 10px" id="descrizione"><br>
-            </div>
-            <div style="text-align: left; margin-top: 40px; margin-left: 50px">
-                <input type="button" value="Aggiungi tag" ><br><br><br>
-                
-                <label for="ragg">Raggiungibilità:</label>
-                <input type="radio" name="ragg" style="margin-left: 50px">A piedi
-                <input type="radio" name="ragg" style="margin-left: 50px">In bicicletta
-                <input type="radio" name="ragg" style="margin-left: 50px">In macchina
-                <input type="radio" name="ragg" style="margin-left: 50px">Con mezzi pubblici
-                <br><br><br>
-                
-                <input type="file" id="myFile" style="margin-top: 40px;" onchange="myFunction()" >
-                <p id="demo" style="margin-top: 40px;" id="immagine"></p><br><br>
-                
-                <label for="categoria" style="margin-right: 130px">Inserisci la categoria</label>
-                <input type="text" style="width: 400px; height: 40px; margin: 10px" id="categoria"><br>
+                <textarea  class= "description"  id="descrizione"></textarea><br>
 
-                <label for="descrizione2">Inserisci una breve descrizione della macchina fotografica utilizzata o del supporto,
+                <!--<input type="button" value="Aggiungi tag" ><br><br><br>-->
+                <div class="custom-select" style="width: 200px;">
+                <label for="categoria"><br>Inserisci la categoria:</br></label>
+                <!--<input type="text" style="width: 400px; height: 40px; margin: 10px" id="categoria"><br>-->
+                <select class= "dropdownMenu" name="categoria" id="categoria">
+                    <option value="" selected>Seleziona</option> <!-- value="" (undefined) così mi dà errore in caso non fosse specificato (null non funziona)-->
+                    <option value="Paesaggio">Paesaggio</option>
+                    <option value="Urbano">Urbano</option>
+                    <option value="Monumento">Monumento</option>
+                    <option value="Lago">Lago</option>
+                    <option value="Mare">Mare</option>
+                    <option value="Montagna">Montagna</option>
+                </select>
+                </div>
+                <br><br>
+                <label for="ragg"><br>Raggiungibilità:</br></label> 
+                <div class="multiselect" id="">
+                    <label><input type="checkbox" id="ragg[0]" value="Piedi" />Piedi</label>
+                    <label><input type="checkbox" id="ragg[1]" value="Bicicletta" />Bicicletta</label>
+                    <label><input type="checkbox" id="ragg[2]" value="Macchina" />Macchina</label>
+                    <label><input type="checkbox" id="ragg[3]" value="Mezzi pubblici" />Mezzi pubblici</label>
+                </div>
+                <!--Funzionante ma poco pratica la selezione con Ctrl-->
+                <!--<select class="dropdownMenu" name="ragg" id="ragg" multiple="true">
+                    <option value="Piedi">Piedi</option>
+                    <option value="Bicicletta">Bicicletta</option>
+                    <option value="Macchina">Macchina</option>
+                    <option value="Mezzi pubblici">Mezzi pubblici</option>-->
+                    <!--<input type="radio" id="ragg" style="margin-left: 50px">Con mezzi pubblici-->
+                <!--</select>-->
+                <br><br><br>
+            </div>
+            <div>
+                
+                <p>Inserire un immagine:</p>
+                <input  type="file" id="myFile" onchange="myFunction()" required>
+                <p id="demo"  id="immagine"></p><br><br>
+                
+
+                <label for="photoDescription"><br>Inserisci una breve descrizione della macchina fotografica utilizzata o del supporto,
                                         aggiungendo dettagli a piacere
                 </label>
-                <input type="text" style="height: 200px; width: 600px; margin: 10px"><br>
+                <textarea style="height: 200px; width: 600px; margin: 10px" id="photoDescription"></textarea><br>
                 
-                <label for="orario" style="margin-right: 60px">Inserisci l'orario di scatto</label>
-                <input type="text" style="width: 400px; height: 40px; margin: 10px"><br>
+                <label for="orario" style="margin-right: 60px"><br>Inserisci l'orario di scatto</br></label>
+                <input type="time" style="height: 20px;" id="orario"><br>
                 
-                <label for="ampm">Momento della giornata:</label>
-                <input type="radio" name="ampm" style="margin-left: 70px">A.M.
+                <!--<label for="ampm">Momento della giornata:</label>-->
+                <!--<input type="radio" name="ampm" style="margin-left: 70px">A.M.
                 <input type="radio" name="ampm" style="margin-left: 50px">P.M.
-                <br>
+                <br>-->
                 
-                <label for="data" style="margin-right: 130px">Data dello scatto</label>
-                <input type="text" style="width: 400px; height: 40px; margin: 10px"><br>
+                <label for="data"></label><br>Data dello scatto</br></label>
+                <input type="date" style="width: 150px; height: 20px; margin-bottom: 20px;" id="data"><br>
             </div>
             
-            <div style="text-align: right; margin-top: 50px; margin-right: 100px">
-                <button type="button" value="Aggiungi!"  onclick="addLocation()" style="width: 200px; height: 50px" >Aggiungi!</button>
+            <div class="container">
+                <button class="registerbtn" type="button" value="Aggiungi!" onclick="addLocation()" >Aggiungi!</button>
             </div>
 
         </form>
