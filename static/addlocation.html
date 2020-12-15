@@ -29,12 +29,12 @@
         </div>
 
 
-        <form><!--method="POST" action="/locations" name="addLocationForm" id="addLocationForm"-->
+        <form>
             
             <br><br><br>
             <div>
                 <label for="nome"><br>Inserisci nome del luogo</br></label>
-                <input type="text" id="nome" ></br> <!--onchange="addLocation()"-->
+                <input type="text" id="nome" ></br> 
                 <label for="posizione"><br>Inserisci la posizione</br></label>
                 <input type="text" id="posizione"><br>
 
@@ -44,12 +44,10 @@
                 <label for="descrizione">Inserisci una breve descrizione del luogo</label>
                 <textarea  class= "description"  id="descrizione"></textarea><br>
 
-                <!--<input type="button" value="Aggiungi tag" ><br><br><br>-->
                 <div class="custom-select" style="width: 200px;">
                 <label for="categoria"><br>Inserisci la categoria:</br></label>
-                <!--<input type="text" style="width: 400px; height: 40px; margin: 10px" id="categoria"><br>-->
                 <select class= "dropdownMenu" name="categoria" id="categoria">
-                    <option value="" selected>Seleziona</option> <!-- value="" (undefined) così mi dà errore in caso non fosse specificato (null non funziona)-->
+                    <option value="" selected>Seleziona</option> 
                     <option value="Paesaggio">Paesaggio</option>
                     <option value="Urbano">Urbano</option>
                     <option value="Monumento">Monumento</option>
@@ -66,14 +64,6 @@
                     <label><input type="checkbox" id="ragg[2]" value="Macchina" />Macchina</label>
                     <label><input type="checkbox" id="ragg[3]" value="Mezzi pubblici" />Mezzi pubblici</label>
                 </div>
-                <!--Funzionante ma poco pratica la selezione con Ctrl-->
-                <!--<select class="dropdownMenu" name="ragg" id="ragg" multiple="true">
-                    <option value="Piedi">Piedi</option>
-                    <option value="Bicicletta">Bicicletta</option>
-                    <option value="Macchina">Macchina</option>
-                    <option value="Mezzi pubblici">Mezzi pubblici</option>-->
-                    <!--<input type="radio" id="ragg" style="margin-left: 50px">Con mezzi pubblici-->
-                <!--</select>-->
                 <br><br><br>
             </div>
             <div>
@@ -90,12 +80,7 @@
                 
                 <label for="orario" style="margin-right: 60px"><br>Inserisci l'orario di scatto</br></label>
                 <input type="time" style="height: 20px;" id="orario"><br>
-                
-                <!--<label for="ampm">Momento della giornata:</label>-->
-                <!--<input type="radio" name="ampm" style="margin-left: 70px">A.M.
-                <input type="radio" name="ampm" style="margin-left: 50px">P.M.
-                <br>-->
-                
+                                
                 <label for="data"></label><br>Data dello scatto</br></label>
                 <input type="date" style="width: 150px; height: 20px; margin-bottom: 20px;" id="data"><br>
             </div>
