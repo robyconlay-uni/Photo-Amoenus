@@ -136,7 +136,7 @@ body {
   overflow: hidden;
   box-sizing: border-box;
   height: 250px;
-  width: 50%;
+  width: 43%;
   background-color:#cfe7d0 ;
   margin-bottom: 20px;
 }
@@ -147,8 +147,8 @@ body {
 
 
 .header-center{
-  width: 50%;
-  float: right;
+  width: 57%;
+  float: left;
   height: 250px;
   display: inline-block;
   background-color:#cfe7d0;
