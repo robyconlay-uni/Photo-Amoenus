@@ -304,7 +304,7 @@ function removeFavourite(id) {
     })
         .then(res => {
             if (res.ok) {
-                document.getElementById("favourite").innerHTML = `<button type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
+                document.getElementById("favourite").innerHTML = `<button class=registerbtn type="button" id="favButton" onclick="addFavourite('${id}')">Aggiungi ai preferiti</button>`;
             }
 
         })
