@@ -1,9 +1,8 @@
 openapi: 3.0.0
 info:
   version: '1.0'
-  title: "Sprint #1"
-  description: Voglio poter vedere le foto scattate in una determinata location per farmi un’idea del posto, 
-    potermi registrare, creare nuove location  
+  title: "Photo Amenous"
+  description: 'Service for sharing locations to take photos.'
   license:
     name: MIT
 servers:
@@ -12,7 +11,7 @@ servers:
   - url: http://localhost:3000/api/v1
     description: Localhost
 paths:
-  /locations/{id}:
+  /locations/:id:
     get:
       description: >-
         Gets information about a specific location, identified by an ID
@@ -32,7 +31,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Location'
         '404':
-          description: 'Insert ID doesn't exist'
+          description: 'Insert ID doesn`t exist'
           content:
             application/json:
               schema:
@@ -42,7 +41,19 @@ paths:
       description: >-
         Gets information about all existing locations
       summary: Get all locations
-      parameters:
+      parameters: 
+        category:
+          type: string
+          description: 'filter for category'
+        city:
+          type: string
+          description: 'filter for city'
+        raggiungibilita:
+          type: string
+          description: 'filter for reachability'
+        order:
+          type: string
+          description: 'order method'
       responses:
         '200':
           description: 'All the existing locations'
@@ -62,7 +73,7 @@ paths:
       summary: Create a new location
       requestBody:
         content:
-          application/json:
+          multpart/form-data:
             schema:
               type: object
               required:
@@ -70,11 +81,15 @@ paths:
                 - address
                 - city
                 - description
-                - locationImage
                 - category
-              proprieties:
+                - raggiungibilita
+                - locationImage
+                - photoDesc
+                - hour
+                - date
+              properties:
                 _id:
-                  type: number
+                  type: mongoose.Schema.Types.ObjectId
                   description: 'ID of the location in database'
                 name:
                   type: string
@@ -88,29 +103,54 @@ paths:
                 description:
                   type: string
                   description: 'description of the location'
-                locationImage:
-                  type: string
-                  description: 'path of the image related to location'
                 category:
                   type: string
                   description: 'category of the location'
-                likes:
-                  type: number
-                  description: 'numeber of likes of the post'
+                raggiungibilita:
+                  type: array[string]
+                  description: 'one or more reachability methods of the location'
+                locationImage:
+                  type: mongoose.Schema.Types.ObjectId
+                  description: '_id of the location s image'
+                  schema: $ref '#/components/schemas/imageScheme/'
+                photoDesc:
+                  type: string
+                  description: 'description of the location s image'
+                hour:
+                  type: string
+                  description: 'hour of the location s image'
+                date:
+                  type: string
+                  description: 'date of the location s image'
       responses:
         '201':
-          description: 'Location created. Link in the location header'
-          header:
-            'Location':
-              schema:
-                type: string
-              description: Link to the created location.
+          description: 'Location created.'
+          headers:
+            content:
+              application/json:
+                schema:
+                  message:
+                    type: string
+                    description: 'Location created'
+                  createdLocation:
+                    type: object
+                    properties:
+                      _id:
+                        type: mongoose.Schema.Types.ObjectId
+                        description: 'id of the created location'
+                      name:
+                        type: string
+                        description: 'name of the created location'
+                type: 
+                description: message of success.
         '500':
-          description: 'Error in creating location'
-          content:
+          description: 'Error in creating a new location.'
+          headers:
+            content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Location'
+                type: string
+                description: message of error.
     patch:
       description: >-
         Changes any value of a location
@@ -126,8 +166,7 @@ paths:
           description: 'Location pathced'
         '500':
           description: 'Error in patching location'
-
-/lib/favourites/:
+  /lib/favourites/:
     get:
       description: >-
         Gets favourites of 1 user
@@ -138,9 +177,9 @@ paths:
             schema:
               type: object
               required:
-		            - token
+              - token
               properties:
-		            token:
+              token:
                   type: string
                   description: 'Token of the user'
       responses:
@@ -166,9 +205,9 @@ paths:
             schema:
               type: object
               required:
-		            - token
+              - token
               properties:
-		            token:
+                token:
                   type: string
                   description: 'Token of the user'
       responses:
@@ -178,9 +217,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Favourites'
-
-
-   /lib/favourites/add/:id:
+  /lib/favourites/add/:id:
     patch:
       description: >-
         Add one location as favourite of 1 user
@@ -198,9 +235,9 @@ paths:
             schema:
               type: object
               required:
-		            - token
+                - token
               properties:
-		            token:
+                token:
                   type: string
                   description: 'Token of the user'
       responses:
@@ -211,13 +248,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Favourites'
         '409':
-          description: 'Location is already in user's favourites'
+          description: 'Location is already in user`s favourites'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Favourites'
-
-/lib/favourites/remove/:id:
+  /lib/favourites/remove/:id:
     patch:
       description: >-
         Remove one location as favourite of 1 user
@@ -235,9 +271,9 @@ paths:
             schema:
               type: object
               required:
-		            - token
+                - token
               properties:
-		            token:
+                token:
                   type: string
                   description: 'Token of the user'
       responses:
@@ -247,8 +283,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Favourites'
-
-/user/registration:
+  /user/signup:
     post:
       description: >-
         Creates a new user in the system.
@@ -259,58 +294,57 @@ paths:
             schema:
               type: object
               required:
-		- id
-		- username
+                - id
+                - username
                 - email
-		- password
+                - password
               properties:
-		_id:
+                _id:
                   type: objectId
                   description: 'Id of the user'
-		username:
+                username:
                   type: string
                   description: 'Username that will be shown in the site'
                 email:
                   type: string
                   description: 'Email address of the user'
-		password:
+                password:
                   type: string
                   description: 'Password to access to the account'
-      responses:                                                         //questa parte non ancora implementata
+      responses:                                                         
         '201':
           description: 'User created'
           headers:
               schema:
                 type: string
               description: message of success.
-	'500':
+        '500':
           description: 'Error in creating a new user'
           headers:
             content:
             application/json:
               schema:
                 type: string
-		description: message of error.
-	'422':
+                description: message of error.
+        '422':
           description: 'User already exist'
           headers:
             content:
             application/json:
               schema:
-		type: string
-		description: message of error.
-		
-/user/:id:
-	delete:
-      	 description: >-
+                type: string
+                description: message of error.
+  /user/:id:
+    delete:
+      description: >-
          Deletes a particular user.
-      	summary: Delete a user
-      	parameters:
-	  - in: path
-          name: id
-	  schema:
-            type: String
-	    description: 'id of the report'
+      summary: Delete a user
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: String
+          description: 'id of the report'
         content:
           application/json:
             schema:
@@ -320,18 +354,50 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/userScheme'
-	'500':
+                $ref: '#/components/schemas/User'
+        '500':
           description: 'Error'
           content:
             application/json:
               schema:
-		type: string
-                description: "message of error"
-
-
-		
-/report:
+              type: string
+              description: "message of error"
+  /user/login:
+    post:
+      description: >-
+        Logs a user
+      summary: Logs a user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: 'User logged in'
+          headers:
+            'message':
+              schema:
+                type: string
+                description: 'Auth successful'
+        '401':
+          description: 'User not logged in'
+          headers:
+            'message':
+              schema:
+                type: string
+                description: 'Auth failed'
+        '500':
+          description: 'User not logged in'
+          headers:
+            'message':
+              schema:
+                type: string
+                description: 'Auth failed'
+  /report:
     post:
       description: >-
         Creates a new report in the system.
@@ -342,23 +408,23 @@ paths:
             schema:
               type: object
               required:
-		- _id
-		- email
-		- text
-		- id_picture
+                - _id
+                - email
+                - text
+                - id_picture
               properties:
-		id:
+                id:
                   type: objectId
                   description: 'Id of the user'
-		email:
-	  	  type: string
-	  	  description: 'email of the user of created the report'
-		text:
+                email:
+                  type: string
+                  description: 'email of the user of created the report'
+                text:
                   type: string
                   description: 'The reason for the report'
-		id_picture:
-          	  type: String
-          	  description: 'id of the picture that was reported'
+                id_picture:
+                  type: String
+                  description: 'id of the picture that was reported'
       responses:                                                       
         '201':
           description: 'Report created'
@@ -367,84 +433,80 @@ paths:
               schema:
                 type: string
               description: Message of report sent with success.
-	'500':
+        '500':
           description: 'Error in creating a new report'
           headers:
             content:
             application/json:
               schema:
                 type: string
-		description: Message of error.
-		
-report/:id:
-	get:
-      	 description: >-
+                description: Message of error.
+  /report/:id:
+    get:
+      description: >-
           Get a specific report.
-      	summary: Get a specific report.
-      	parameters:
-	  - in: path
+      summary: Get a specific report.
+      parameters:
+        - in: path
           name: id
-	  schema:
+          schema:
             type: String
-	    description: 'id of the report'
-      	responses:
-         '200':
+            description: 'id of the report'
+      responses:
+        '200':
            description: 'Report of the passed id '
            content:
              application/json:
                schema:
-                 $ref: '#/components/schemas/reportScheme'
-	 '404':
+                 $ref: '#/components/schemas/Report'
+        '404':
            description: 'Error'
            content:
              application/json:
                schema:
-		 type: string
+                 type: string
                  description: "message of error"
-		
-/checkReports:
+  /checkReports:
     get:
       description: >-
         Gets all the reports in the system.
       summary: Gets all the reports.
-      parameters:
       responses:                                                       
         '200':
           description: 'All the existing report'
           content:
             application/json:
               schema:
-		type: array
-		items:
-            	$ref: '#/components/schemas/reportScheme
-	'404':
+                $ref: '#/components/schemas/Report'
+        '404':
           description: 'there are not existing reports'
-            content:
+          content:
             application/json:
               schema:
-		type: string
+                type: string
                 description: message of error
-
-
 components:
-    userScheme:
-      type: object
-      required:
-        - id
-        - username
-        - email
-        - password
-      properties:
-        username:
-          type: String
-          description: 'Name of the location'
-        email:
-          type: String
-          description: 'Email of the user'
-        password:
-          type: String
-          description: 'Password of the user'
-    locationScheme:
+  schemas:
+    User:
+      userScheme:
+        type: object
+        required:
+          - id
+          - username
+          - email
+          - password
+        properties:
+          username:
+            type: String
+            description: 'Name of the location'
+          email:
+            type: String
+            description: 'Email of the user'
+          password:
+            type: String
+            description: 'Password of the user'
+    Location:
+      locationSchema:
       type: object
       required:
         - id
@@ -452,51 +514,100 @@ components:
         - address
         - city
         - description
-        - locationImage
         - category
-        - likes
-      properties:
-        id:
-          type: String
-          description: 'ID of the location'
-        name:
-          type: String
-          description: 'Name of the location'
-        address:
-          type: String
-          description: 'Address of the location'
-        city:
-          type: String
-          description: 'City of the location'
-        description:
-          type: String
-          description: 'Short description of the location'
-        image:
-          type: String
-          description: 'Representative image of the location'
-        category:
-          type: String
-          description: 'Most Representative category of the location'
-        likes:
-          type: Number
-          description: 'Number of people who likes this element'  
-    reportScheme:
-      type: object
-      required:
-        - _id
-	- email
-        - text
-	- id_picture
+        - raggiungibilita
+        - locationImage
+        - photoImage
+        - photoDesc
+        - hour
+        - date
       properties:
         _id:
-          type: String
+          type: mongoose.Schema.Types.ObjectId
           description: 'ID of the location'
-	email:
-	  type: string
-	  description: 'email of the user of created the report'
-        text:
-          type: String
-          description: 'Content of the report'
-	id_picture:
-          type: String
-          description: 'id of the picture that was reported'
+        name:
+          type: string
+          description: 'name of the location'
+        address:
+          type: string
+          description: 'address of the location'
+        city:
+          type: string
+          description: 'city of the location'
+        description:
+          type: string
+          description: 'description of the location'
+        category:
+          type: string
+          description: 'category of the location'
+        raggiungibilita:
+          type: array[string]
+          description: 'raggiungibilita of the location'
+        raggiungibilita:
+          type: array[string]
+          description: 'one or more reachability methods of the location'
+        locationImage:
+          type: mongoose.Schema.Types.ObjectId
+          description: '_id of the location s image'
+          reference: 'Image'
+        photoDesc:
+          type: string
+          description: 'description of the location s image'
+        hour:
+          type: string
+          description: 'hour of the location s image'
+        date:
+          type: string
+          description: 'date of the location s image'
+        like:
+          type: number
+          description: 'number of persons that find location useful'
+    imageScheme:
+      type: object
+      required:
+        - img
+      properties:
+        _id:
+          type: mongoose.Schema.Types.ObjectId
+          description: 'ID of the image'
+        img:
+          type: object
+          content:
+            data:
+              type: buffer
+              description: 'Buffer of the image data'
+            contentType:
+              type: string
+              description: 'type of the image'
+    Report:
+      reportScheme:
+        type: object
+        required:
+          - _id
+          - email
+          - text
+          - id_picture
+        properties:
+          _id:
+            type: String
+            description: 'ID of the location'
+          email:
+            type: string
+            description: 'email of the user of created the report'
+          text:
+            type: String
+            description: 'Content of the report'
+          id_picture:
+            type: String
+            description: 'id of the picture that was reported'
+    Favourites:
+      favoruiteScheme:
+      type: object
+      properties:
+        _id:
+          type: mongoose.Schema.Types.ObjectId
+          description: 'ID of the User'
+        favourites:
+          type: Array of mongoose.Schema.Types.ObjectId
+          description: 'List of Locations` ids'
+      
