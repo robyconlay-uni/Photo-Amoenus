@@ -60,3 +60,7 @@ Il file `travis.yml` fa si che travis pubblichi il progetto su [Heroku](https://
 ### Documentazione
 
 Il file `apiary.yml` contiene la documentazione delle API. Per visualizzarlo correttamente è necessario importarlo su [apiary.io](https://apiary.io/) o visitare [questa pagina](https://app.apiary.io/assignementsapi30)
+
+## Licence
+
+[MIT](https://github.com/robyconlay-uni/Photo-Amoenus/blob/main/LICENSE)
