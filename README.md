@@ -14,6 +14,8 @@ Questo progetto è stato realizzato durante il semestre Settembre - Febbraio 202
 
 Una demo del sito è disponibile su [Heroku](https://photo-amoenus-api.herokuapp.com/)
 
+Nella sezione Wiki di Github web è presente la descrizione completa dei metodi e utilizzati
+
 ## Collaboratori 
 
 - robyconlay-uni (Roberto Mazzalai)
