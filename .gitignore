@@ -1,6 +1,8 @@
 
 # Created by https://www.gitignore.io/api/node,windows,linux,visualstudiocode
 
+.env
+.nodemon.json
 ### Linux ###
 *~
 
