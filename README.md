@@ -12,6 +12,8 @@ Questo progetto è stato realizzato durante il semestre Settembre - Febbraio 202
 - Sprit 1 (incentrato su API development)
 - Sprint 2 (API + frontend)
 
+Una demo del sito è disponibile su [Heroku](https://photo-amoenus-api.herokuapp.com/)
+
 ## Collaboratori 
 
 - robyconlay-uni (Roberto Mazzalai)
@@ -55,7 +57,7 @@ Creare un file `.env` simile a `.env.example` contenente le proprie variabili di
 
 ### Travis e Heroku
 
-Il file `travis.yml` fa si che travis pubblichi il progetto su [Heroku](https://photo-amoenus.herokuapp.com/)
+Il file `travis.yml` fa si che travis pubblichi il progetto su Heroku
 
 ### Documentazione
 
